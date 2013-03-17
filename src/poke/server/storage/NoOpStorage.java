@@ -48,7 +48,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public NameSpace getNameSpaceInfo(long spaceId) {
+	public NameSpace getNameSpaceInfo(String spaceId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -66,7 +66,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeNameSpace(long spaceId) {
+	public boolean removeNameSpace(String spaceId) {
 		// TODO Auto-generated method stub
 		return true;
 	}

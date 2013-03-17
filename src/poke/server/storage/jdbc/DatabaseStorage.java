@@ -87,7 +87,7 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public NameSpace getNameSpaceInfo(long spaceId) {
+	public NameSpace getNameSpaceInfo(String userId) {
 		NameSpace space = null;
 
 		Connection conn = null;
@@ -98,7 +98,7 @@ public class DatabaseStorage implements Storage {
 			// select * from space where id = spaceId
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("failed/exception on looking up space " + spaceId, ex);
+			logger.error("failed/exception on looking up space " + userId, ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
@@ -179,7 +179,7 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeNameSpace(long spaceId) {
+	public boolean removeNameSpace(String userId) {
 		// TODO Auto-generated method stub
 		return false;
 	}

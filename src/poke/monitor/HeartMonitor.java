@@ -149,11 +149,11 @@ public class HeartMonitor extends Thread {
 			try {
 				if(servers != null && servers.size() > 0) {
 					for(GeneralConf server: servers) {
-						String nodeid = server.getId();
+						String nodeid = server.getNodeId();
 						if(! nodeid.equals(nodeId)) {
 							Channel channel = channels.get(nodeid);
 							if(!(channel != null && channel.isConnected())) {
-								Channel ch = connect(nodeid, server.getHost(), server.getMgtPort());
+								Channel ch = connect(nodeid, server.getHost(), server.getPortMgmt());
 								if(ch != null) {
 									Network.Builder n = Network.newBuilder();
 									n.setNodeId(nodeId);

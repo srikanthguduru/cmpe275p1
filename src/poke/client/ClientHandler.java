@@ -15,6 +15,9 @@
  */
 package poke.client;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -113,9 +116,13 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 		if (doc.hasNameSpace())
 			System.out.println("NameSpace: " + doc.getNameSpace());
 
-		if (doc.hasDocument()) {
-			NameValueSet nvs = doc.getDocument();
-			PrintNode.print(nvs);
+		if (doc.getDocumentCount() != 0) {
+			List<NameValueSet> list = doc.getDocumentList();
+			Iterator<NameValueSet> itr = list.iterator();
+			while (itr.hasNext()) {
+				NameValueSet nvs = itr.next();
+				PrintNode.print(nvs);
+			}
 		}
 	}
 

@@ -31,51 +31,53 @@ import eye.Comm.NameSpace;
  */
 public class InMemoryStorage implements Storage {
 	private static String sNoName = "";
-	private HashMap<Long, DataNameSpace> data = new HashMap<Long, DataNameSpace>();
+	private HashMap<String, DataNameSpace> data = new HashMap<String, DataNameSpace>();
+	private List<NameSpace> users = new ArrayList<NameSpace>();
 
 	@Override
-	public boolean addDocument(String namespace, Document doc) {
+	public boolean addDocument(String userId, Document doc) {
 		if (doc == null)
 			return false;
+
 		DataNameSpace dns = null;
-		if (namespace == null) {
-			namespace = sNoName;
-			NameSpace.Builder bldr = NameSpace.newBuilder();
-			bldr.setId(createKey());
-			bldr.setName(sNoName);
-			bldr.setOwner("none");
-			bldr.setCreated(System.currentTimeMillis());
-			dns = new DataNameSpace(bldr.build());
-			data.put(dns.nsb.getId(), dns);
-		} else
-			dns = lookupByName(namespace);
+		NameSpace ns = null;
 
-		if (dns == null)
-			throw new RuntimeException("Unknown namspace: " + namespace);
+		if(userId != null)
+			ns = lookupByID(userId);				
+		if (ns == null)
+			throw new RuntimeException("Unknown namspace: " + userId);
 
+			
 		Long key = null;
-		if (doc.hasId())
-			doc.hasId();
-		else {
+		if (!doc.hasId()) {
 			// note because we store the protobuf instance (read-only)
 			key = createKey();
 			Document.Builder bldr = Document.newBuilder(doc);
 			bldr.setId(key);
 			doc = bldr.build();
 		}
+		if (data.containsKey(userId))
+			dns  = data.get(userId);
+		else {
+			dns = new DataNameSpace();
+		}
+		dns.add(doc);
 
-		return dns.add(key, doc);
+		DataNameSpace updated = data.put(userId, dns);
+		return (updated !=null); 
 	}
 
 	@Override
-	public boolean removeDocument(String namespace, long docId) {
-		if (namespace == null)
-			namespace = sNoName;
+	public boolean removeDocument(String userId, long docId) {
+		if (userId == null)
+			userId = sNoName;
 
 		boolean rtn = false;
-		DataNameSpace list = data.get(namespace);
-		if (list != null)
-			rtn = list.remove(docId);
+		NameSpace list = lookupByID(userId);
+		if (list != null) {
+			DataNameSpace dns = data.get(userId);
+			dns.remove(docId);
+		}	
 
 		return rtn;
 	}
@@ -86,12 +88,12 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String namespace, Document criteria) {
+	public List<Document> findDocuments(String userId, Document criteria) {
 		// TODO locating documents can be have several implementations that
 		// allow for exact matching to not equal to gt to lt
 
 		// return the namespace as queries are not implemented
-		DataNameSpace list = data.get(namespace);
+		DataNameSpace list = data.get(userId);
 		if (list == null)
 			return null;
 		else
@@ -99,12 +101,8 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public eye.Comm.NameSpace getNameSpaceInfo(long spaceId) {
-		DataNameSpace dns = data.get(spaceId);
-		if (dns != null)
-			return dns.getNameSpace();
-		else
-			return null;
+	public eye.Comm.NameSpace getNameSpaceInfo(String userId) {
+		return lookupByID(userId);
 	}
 
 	@Override
@@ -114,44 +112,24 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public NameSpace createNameSpace(eye.Comm.NameSpace space) {
-		if (space == null)
+	public NameSpace createNameSpace(eye.Comm.NameSpace user) {
+		if (user == null)
 			return null;
 
-		DataNameSpace dns = lookupByName(space.getName());
+		NameSpace dns = lookupByID(user.getUserId());
 		if (dns != null)
 			throw new RuntimeException("Namespace already exists");
 
-		NameSpace.Builder bldr = NameSpace.newBuilder();
-		if (space.hasId()) {
-			dns = data.get(space.getId());
-			if (dns != null)
-				throw new RuntimeException("Namespace ID already exists");
-			else
-				bldr.setId(space.getId());
-		} else
-			bldr.setId(createKey());
-
-		bldr.setName(space.getName());
-		bldr.setCreated(System.currentTimeMillis());
-		bldr.setLastModified(bldr.getCreated());
-
-		if (space.hasOwner())
-			bldr.setOwner(space.getOwner());
-
-		if (space.hasDesc())
-			bldr.setDesc(space.getDesc());
-
+		NameSpace.Builder bldr = NameSpace.newBuilder(user);
 		NameSpace ns = bldr.build();
-		dns = new DataNameSpace(ns);
-		data.put(dns.getNameSpace().getId(), dns);
+		users.add(ns);
 
 		return ns;
 	}
 
 	@Override
-	public boolean removeNameSpace(long spaceId) {
-		DataNameSpace dns = data.remove(spaceId);
+	public boolean removeNameSpace(String user_id) {
+		DataNameSpace dns = data.remove(user_id);
 		try {
 			return (dns != null);
 		} finally {
@@ -161,56 +139,47 @@ public class InMemoryStorage implements Storage {
 		}
 	}
 
-	private DataNameSpace lookupByName(String name) {
-		if (name == null)
+	private NameSpace lookupByID(String user_id) {
+		if (user_id == null)
 			return null;
 
-		for (DataNameSpace dns : data.values()) {
-			if (dns.getNameSpace().getName().equals(name))
-				return dns;
+		for (NameSpace ns : users) {
+			if (ns.getUserId().equals(user_id))
+				return ns;
 		}
 		return null;
 	}
 
 	private long createKey() {
 		// TODO need key generator
-		return System.nanoTime();
+		return System.currentTimeMillis();
 	}
 
 	private static class DataNameSpace {
 		// store the builder to allow continued updates to the metadata
-		eye.Comm.NameSpace.Builder nsb;
-		HashMap<Long, Document> data = new HashMap<Long, Document>();
-
-		public DataNameSpace(NameSpace ns) {
-			nsb = NameSpace.newBuilder(ns);
-		}
-
+		HashMap<Long, Document> data = new HashMap<Long,Document>();
+		
 		public void release() {
 			if (data != null) {
 				data.clear();
 				data = null;
 			}
-
-			nsb = null;
 		}
 
-		public NameSpace getNameSpace() {
-			return nsb.build();
-		}
-
-		public boolean add(Long key, Document doc) {
-			data.put(key, doc);
-			nsb.setLastModified(System.currentTimeMillis());
-			return true;
-		}
-
-		public boolean remove(Long key) {
-			Document doc = data.remove(key);
-			if (doc == null)
+		public boolean add(Document doc) {
+			Document uploaded =  data.put(doc.getId(),doc);
+			if (uploaded == null)
 				return false;
 			else {
-				nsb.setLastModified(System.currentTimeMillis());
+				return true;
+			}
+		}
+
+		public boolean remove(long docId) {
+			Document removed = data.remove(docId);
+			if (removed == null)
+				return false;
+			else {
 				return true;
 			}
 		}

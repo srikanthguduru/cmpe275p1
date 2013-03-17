@@ -168,24 +168,24 @@ public class Server {
 	protected void run(String nodeId) {
 		logger.info("Start Server nodeId " + nodeId);
 		
-		GeneralConf server = conf.findById(nodeId);
+		GeneralConf server = conf.findNodeById(nodeId);
 		
 		int port =  server.getPort();
-		int mport = server.getMgtPort();
+		int mport = server.getPortMgmt();
 		
 		// storage initialization
 		// TODO storage init
 		// TODO - Initialize DB Connection here
 
 		// start communication
-		createPublicBoot(port, nodeId, conf.getServerMap());
+		createPublicBoot(port, nodeId, conf.getServer());
 		createManagementBoot(mport);
 
 		// start management
 		ManagementQueue.startup();
 
 		// start heartbeat
-		String str = server.getId();
+		String str = server.getNodeId();
 		heartbeat = ServerHeartbeat.getInstance(str);
 		heartbeat.start();
 		

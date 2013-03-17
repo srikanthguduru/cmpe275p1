@@ -15,8 +15,6 @@
  */
 package poke.util;
 
-import java.util.Date;
-
 import eye.Comm.NameSpace;
 import eye.Comm.NameValueSet;
 import eye.Comm.NameValueSet.NodeType;
@@ -31,11 +29,10 @@ public class PrintNode {
 			return;
 
 		System.out.println("NameSpace: ");
+		System.out.println("  ID : " + ns.getUserId());
 		System.out.println("  Name: " + ns.getName());
-		System.out.println("  Desc: " + ((ns.hasDesc()) ? ns.getDesc() : ""));
-		System.out.println("  Owner: " + ns.getOwner());
-		System.out.println("  Created: " + new Date(ns.getCreated()));
-		System.out.println("  Modified: " + new Date(ns.getLastModified()));
+		System.out.println("  City: " + ns.getCity());
+		System.out.println("  Zip Code: " + ns.getZipCode());
 		System.out.print("");
 	}
 

@@ -27,19 +27,19 @@ public interface Storage {
 
 	void release();
 
-	NameSpace getNameSpaceInfo(long spaceId);
+	NameSpace getNameSpaceInfo(String userId);
 
 	List<NameSpace> findNameSpaces(NameSpace criteria);
 
 	NameSpace createNameSpace(NameSpace space);
 
-	boolean removeNameSpace(long spaceId);
+	boolean removeNameSpace(String userId);
 
-	boolean addDocument(String namespace, Document doc);
+	boolean addDocument(String user_id, Document doc);
 
-	boolean removeDocument(String namespace, long docId);
+	boolean removeDocument(String user_id, long docId);
 
-	boolean updateDocument(String namespace, Document doc);
+	boolean updateDocument(String user_id, Document doc);
 
-	List<Document> findDocuments(String namespace, Document criteria);
+	List<Document> findDocuments(String user_id, Document criteria);
 }

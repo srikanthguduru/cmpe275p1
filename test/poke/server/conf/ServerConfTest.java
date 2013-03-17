@@ -30,9 +30,9 @@ public class ServerConfTest {
 	public void testBasicConf() throws Exception {
 		ServerConf conf = new ServerConf();
 		GeneralConf svc = new GeneralConf();
-		svc.setId("100");
+		svc.setNodeId("100");
 		svc.setPort(5570);
-		svc.setMgtPort(5670);
+		svc.setPortMgmt(5670);
 		svc.setStorage("poke.server.storage.InMemoryStorage");
 		conf.addServer(svc);
 

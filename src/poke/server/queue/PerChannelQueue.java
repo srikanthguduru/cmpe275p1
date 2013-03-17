@@ -161,8 +161,8 @@ public class PerChannelQueue implements ChannelQueue {
 			GeneralConf server = null;
 			if( index != -1 ) {
 				server = serverMap.get(index);
-				if(! nodeId.equals(server.getId())) {
-					logger.info("*******Route Request to NodeId " + server.getId());
+				if(! nodeId.equals(server.getNodeId())) {
+					logger.info("*******Route Request to NodeId " + server.getNodeId());
 					return server;
 				}
 			}
@@ -338,16 +338,16 @@ public class PerChannelQueue implements ChannelQueue {
 								// to its outbound Queue. If we don't then create new RoutingConnection and pass
 								// request to it.
 								// Use ServiceMonitor to first check if server is available
-								if( ! HeartMonitor.getInstance().isServerRunning(server.getId())) {
+								if( ! HeartMonitor.getInstance().isServerRunning(server.getNodeId())) {
 									logger.error("remote server is not ready to accept request " + req);
 									Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed");
 									sq.enqueueResponse(reply);
 								}
 								else {
-									RoutingConnection clientConnection = routingConnections.get(server.getId());
+									RoutingConnection clientConnection = routingConnections.get(server.getNodeId());
 									if( clientConnection == null ) {
 										clientConnection = RoutingConnection.initConnection(server, sq);
-										routingConnections.put(server.getId(), clientConnection);
+										routingConnections.put(server.getNodeId(), clientConnection);
 									}
 									clientConnection.enqueueRequest(req);
 								}

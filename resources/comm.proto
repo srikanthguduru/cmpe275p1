@@ -9,13 +9,29 @@ message Finger {
 
 message NameSpace {
 	// internally created or supplied by caller
-	optional int64 id = 1; 
-	
+	required string user_id = 1;
 	required string name = 2;
-	optional string desc = 3;
-	optional int64 created = 4;
-	optional int64 last_modified = 5;
-	optional string owner = 6;
+	required string city = 3;
+	required string zip_code = 4;
+	required string password = 5;
+}
+
+message LoginInfo {
+	required string user_id = 1;
+	required string password = 2;	
+}
+
+message Point {
+	required int64 x = 1;
+	required int64 y = 2;
+}
+
+message QueryInfo {
+	required string user_id = 1;
+	required Point location = 2;
+	optional string name = 3;
+	optional int64 time = 4;
+	optional string desc = 5;
 }
 
 message NameValueSet {
@@ -23,7 +39,6 @@ message NameValueSet {
     optional string name = 2;
     optional string value = 3;
     repeated NameValueSet node = 4;
-    
     enum NodeType {
     	NODE = 1;
     	VALUE = 2;
@@ -33,7 +48,9 @@ message NameValueSet {
 message Document {
     optional string name_space = 1;
     optional int64 id = 2;
-    required NameValueSet document = 3;
+    required bytes img_byte = 3;
+	required Point location = 4;
+    repeated NameValueSet document = 5;
 }
 
 message DocumentSet {
@@ -88,8 +105,8 @@ message Payload {
 message PayloadReply {
     repeated Document docs = 1;
     repeated NameSpace spaces = 2;
-    optional Document stats = 3;
-    optional Document finger = 4;
+    optional Document stats = 3;	//To be reviewed
+    optional Document finger = 4;	//To be reviewed
 }
 
 message Request {
