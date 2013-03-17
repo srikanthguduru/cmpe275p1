@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.server.conf.ServerConf.GeneralConf;
+import poke.server.conf.ServerConf.RouteConf;
 import poke.server.management.ServerHeartbeat;
 import eye.Comm.Heartbeat;
 import eye.Comm.Management;
@@ -30,6 +31,8 @@ public class HeartMonitor extends Thread {
 	
 	String nodeId;
 	List<GeneralConf> servers;
+	List<RouteConf> route;
+
 	boolean forever = true;
 	HashMap<String, Channel> channels = new HashMap<String, Channel>();
 	HashMap<String, ChannelFuture> channelFutures = new HashMap<String, ChannelFuture>();

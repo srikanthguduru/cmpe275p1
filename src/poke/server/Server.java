@@ -169,14 +169,14 @@ public class Server {
 		logger.info("Start Server nodeId " + nodeId);
 		
 		GeneralConf server = conf.findNodeById(nodeId);
-		
+
 		int port =  server.getPort();
 		int mport = server.getPortMgmt();
 		
 		// storage initialization
 		// TODO storage init
 		// TODO - Initialize DB Connection here
-
+		
 		// start communication
 		createPublicBoot(port, nodeId, conf.getServer());
 		createManagementBoot(mport);
@@ -189,7 +189,7 @@ public class Server {
 		heartbeat = ServerHeartbeat.getInstance(str);
 		heartbeat.start();
 		
-		serverMonitor = HeartMonitor.getInstance(str, conf.getServer());
+		serverMonitor = HeartMonitor.getInstance(str, conf.getConnectedNodes(nodeId));
 		serverMonitor.start();
 		
 		logger.info("Server ready with nodeId " + nodeId + " port: " + port + " mgmtPort: " + mport);

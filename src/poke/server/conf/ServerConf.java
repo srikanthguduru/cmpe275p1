@@ -17,6 +17,7 @@ package poke.server.conf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,6 +45,9 @@ public class ServerConf {
 	private List<ResourceConf> resource;
 	private List<RouteConf> route;
 	private List<DatasourceConf> datasource;
+
+	// To Track Route
+	private List<GeneralConf> visibleNodes = new ArrayList<ServerConf.GeneralConf>();
 
 	private volatile HashMap<String, GeneralConf> idToSvr;
 	private volatile HashMap<String, RouteConf> idToRte;
@@ -119,6 +123,24 @@ public class ServerConf {
 		datasource.add(entry);
 	}
 
+	// Remove Servers based on route
+	public List<GeneralConf> getConnectedNodes(String nodeId) {
+		RouteConf route = findRouteById(nodeId);
+		List<String> nodes = route.getConnected();
+		Iterator<String> itr = nodes.iterator();
+		while(itr.hasNext()) {
+			String currentNode = itr.next();
+			for(GeneralConf gc : server) {
+				if(gc.getNodeId().equals(currentNode)) {
+					visibleNodes.add(gc);
+					break;
+				}
+			}
+		}
+		return visibleNodes;
+	}
+	
+	
 	//Find by Node ID
 	public GeneralConf findNodeById(String id) {
 		return svrAsMap().get(id);
@@ -332,36 +354,39 @@ public class ServerConf {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class DatasourceConf {
 		private String site;
-		private String sUrl;
-		private String sUser;
-		private String sPass;
-		
-		public DatasourceConf() {
-		}
-		
+		private String url;
+		private String user;
+		private String pass;
+		private String schema;
 		public String getSite() {
 			return site;
 		}
 		public void setSite(String site) {
 			this.site = site;
 		}
-		public String getsUrl() {
-			return sUrl;
+		public String getUrl() {
+			return url;
 		}
-		public void setsUrl(String sUrl) {
-			this.sUrl = sUrl;
+		public void setUrl(String url) {
+			this.url = url;
 		}
-		public String getsUser() {
-			return sUser;
+		public String getUser() {
+			return user;
 		}
-		public void setsUser(String sUser) {
-			this.sUser = sUser;
+		public void setUser(String user) {
+			this.user = user;
 		}
-		public String getsPass() {
-			return sPass;
+		public String getPass() {
+			return pass;
 		}
-		public void setsPass(String sPass) {
-			this.sPass = sPass;
+		public void setPass(String pass) {
+			this.pass = pass;
+		}
+		public String getSchema() {
+			return schema;
+		}
+		public void setSchema(String schema) {
+			this.schema = schema;
 		}
 	}
 }

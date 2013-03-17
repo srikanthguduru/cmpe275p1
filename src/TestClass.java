@@ -11,12 +11,12 @@ public class TestClass {
 	public static void main(String[] args) {
 		Connection conn;
 
-		String dburl = "jdbc:postgresql://localhost:5432/lifestream"; // args[0];
+		String dburl = "jdbc:postgresql://localhost:5432/cmpe275"; // args[0];
 		// String dburl = "jdbc:postgresql_lwgis://localhost:5432/lifestream";
-		String dbuser = "mdhoble";
+		String dbuser = "cmpe275";
 		String dbpass = "";
 
-		String dbtable = "cmpe275.jdbc_test";
+		String dbtable = "site1.jdbc_test";
 
 		String dropSQL = "drop table " + dbtable;
 		String createSQL = "create table " + dbtable
