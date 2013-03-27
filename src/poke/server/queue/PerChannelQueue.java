@@ -318,6 +318,7 @@ public class PerChannelQueue implements ChannelQueue {
 						Request req = ((Request) msg);
 						logger.info("Received request on nodeId " + nodeId + " Tag:" + req.getHeader().getTag());
 						Resource rsc = ResourceFactory.getInstance().resourceInstance(req.getHeader().getRoutingId());
+						
 						if (rsc == null) {
 							logger.error("failed to obtain resource for " + req);
 							Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed");

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import poke.server.resources.Resource;
 import poke.server.resources.ResourceUtil;
+import poke.server.storage.Storage;
 import eye.Comm.Header.ReplyStatus;
 import eye.Comm.Request;
 import eye.Comm.Response;
@@ -45,5 +46,11 @@ public class PokeResource implements Resource {
 		Response reply = r.build();
 
 		return reply;
+	}
+
+	@Override
+	public void setStorage(Storage storage) {
+		// TODO Auto-generated method stub
+		
 	}
 }

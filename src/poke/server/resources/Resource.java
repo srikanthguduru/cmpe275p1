@@ -15,6 +15,7 @@
  */
 package poke.server.resources;
 
+import poke.server.storage.Storage;
 import eye.Comm.Request;
 import eye.Comm.Response;
 
@@ -35,5 +36,7 @@ public interface Resource {
 	 * @return
 	 */
 	Response process(Request request);
+	
+	void setStorage(Storage storage);
 
 }

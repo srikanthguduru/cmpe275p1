@@ -44,6 +44,8 @@ import poke.server.management.ManagementDecoderPipeline;
 import poke.server.management.ManagementQueue;
 import poke.server.management.ServerHeartbeat;
 import poke.server.resources.ResourceFactory;
+import poke.server.storage.Storage;
+import poke.server.storage.jdbc.DatabaseStorage;
 
 /**
  * Note high surges of messages can close down the channel if the handler cannot
@@ -66,6 +68,7 @@ public class Server {
 	protected ServerConf conf;
 	protected ServerHeartbeat heartbeat;
 	protected HeartMonitor serverMonitor;
+	protected Storage storage;
 	
 	/**
 	 * static because we need to get a handle to the factory from the shutdown
@@ -89,11 +92,14 @@ public class Server {
 	 * 
 	 * @param cfg
 	 */
-	public Server(File cfg) {
-		init(cfg);
+	public Server(File cfg, String siteid) {
+		/* Since nodeId == siteid in server.conf file we can init the DBStorage using the nodeId
+		 * i.e. it will initialize the dbstorage for the shema of the current server (passed as arg) 
+		 */
+		init(cfg, siteid);
 	}
 
-	private void init(File cfg) {
+	private void init(File cfg, String siteid) {
 		// resource initialization - how message are processed
 		BufferedInputStream br = null;
 		try {
@@ -101,7 +107,10 @@ public class Server {
 			br = new BufferedInputStream(new FileInputStream(cfg));
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), ServerConf.class);
-			ResourceFactory.initialize(conf);
+						
+			DatabaseStorage dataStorage = new DatabaseStorage(conf, siteid);
+			storage = dataStorage;
+			ResourceFactory.initialize(conf, storage);
 		} catch (Exception e) {
 		}
 
@@ -211,7 +220,7 @@ public class Server {
 			System.exit(2);
 		}
 
-		Server svr = new Server(cfg);
+		Server svr = new Server(cfg, args[1]);
 		svr.run(args[1]);
 	}
 }

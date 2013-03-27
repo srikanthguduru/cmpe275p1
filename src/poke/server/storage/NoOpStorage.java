@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
+import eye.Comm.QueryInfo;
 
 public class NoOpStorage implements Storage {
 
@@ -42,7 +43,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String namespace, Document criteria) {
+	public List<Document> findDocuments(String namespace, QueryInfo criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}

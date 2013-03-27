@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
+import eye.Comm.QueryInfo;
 
 /**
  * A memory-based storage.
@@ -88,7 +89,7 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String userId, Document criteria) {
+	public List<Document> findDocuments(String userId, QueryInfo criteria) {
 		// TODO locating documents can be have several implementations that
 		// allow for exact matching to not equal to gt to lt
 

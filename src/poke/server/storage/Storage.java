@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
+import eye.Comm.QueryInfo;
 
 public interface Storage {
 
@@ -41,5 +42,5 @@ public interface Storage {
 
 	boolean updateDocument(String user_id, Document doc);
 
-	List<Document> findDocuments(String user_id, Document criteria);
+	List<Document> findDocuments(String user_id, QueryInfo criteria);
 }

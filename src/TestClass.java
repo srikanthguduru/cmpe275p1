@@ -11,10 +11,10 @@ public class TestClass {
 	public static void main(String[] args) {
 		Connection conn;
 
-		String dburl = "jdbc:postgresql://localhost:5432/cmpe275"; // args[0];
+		String dburl = "jdbc:postgresql://localhost:5433/cmpe275"; // args[0];
 		// String dburl = "jdbc:postgresql_lwgis://localhost:5432/lifestream";
-		String dbuser = "cmpe275";
-		String dbpass = "";
+		String dbuser = "postgres";
+		String dbpass = "root";
 
 		String dbtable = "site1.jdbc_test";
 
@@ -22,7 +22,7 @@ public class TestClass {
 		String createSQL = "create table " + dbtable
 				+ " (geom geometry, id int4)";
 		String insertPointSQL = "insert into " + dbtable
-				+ " values ('POINT (10 10 10)',1)";
+				+ " values ('POINT (10 10)',1)";
 		String insertPolygonSQL = "insert into " + dbtable
 				+ " values ('POLYGON ((0 0 0,0 10 0,10 10 0,10 0 0,0 0 0))',2)";
 

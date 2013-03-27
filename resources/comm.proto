@@ -50,7 +50,10 @@ message Document {
     optional int64 id = 2;
     required bytes img_byte = 3;
 	required Point location = 4;
-    repeated NameValueSet document = 5;
+	optional string file_name =5;
+	optional string file_type = 6;
+	optional int64 time = 7;
+    repeated NameValueSet document = 8;
 }
 
 message DocumentSet {
@@ -100,6 +103,8 @@ message Payload {
     optional Finger finger = 1;
     optional Document doc = 2;
     optional NameSpace space = 3;
+    optional QueryInfo query = 4;
+    required LoginInfo loginUser = 5;
 }
 
 message PayloadReply {
