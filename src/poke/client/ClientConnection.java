@@ -28,9 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.protobuf.GeneratedMessage;
 
-import eye.Comm.Finger;
-import eye.Comm.Header;
-import eye.Comm.Payload;
 import eye.Comm.Request;
 
 /**
@@ -52,7 +49,6 @@ public class ClientConnection {
 	protected ClientConnection(String host, int port) {
 		this.host = host;
 		this.port = port;
-
 		init();
 	}
 
@@ -69,28 +65,7 @@ public class ClientConnection {
 		return rtn;
 	}
 
-	public void poke(String tag, int num) {
-		// data to send
-		Finger.Builder f = eye.Comm.Finger.newBuilder();
-		f.setTag(tag);
-		f.setNumber(num);
-
-		// payload containing data
-		Request.Builder r = Request.newBuilder();
-		eye.Comm.Payload.Builder p = Payload.newBuilder();
-		p.setFinger(f.build());
-		r.setBody(p.build());
-
-		// header with routing info
-		eye.Comm.Header.Builder h = Header.newBuilder();
-		h.setOriginator("client");
-		h.setTag(tag+num+System.currentTimeMillis());
-		h.setTime(System.currentTimeMillis());
-		h.setRoutingId(eye.Comm.Header.Routing.FINGER);
-		r.setHeader(h.build());
-
-		eye.Comm.Request req = r.build();
-
+	public void sendRequest(Request req) {
 		try {
 			// enqueue message
 			outbound.put(req);

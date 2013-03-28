@@ -15,7 +15,22 @@
  */
 package poke.demo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Random;
+
 import poke.client.ClientConnection;
+
+import com.google.protobuf.ByteString;
+
+import eye.Comm.Document;
+import eye.Comm.Finger;
+import eye.Comm.Header;
+import eye.Comm.Header.Routing;
+import eye.Comm.NameSpace;
+import eye.Comm.Payload;
+import eye.Comm.Request;
+
 
 public class Jab {
 	private String tag;
@@ -26,14 +41,104 @@ public class Jab {
 	}
 
 	public void run() {
-		ClientConnection cc = ClientConnection
-				.initConnection("localhost", 5570);
+		ClientConnection cc = ClientConnection.initConnection("localhost", 5570);
 		for (int i = 0; i < 2; i++) {
 			count++;
-			cc.poke(tag, count);
+			cc.sendRequest(buildPoke(tag, count));
 		}
+		
+		// Add NameSpace
+		cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
+		// Add Document
+		cc.sendRequest(createDocRequest(Routing.DOCADD));
+		
+	}
+	
+	private Request buildPoke(String tag, int num) {
+		// data to send
+		Finger.Builder f = eye.Comm.Finger.newBuilder();
+		f.setTag(tag);
+		f.setNumber(num);
+
+		// payload containing data
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setFinger(f.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(tag+num+System.currentTimeMillis());
+		h.setTime(System.currentTimeMillis());
+		h.setRoutingId(eye.Comm.Header.Routing.FINGER);
+		r.setHeader(h.build());
+		return r.build();
 	}
 
+	private Request createNameSpace(Routing msgRoute) {
+		// data to send
+		NameSpace.Builder ns = eye.Comm.NameSpace.newBuilder();
+		ns.setName("Srinath");
+		ns.setPassword("cmpe275");
+		ns.setUserId("SrinathS");
+		ns.setCity("Sunnyvale");
+		ns.setZipCode("94086");
+
+		// payload containing data
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setSpace(ns.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(Long.toString(ns.hashCode()+	System.currentTimeMillis()));
+		h.setTime(System.currentTimeMillis());
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+	}
+		
+	private Request createDocRequest(Routing msgRoute){
+		// data to send
+		Document.Builder doc = Document.newBuilder();
+		doc.setId(new Random().nextLong());
+		doc.setNameSpace("Srinath");
+		doc.setFileName("My Image");
+		doc.setFileType("jpg");
+		eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(35).setY(-122);
+		doc.setLocation(pnt);
+		doc.setTime(System.currentTimeMillis());
+		
+		File image = new File("resources/DSC_1832.jpg");
+		byte [] imgAsBytes = new byte[(int)image.length()];
+		try {
+			FileInputStream fis = new FileInputStream(image);
+			fis.read(imgAsBytes);
+			fis.close();
+		} catch(Exception e){
+			System.out.println("Should not be here " +e.getMessage());
+		}
+		doc.setImgByte(ByteString.copyFrom(imgAsBytes));
+
+		// payload containing data
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setDoc(doc.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(Long.toString(doc.hashCode()+	System.currentTimeMillis()));
+		h.setTime(System.currentTimeMillis());
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+	}
+	
 	public static void main(String[] args) {
 		try {
 			Jab jab = new Jab("jab");
