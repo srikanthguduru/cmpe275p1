@@ -17,7 +17,5 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/postgis-jdbc-2.0.2SVN.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.2-1002.jdbc4.jar"/>
-	<classpathentry kind="lib" path="/opt/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc3.jar"/>
-	<classpathentry kind="lib" path="/opt/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
