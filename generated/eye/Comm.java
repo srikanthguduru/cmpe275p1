@@ -5282,7 +5282,7 @@ public final class Comm {
       
       public eye.Comm.DocumentSet buildPartial() {
         eye.Comm.DocumentSet result = new eye.Comm.DocumentSet(this);
-        int from_bitField0_ = bitField0_;
+//        int from_bitField0_ = bitField0_;
         if (documentsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             documents_ = java.util.Collections.unmodifiableList(documents_);
@@ -5845,7 +5845,7 @@ public final class Comm {
       
       public eye.Comm.NameSpaceSet buildPartial() {
         eye.Comm.NameSpaceSet result = new eye.Comm.NameSpaceSet(this);
-        int from_bitField0_ = bitField0_;
+//        int from_bitField0_ = bitField0_;
         if (spacesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             spaces_ = java.util.Collections.unmodifiableList(spaces_);

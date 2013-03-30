@@ -31,6 +31,7 @@ import poke.server.resources.Resource;
 import poke.server.resources.ResourceFactory;
 import poke.server.resources.ResourceUtil;
 import poke.server.routing.RoutingConnection;
+import poke.server.routing.graph.OverlayNetwork;
 
 import com.google.protobuf.GeneratedMessage;
 
@@ -162,9 +163,20 @@ public class PerChannelQueue implements ChannelQueue {
 			if( index != -1 ) {
 				server = serverMap.get(index);
 				if(! nodeId.equals(server.getNodeId())) {
-					logger.info("*******Route Request to NodeId " + server.getNodeId());
-					return server;
+					String nextNode = OverlayNetwork.getInstance().getNextNode(nodeId, server.getNodeId());
+					GeneralConf nextServer = getServer(nextNode);
+					logger.info("*******Route Request to NodeId " + nextServer.getNodeId());
+					return nextServer;
 				}
+			}
+		}
+		return null;
+	}
+	
+	public GeneralConf getServer(String nodeId) {
+		for(GeneralConf server: serverMap) {
+			if(server.getNodeId().equalsIgnoreCase(nodeId)) {
+				return server;
 			}
 		}
 		return null;

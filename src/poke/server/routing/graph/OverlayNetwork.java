@@ -11,12 +11,19 @@ import poke.server.conf.ServerConf.GeneralConf;
 import poke.server.conf.ServerConf.RouteConf;
 
 public class OverlayNetwork {
+	
+	private static OverlayNetwork instance;
+	
 	private Map<String,Vertex> nodes;
 	private List<Edge> edges;
 	private Graph graph;
 	private DijkstraAlgorithm dijkstra;
 	
-	public OverlayNetwork(List<GeneralConf> servers, List<RouteConf> route) {
+	private OverlayNetwork() {
+		
+	}
+	
+	public void createGraph(List<GeneralConf> servers, List<RouteConf> route) {
 		//Update Nodes
 		nodes = new HashMap<String,Vertex>();
 		Iterator<GeneralConf> itr = servers.iterator();
@@ -43,6 +50,13 @@ public class OverlayNetwork {
 		
 		graph = new Graph(nodes, edges);
 		dijkstra = new DijkstraAlgorithm(graph);
+	}
+	
+	public synchronized static OverlayNetwork getInstance() {
+		if(instance == null) {
+			instance = new OverlayNetwork();
+		}
+		return instance;
 	}
 	
 	public String getNextNode(String sourceLoc, String destLoc) {

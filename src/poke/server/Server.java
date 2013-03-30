@@ -44,6 +44,7 @@ import poke.server.management.ManagementDecoderPipeline;
 import poke.server.management.ManagementQueue;
 import poke.server.management.ServerHeartbeat;
 import poke.server.resources.ResourceFactory;
+import poke.server.routing.graph.OverlayNetwork;
 import poke.server.storage.Storage;
 import poke.server.storage.jdbc.DatabaseStorage;
 
@@ -193,6 +194,10 @@ public class Server {
 		// start management
 		ManagementQueue.startup();
 
+		// create overlay network graph
+		OverlayNetwork oNetwork = OverlayNetwork.getInstance();
+		oNetwork.createGraph(conf.getServer(), conf.getRoute());
+		
 		// start heartbeat
 		String str = server.getNodeId();
 		heartbeat = ServerHeartbeat.getInstance(str);
