@@ -15,9 +15,6 @@
  */
 package poke.client;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -31,13 +28,7 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import poke.util.PrintNode;
-
 import com.google.protobuf.GeneratedMessage;
-
-import eye.Comm.Document;
-import eye.Comm.Header;
-import eye.Comm.NameValueSet;
 
 public class ClientHandler extends SimpleChannelUpstreamHandler {
 	protected static Logger logger = LoggerFactory.getLogger("client");
@@ -108,23 +99,23 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 		e.getChannel().close();
 	}
 
-	private void printDocument(Document doc) {
-		if (doc == null) {
-			System.out.println("document is null");
-			return;
-		}
-
-		if (doc.hasNameSpace())
-			System.out.println("NameSpace: " + doc.getNameSpace());
-
-		/*if (doc.getDocumentCount() != 0) {
-			List<NameValueSet> list = doc.getDocumentList();
-			Iterator<NameValueSet> itr = list.iterator();
-			while (itr.hasNext()) {
-				NameValueSet nvs = itr.next();
-				PrintNode.print(nvs);
-			}
-		}*/
-	}
+//	private void printDocument(Document doc) {
+//		if (doc == null) {
+//			System.out.println("document is null");
+//			return;
+//		}
+//
+//		if (doc.hasNameSpace())
+//			System.out.println("NameSpace: " + doc.getNameSpace());
+//
+//		/*if (doc.getDocumentCount() != 0) {
+//			List<NameValueSet> list = doc.getDocumentList();
+//			Iterator<NameValueSet> itr = list.iterator();
+//			while (itr.hasNext()) {
+//				NameValueSet nvs = itr.next();
+//				PrintNode.print(nvs);
+//			}
+//		}*/
+//	}
 
 }
