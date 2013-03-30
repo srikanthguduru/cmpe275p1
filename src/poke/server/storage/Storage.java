@@ -21,6 +21,7 @@ import java.util.Properties;
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
+import eye.Comm.QueryNamespace;
 
 public interface Storage {
 
@@ -30,7 +31,7 @@ public interface Storage {
 
 	NameSpace getNameSpaceInfo(String userId);
 
-	List<NameSpace> findNameSpaces(NameSpace criteria);
+	List<NameSpace> findNameSpaces(String user_id, QueryNamespace criteria);
 
 	NameSpace createNameSpace(NameSpace space);
 

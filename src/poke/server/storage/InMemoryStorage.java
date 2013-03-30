@@ -23,6 +23,7 @@ import java.util.Properties;
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
+import eye.Comm.QueryNamespace;
 
 /**
  * A memory-based storage.
@@ -107,7 +108,7 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<eye.Comm.NameSpace> findNameSpaces(eye.Comm.NameSpace criteria) {
+	public List<eye.Comm.NameSpace> findNameSpaces(String userId, QueryNamespace criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}

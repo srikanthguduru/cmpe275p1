@@ -88,7 +88,7 @@ public class ResourceFactory {
 			rsc.setStorage(storage);
 			return rsc;
 		} catch (Exception e) {
-			logger.error("unable to create resource " + rc.getClazz());
+			System.out.println("unable to create resource " + rc.getClazz());
 			return null;
 		}
 	}

@@ -60,14 +60,15 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 	}
 
 	public void handleMessage(eye.Comm.Response msg) {
-		if (msg.getHeader().getRoutingId() == Header.Routing.FINGER) {
+		//if (msg.getHeader().getRoutingId() == Header.Routing.FINGER) {
 			System.out.println("Finger response: ");
 			System.out.println(" - Tag : " + msg.getHeader().getTag());
 			System.out.println(" - Time : " + msg.getHeader().getTime());
 			System.out.println(" - Status : " + msg.getHeader().getReplyCode());
+			System.out.println(" - Message : " + msg.getHeader().getReplyMsg());
 			System.out.println("\nInfo:");
-			printDocument(msg.getBody().getFinger());
-		}
+			//printDocument(msg.getBody().getFinger());
+		//}
 	}
 
 	@Override
@@ -116,14 +117,14 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 		if (doc.hasNameSpace())
 			System.out.println("NameSpace: " + doc.getNameSpace());
 
-		if (doc.getDocumentCount() != 0) {
+		/*if (doc.getDocumentCount() != 0) {
 			List<NameValueSet> list = doc.getDocumentList();
 			Iterator<NameValueSet> itr = list.iterator();
 			while (itr.hasNext()) {
 				NameValueSet nvs = itr.next();
 				PrintNode.print(nvs);
 			}
-		}
+		}*/
 	}
 
 }
