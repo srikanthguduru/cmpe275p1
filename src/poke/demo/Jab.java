@@ -44,11 +44,11 @@ public class Jab {
 		ClientConnection cc = ClientConnection.initConnection("localhost", 5570);
 		for (int i = 0; i < 2; i++) {
 			count++;
-			cc.sendRequest(buildPoke(tag, count));
+			//cc.sendRequest(buildPoke(tag, count));
 		}
 		
 		// Add NameSpace
-		cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
+	//	cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
 		// Add Document
 		cc.sendRequest(createDocRequest(Routing.DOCADD));
 		

@@ -62,7 +62,7 @@ public class NameSpaceResource implements Resource {
 			reply = r.build();
 		}
 		else if(routingNumber == 11){
-			List<NameSpace> namespaces = storage.findNameSpaces(request.getBody().getSpace());
+			List<NameSpace> namespaces = storage.findNameSpaces(request.getHeader().getOriginator(), request.getBody().getQueryUser());
 
 			if(namespaces == null )
 			{
@@ -85,7 +85,7 @@ public class NameSpaceResource implements Resource {
 		}
 		if(routingNumber == 13)
 		{
-			boolean removed = storage.removeNameSpace(request.getBody().getLoginUser().getUserId());
+			boolean removed = storage.removeNameSpace(request.getHeader().getOriginator());
 			if(!removed)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),

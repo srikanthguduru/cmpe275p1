@@ -41,6 +41,7 @@ import eye.Comm.LoginInfo;
 import eye.Comm.NameSpace;
 import eye.Comm.Point;
 import eye.Comm.QueryInfo;
+import eye.Comm.QueryNamespace;
 
 public class DatabaseStorage implements Storage {
 	protected static Logger logger = LoggerFactory.getLogger("database");
@@ -132,20 +133,84 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public List<NameSpace> findNameSpaces(NameSpace criteria) {
-		List<NameSpace> list = null;
+	public List<NameSpace> findNameSpaces(String namespace, QueryNamespace criteria) {
+		if (criteria == null)
+			return null;
+
+		StringBuffer select = null;
+		StringBuffer searchClauseBuffer = new StringBuffer();
+		List<NameSpace> users = new ArrayList<NameSpace>();
+		int queryParamCount = 0;
+
+		String userId = criteria.getUserId();
+		String name = criteria.getName();
+		String city = criteria.getCity();
+		String zipCode = criteria.getZipCode();
+
+		select = new StringBuffer("SELECT * FROM " + schema + ".user_data WHERE ");
+
+		if(userId != null)
+		{
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
+			select.append("user_id = '" + userId + "'");
+		}
+		if(name != null)
+		{
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
+			select.append("name = '" + name + "'");
+		}
+		if(city != null)
+		{
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
+			select.append("city = '" + city + "'");
+		}
+		if(zipCode != null)
+		{
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
+			select.append("zip_code = '" + zipCode + "'");
+		}
 
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-			// TODO complete code to search through JDBC/SQL
+
+			Statement stmt = conn.createStatement();
+			logger.debug("Querying users - operation done by user: " + namespace);
+
+			ResultSet rs = stmt.executeQuery(select.toString());
+
+			NameSpace user;
+			while(rs.next()){
+
+				user = NameSpace.newBuilder()
+						.setUserId(rs.getString("user_id"))
+						.setName(rs.getString("name"))
+						.setCity(rs.getString("city"))
+						.setZipCode(rs.getString("zip_code")).build();
+
+				users.add(user);
+			}
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("failed/exception on find", ex);
+			logger.error("failed/exception on querying namepaces by user " + namespace, ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
+
 			}
 			return null;
 		} finally {
@@ -157,8 +222,7 @@ public class DatabaseStorage implements Storage {
 				}
 			}
 		}
-
-		return list;
+		return users;
 	}
 
 	@Override
@@ -422,12 +486,36 @@ public class DatabaseStorage implements Storage {
 			return null;
 
 		StringBuffer select = null;
+		StringBuffer searchClauseBuffer = new StringBuffer();
+		int queryParamCount = 0;
+
+		String userId = criteria.getUserId();
+		String fileName = criteria.getName();
+		long time = criteria.getTime();
+		
 		List<Document> images = new ArrayList<Document>();
-		select = new StringBuffer("SELECT * FROM " + schema + ".image WHERE user_id = '" + criteria.getUserId()
-				+ "'");
-		if(criteria.getName()!= null)
+		select = new StringBuffer("SELECT * FROM " + schema + ".image WHERE " );
+		
+		if(userId != null)
+		{
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
+			select.append("user_id = '" + userId + "'");
+		}
+		if(fileName != null){
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
 			select.append(", file_name = '" + criteria.getName() + "'");
-		if(criteria.getTime() != -1){
+		}			
+		if(time != -1){
+			if(queryParamCount > 0)
+				searchClauseBuffer.append(" OR ");
+
+			queryParamCount++;
 			java.sql.Date imgTime = new Date(criteria.getTime());
 			select.append(", time = '" + imgTime + "'");
 		}
@@ -450,20 +538,20 @@ public class DatabaseStorage implements Storage {
 				ByteString bytes = ByteString.copyFrom(rs.getBytes("data"));
 
 				PGgeometry geom = (PGgeometry)rs.getObject("geom"); 
-				long x = 0, y = 0;
+				double x = 0, y = 0;
 				if(geom.getGeometry().getPoint(0) != null)
 				{
-					x = (long)geom.getGeometry().getPoint(0).getX();
-					y = (long)geom.getGeometry().getPoint(0).getY();
+					x = geom.getGeometry().getPoint(0).getX();
+					y = geom.getGeometry().getPoint(0).getY();
 				}
 
 				Point point = Point.newBuilder().setX(x)
 						.setY(y).build();
 				java.sql.Date date = rs.getDate("time");
-				long time = -1L;
+				long timeFromDB = -1L;
 
 				if (date != null){
-					time = date.getTime();
+					timeFromDB = date.getTime();
 				}
 				image = Document.newBuilder()
 						.setId(rs.getLong("id"))
@@ -471,9 +559,9 @@ public class DatabaseStorage implements Storage {
 						.setFileType(rs.getString("file_type"))
 						.setImgByte(bytes)
 						.setLocation(point)
-						.setTime(time).build();
-						
-						images.add(image);
+						.setTime(timeFromDB).build();
+
+				images.add(image);
 			}
 
 		} catch (Exception ex) {
@@ -482,7 +570,7 @@ public class DatabaseStorage implements Storage {
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
-				
+
 			}
 			return null;
 		} finally {

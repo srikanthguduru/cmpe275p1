@@ -42,7 +42,8 @@ public class DocumentResource implements Resource {
 
 		if(routingNumber == 20)
 		{
-			boolean added = storage.addDocument(request.getBody().getLoginUser().getUserId(), request.getBody().getDoc());
+			System.out.println("Routinggg");
+			boolean added = storage.addDocument(request.getHeader().getOriginator(), request.getBody().getDoc());
 			if(!added)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
@@ -57,7 +58,7 @@ public class DocumentResource implements Resource {
 			reply = r.build();
 		}
 		else if(routingNumber == 21){
-			List<Document> documents = storage.findDocuments(request.getBody().getLoginUser().getUserId(), request.getBody().getQuery());
+			List<Document> documents = storage.findDocuments(request.getHeader().getOriginator(), request.getBody().getQuery());
 
 			if(documents == null )
 			{
@@ -80,7 +81,7 @@ public class DocumentResource implements Resource {
 		}
 		if(routingNumber == 22)
 		{
-			boolean updated = storage.updateDocument(request.getBody().getLoginUser().getUserId(), request.getBody().getDoc());
+			boolean updated = storage.updateDocument(request.getHeader().getOriginator(), request.getBody().getDoc());
 			if(!updated)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
@@ -96,7 +97,7 @@ public class DocumentResource implements Resource {
 		}
 		if(routingNumber == 23)
 		{
-			boolean removed = storage.removeDocument(request.getBody().getLoginUser().getUserId(), request.getBody().getDoc().getId());
+			boolean removed = storage.removeDocument(request.getHeader().getOriginator(), request.getBody().getDoc().getId());
 			if(!removed)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
