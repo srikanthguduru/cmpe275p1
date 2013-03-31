@@ -34,7 +34,7 @@ public class ServerHeartbeat extends Thread {
 	protected static Logger logger = LoggerFactory.getLogger("management-beat");
 	protected static AtomicReference<ServerHeartbeat> instance = new AtomicReference<ServerHeartbeat>();
 
-	public static final int sHeartRate = 5000; // msec
+	public static final int sHeartRate = 30000; // msec
 
 	String nodeId;
 	ManagementQueue mqueue;

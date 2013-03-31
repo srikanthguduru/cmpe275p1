@@ -20,6 +20,7 @@ import java.util.List;
 import poke.server.resources.Resource;
 import poke.server.resources.ResourceUtil;
 import poke.server.storage.Storage;
+import poke.server.storage.StorageFactory;
 import eye.Comm.Document;
 import eye.Comm.Header.ReplyStatus;
 import eye.Comm.Header.Routing;
@@ -28,8 +29,6 @@ import eye.Comm.Request;
 import eye.Comm.Response;
 
 public class DocumentResource implements Resource {
-
-	protected Storage storage;
 	
 	@Override
 	public Response process(Request request) {
@@ -39,7 +38,8 @@ public class DocumentResource implements Resource {
 		Response reply = null;
 		int routingNumber = routingId.getNumber();
 		PayloadReply.Builder payload = PayloadReply.newBuilder();
-
+		
+		Storage storage = StorageFactory.getInstance().getStorageInstance();
 		if(routingNumber == 20)
 		{
 			System.out.println("Routinggg");
@@ -114,12 +114,6 @@ public class DocumentResource implements Resource {
 		
 		return reply;
 	
-	}
-
-	@Override
-	public void setStorage(Storage storage) {
-		this.storage = storage;
-		
 	}
 
 }

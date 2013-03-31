@@ -154,7 +154,7 @@ public class ServerConf {
 		return rscAsMap().get(id);
 	}
 
-	public DatasourceConf findByDBId(String id) {
+	public DatasourceConf findDatasourceById(String id) {
 		return dbAsMap().get(id);
 	}
 

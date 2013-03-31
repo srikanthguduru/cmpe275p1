@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package poke.server.resources;
+package poke.server.storage;
 
 import java.beans.Beans;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,8 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import poke.server.conf.ServerConf;
-import poke.server.conf.ServerConf.ResourceConf;
-import eye.Comm.Header;
+import poke.server.conf.ServerConf.GeneralConf;
 
 /**
  * Resource factory provides how the server manages resource creation. We hide
@@ -42,30 +41,31 @@ import eye.Comm.Header;
  * @author gash
  * 
  */
-public class ResourceFactory {
-	protected static Logger logger = LoggerFactory.getLogger("server");
+public class StorageFactory {
+	protected static Logger logger = LoggerFactory.getLogger("StorageFactory");
 
-	private static ServerConf cfg;
-	private static AtomicReference<ResourceFactory> factory = new AtomicReference<ResourceFactory>();
+	private static Storage storage;
+	private static AtomicReference<StorageFactory> factory = new AtomicReference<StorageFactory>();
 
-	public static void initialize(ServerConf cfg) {
+	public static void initialize(ServerConf cfg, GeneralConf gcf) {
 		try {
-			ResourceFactory.cfg = cfg;
-			factory.compareAndSet(null, new ResourceFactory());
+			StorageFactory.storage = (Storage) Beans.instantiate(StorageFactory.class.getClassLoader(), gcf.getStorage());
+			StorageFactory.storage.init(cfg.findDatasourceById(gcf.getNodeId()));
+			factory.compareAndSet(null, new StorageFactory());
 		} catch (Exception e) {
 			logger.error("failed to initialize ResourceFactory", e);
 		}
 	}
 
-	public static ResourceFactory getInstance() {
-		ResourceFactory rf = factory.get();
-		if (rf == null)
+	public static StorageFactory getInstance() {
+		StorageFactory sf = factory.get();
+		if (sf == null)
 			throw new RuntimeException("Server not intialized");
 
-		return rf;
+		return sf;
 	}
 
-	private ResourceFactory() {
+	private StorageFactory() {
 	}
 
 	/**
@@ -74,20 +74,7 @@ public class ResourceFactory {
 	 * @param route
 	 * @return
 	 */
-	public Resource resourceInstance(Header.Routing route) {
-		ResourceConf rc = cfg.findById(route.getNumber());
-		if (rc == null) {
-			logger.error("unable to find ResourceConf " + route.getNumber());
-			return null;
-		}
-		try {
-			// strategy: instance-per-request
-			Resource rsc = (Resource) Beans.instantiate(this.getClass().getClassLoader(), rc.getClazz());
-			return rsc;
-		} catch (Exception e) {
-			logger.error("unable to create resource " + rc.getClazz(), e);
-		}
-		return null;
+	public Storage getStorageInstance() {
+		return storage;
 	}
-
 }

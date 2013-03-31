@@ -76,7 +76,7 @@ public class HeartMonitor extends Thread {
 	 */
 	public boolean isServerRunning(String nodeId) {
 		MonitorData monitor = serverstatus.get(nodeId);
-		if(monitor != null && monitor.successCount >= SUCCESS_THRSHOLD) { 
+		if(monitor != null && monitor.successCount >= 0) { //SUCCESS_THRSHOLD) { 
 			return true;
 		}
 		return false;

@@ -33,25 +33,35 @@ import eye.Comm.Request;
 
 
 public class Jab {
-	private String tag;
+	private String userId;
+	private String server;
+	private int requestType;
+	private int port;
 	private int count;
 
-	public Jab(String tag) {
-		this.tag = tag;
+	public Jab(String user, String server, int port, int request) {
+		this.userId = user;
+		this.server = server;
+		this.port = port;
+		this.requestType = request;
 	}
 
 	public void run() {
-		ClientConnection cc = ClientConnection.initConnection("localhost", 5570);
-		for (int i = 0; i < 2; i++) {
-			count++;
-			cc.sendRequest(buildPoke(tag, count));
+		ClientConnection cc = ClientConnection.initConnection(server, port);
+		switch (requestType) {
+			case 0: // Add Poke
+				cc.sendRequest(buildPoke(userId, count));
+				break;
+			case 1: // Add NameSpace
+				cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
+				break;
+			case 2: // Add Document
+				cc.sendRequest(createDocRequest(Routing.DOCADD));
+				break;
+
+			default:
+				break;
 		}
-		
-		// Add NameSpace
-		cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
-		// Add Document
-		cc.sendRequest(createDocRequest(Routing.DOCADD));
-		
 	}
 	
 	private Request buildPoke(String tag, int num) {
@@ -81,7 +91,7 @@ public class Jab {
 		NameSpace.Builder ns = eye.Comm.NameSpace.newBuilder();
 		ns.setName("Srinath");
 		ns.setPassword("cmpe275");
-		ns.setUserId("SrinathS");
+		ns.setUserId(userId);
 		ns.setCity("Sunnyvale");
 		ns.setZipCode("94086");
 
@@ -94,7 +104,7 @@ public class Jab {
 		// header with routing info
 		eye.Comm.Header.Builder h = Header.newBuilder();
 		h.setOriginator("client");
-		h.setTag(Long.toString(ns.hashCode()+	System.currentTimeMillis()));
+		h.setTag(userId);
 		h.setTime(System.currentTimeMillis());
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
@@ -105,7 +115,7 @@ public class Jab {
 		// data to send
 		Document.Builder doc = Document.newBuilder();
 		doc.setId(new Random().nextLong());
-		doc.setNameSpace("Srinath");
+		doc.setNameSpace(userId);
 		doc.setFileName("My Image");
 		doc.setFileType("jpg");
 		eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(35).setY(-122);
@@ -132,7 +142,7 @@ public class Jab {
 		// header with routing info
 		eye.Comm.Header.Builder h = Header.newBuilder();
 		h.setOriginator("client");
-		h.setTag(Long.toString(doc.hashCode()+	System.currentTimeMillis()));
+		h.setTag(userId);
 		h.setTime(System.currentTimeMillis());
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
@@ -141,7 +151,12 @@ public class Jab {
 	
 	public static void main(String[] args) {
 		try {
-			Jab jab = new Jab("jab");
+			if(args.length != 4) {
+				System.out.println("Usage jab <User_Id> <Server> <Port> <RequestType [0 - Poke, 1 - UserAdd, 2 - ImageUpload>");
+				return;
+			}
+			System.out.println("UserID: " + args[0] + ", Server: " + args[1] + ", Port: " + args[2] + ", Request: " + args[3]);
+			Jab jab = new Jab(args[0], args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 			jab.run();
 
 			Thread.sleep(5000);

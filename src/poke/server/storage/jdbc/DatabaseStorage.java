@@ -22,13 +22,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.postgis.PGgeometry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import poke.server.conf.ServerConf;
 import poke.server.conf.ServerConf.DatasourceConf;
 import poke.server.storage.Storage;
 
@@ -49,27 +47,16 @@ public class DatabaseStorage implements Storage {
 	protected BoneCP cpool;
 	protected String schema;
 
-	protected DatabaseStorage() {
-	}
-
-	public DatabaseStorage(ServerConf conf, String siteid) {
-		init(conf, siteid);
+	public DatabaseStorage() {
 	}
 
 	@Override
-	public void init(Properties cnf) {
-
-	}
-
-	public void init(ServerConf conf, String siteid) {
+	public void init(DatasourceConf ds) {
 		if (cpool != null)
 			return;
 
 		BoneCPConfig config ;
-
 		try {
-			DatasourceConf ds = conf.findByDBId(siteid);
-
 			this.schema = ds.getSchema();
 
 			Class.forName("org.postgresql.Driver");
@@ -231,11 +218,12 @@ public class DatabaseStorage implements Storage {
 			return space;
 
 		String insert = "INSERT INTO " + schema + ".userdata (user_id, name, city, zip_code, password) VALUES ('" + space.getUserId() + "', '" 
-				+ space.getName() + "', '" + space.getCity() + "', '" + space.getZipCode() + "'," + space.getPassword() + "');";
+				+ space.getName() + "', '" + space.getCity() + "', '" + space.getZipCode() + "','" + space.getPassword() + "');";
 
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
@@ -243,7 +231,7 @@ public class DatabaseStorage implements Storage {
 
 			stmt.executeUpdate(insert);
 
-			// TODO complete code to use JDBC
+			conn.commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on creating space " + space, ex);

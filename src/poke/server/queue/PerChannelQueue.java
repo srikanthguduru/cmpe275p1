@@ -333,7 +333,7 @@ public class PerChannelQueue implements ChannelQueue {
 						
 						if (rsc == null) {
 							logger.error("failed to obtain resource for " + req);
-							Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed");
+							Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed - Failed to find resource.");
 							sq.enqueueResponse(reply);
 						}
 						else {
@@ -353,7 +353,7 @@ public class PerChannelQueue implements ChannelQueue {
 								// Use ServiceMonitor to first check if server is available
 								if( ! HeartMonitor.getInstance().isServerRunning(server.getNodeId())) {
 									logger.error("remote server is not ready to accept request " + req);
-									Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed");
+									Response reply = ResourceUtil.buildError(req.getHeader(), ReplyStatus.FAILURE, "Request not processed - Processing Node is not available.");
 									sq.enqueueResponse(reply);
 								}
 								else {

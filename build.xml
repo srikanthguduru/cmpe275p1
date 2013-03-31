@@ -49,9 +49,17 @@
 
 	<!-- ================================================================= -->
 
-	<target name="poke" depends="init">
+	<target name="client" depends="init">
+		<property name="user" value="SrinathS"/>
+		<property name="server" value="localhost"/>
+		<property name="port" value="5570"/>
+		<property name="request" value="0"/>
 		<java fork="yes" classname="poke.demo.Jab">
 			<classpath refid="project.classpath" />
+			<arg value="${user}" />
+			<arg value="${server}" />
+			<arg value="${port}" />
+			<arg value="${request}" />
 		</java>
 	</target>
 

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import poke.server.resources.Resource;
 import poke.server.resources.ResourceUtil;
 import poke.server.storage.Storage;
+import poke.server.storage.StorageFactory;
 import eye.Comm.Header.ReplyStatus;
 import eye.Comm.Header.Routing;
 import eye.Comm.NameSpace;
@@ -32,7 +33,6 @@ import eye.Comm.Response;
 
 public class NameSpaceResource implements Resource {
 	protected static Logger logger = LoggerFactory.getLogger("server");
-	protected Storage storage;
 
 	@Override
 	public Response process(Request request) {
@@ -43,6 +43,7 @@ public class NameSpaceResource implements Resource {
 		int routingNumber = routingId.getNumber();
 		PayloadReply.Builder payload = PayloadReply.newBuilder();
 
+		Storage storage = StorageFactory.getInstance().getStorageInstance();
 		if(routingNumber == 10)
 		{
 			NameSpace created = storage.createNameSpace(request.getBody().getSpace());
@@ -55,7 +56,7 @@ public class NameSpaceResource implements Resource {
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
 						ReplyStatus.SUCCESS, "User created successfully"));
-				payload.setSpaces(0, created);
+				payload.addSpaces(created);
 				r.setBody(payload);
 			}
 
@@ -101,12 +102,6 @@ public class NameSpaceResource implements Resource {
 		}
 		
 		return reply;
-	}
-
-	@Override
-	public void setStorage(Storage storage) {
-		this.storage = storage;
-
 	}
 
 }

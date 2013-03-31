@@ -16,8 +16,8 @@
 package poke.server.storage;
 
 import java.util.List;
-import java.util.Properties;
 
+import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
@@ -25,7 +25,7 @@ import eye.Comm.QueryNamespace;
 
 public interface Storage {
 
-	void init(Properties cfg);
+	void init(DatasourceConf ds);
 
 	void release();
 

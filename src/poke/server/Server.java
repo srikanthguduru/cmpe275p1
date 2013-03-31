@@ -46,7 +46,7 @@ import poke.server.management.ServerHeartbeat;
 import poke.server.resources.ResourceFactory;
 import poke.server.routing.graph.OverlayNetwork;
 import poke.server.storage.Storage;
-import poke.server.storage.jdbc.DatabaseStorage;
+import poke.server.storage.StorageFactory;
 
 /**
  * Note high surges of messages can close down the channel if the handler cannot
@@ -109,9 +109,7 @@ public class Server {
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), ServerConf.class);
 						
-			DatabaseStorage dataStorage = new DatabaseStorage(conf, siteid);
-			storage = dataStorage;
-			ResourceFactory.initialize(conf, storage);
+			ResourceFactory.initialize(conf);
 		} catch (Exception e) {
 		}
 
@@ -184,8 +182,7 @@ public class Server {
 		int mport = server.getPortMgmt();
 		
 		// storage initialization
-		// TODO storage init
-		// TODO - Initialize DB Connection here
+		StorageFactory.initialize(conf, server);
 		
 		// start communication
 		createPublicBoot(port, nodeId, conf.getServer());
@@ -195,8 +192,7 @@ public class Server {
 		ManagementQueue.startup();
 
 		// create overlay network graph
-		OverlayNetwork oNetwork = OverlayNetwork.getInstance();
-		oNetwork.createGraph(conf.getServer(), conf.getRoute());
+		OverlayNetwork.initialize(conf.getServer(), conf.getRoute());
 		
 		// start heartbeat
 		String str = server.getNodeId();

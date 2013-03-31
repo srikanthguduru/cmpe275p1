@@ -16,8 +16,8 @@
 package poke.server.storage;
 
 import java.util.List;
-import java.util.Properties;
 
+import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
@@ -74,7 +74,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public void init(Properties cfg) {
+	public void init(DatasourceConf cfg) {
 		// TODO Auto-generated method stub
 		
 	}
