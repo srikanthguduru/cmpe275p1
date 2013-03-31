@@ -126,6 +126,7 @@ message PayloadReply {
     repeated NameSpace spaces = 2;
     optional Document stats = 3; //To be reviewed
     optional Document finger = 4; //To be reviewed
+    optional string uuid = 5;
 }
 
 message Request {
