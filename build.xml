@@ -64,7 +64,7 @@
 	</target>
 
 	<target name="monitor" depends="init">
-		<java fork="yes" classname="poke.monitor.HeartMonitor">
+		<java fork="yes" classname="poke.demo.Monitor">
 			<classpath refid="project.classpath" />
 		</java>
 	</target>
