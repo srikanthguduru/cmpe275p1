@@ -27,8 +27,11 @@ import eye.Comm.Document;
 import eye.Comm.Finger;
 import eye.Comm.Header;
 import eye.Comm.Header.Routing;
+import eye.Comm.LoginInfo;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
 import eye.Comm.Payload;
+import eye.Comm.QueryDocument;
 import eye.Comm.Request;
 
 
@@ -55,10 +58,27 @@ public class Jab {
 			case 1: // Add NameSpace
 				cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
 				break;
-			case 2: // Add Document
+			case 2: // Login
+				cc.sendRequest(login(Routing.LOGIN));
+				break;
+			case 3: // Add Document
 				cc.sendRequest(createDocRequest(Routing.DOCADD));
 				break;
-
+			case 4: // Update Document
+				cc.sendRequest(createDocRequest(Routing.DOCUPDATE));
+				break;
+			case 5: // Find Document
+				cc.sendRequest(findDoc(Routing.DOCFIND));
+				break;
+			case 6: // Remove Doc --> Change to NameSpace Find
+				cc.sendRequest(findDoc(Routing.DOCREMOVE));
+				break;
+			case 7: // Find  User
+				cc.sendRequest(findNameSpace(Routing.NAMESPACEFIND));
+				break;
+			case 8: // Remove User
+				cc.sendRequest(removeNameSpace(Routing.NAMESPACEREMOVE));
+				break;
 			default:
 				break;
 		}
@@ -110,7 +130,6 @@ public class Jab {
 	}
 		
 	private Request createDocRequest(Routing msgRoute){
-		// data to send
 		Document.Builder doc = Document.newBuilder();
 		doc.setId(new Random().nextLong());
 		doc.setNameSpace(userId);
@@ -145,11 +164,95 @@ public class Jab {
 		r.setHeader(h.build());
 		return r.build();
 	}
+
+	private Request login(Routing msgRoute) {
+		// data to send
+		LoginInfo.Builder l = LoginInfo.newBuilder();
+		l.setUserId(userId);
+		l.setPassword("cmpe275");
+		
+		// payload containing data
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setLogin(l.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(userId);
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+	}
+
+	private Request findDoc(Routing msgRoute) {
+		QueryDocument.Builder qd = QueryDocument.newBuilder();
+		if(msgRoute == Routing.DOCFIND) {
+			eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(34.6).setY(-121.5);
+			qd.setLocation(pnt);
+		} else {
+			qd.setName(userId);
+		}
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		r.setBody(p.build());
+		p.setQuery(qd.build());
+			
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(userId);
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+	}
+
+	private Request findNameSpace(Routing msgRoute) {
+		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
+		qd.setUserId(userId);
+		
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setQueryUser(qd.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(userId);
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+		
+	}
+	
+	private Request removeNameSpace(Routing msgRoute) {
+		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
+		qd.setUserId(userId);
+		
+		Request.Builder r = Request.newBuilder();
+		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		p.setQueryUser(qd.build());
+		r.setBody(p.build());
+
+		// header with routing info
+		eye.Comm.Header.Builder h = Header.newBuilder();
+		h.setOriginator("client");
+		h.setTag(userId);
+		h.setRoutingId(msgRoute);
+		r.setHeader(h.build());
+		return r.build();
+		
+	}
 	
 	public static void main(String[] args) {
 		try {
 			if(args.length != 4) {
-				System.out.println("Usage jab <User_Id> <Server> <Port> <RequestType [0 - Poke, 1 - UserAdd, 2 - ImageUpload>");
+				System.out.println("Usage jab <User_Id> <Server> <Port> <RequestType>");
+				System.out.println("Request Type - [0 - Poke, 1 - UserAdd, 2 - Login, 3 - ImageUpload, 4 - Update Image ");
+				System.out.println("Request Type - [5 - Find Image, 6 - Remove Image, 7 - Find User, 8 - Remove User ]");
 				return;
 			}
 			System.out.println("UserID: " + args[0] + ", Server: " + args[1] + ", Port: " + args[2] + ", Request: " + args[3]);

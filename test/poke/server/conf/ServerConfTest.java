@@ -46,7 +46,7 @@ public class ServerConfTest {
 		// entries map to the same class
 		rsc = new ResourceConf();
 		rsc.setName("namespace.list");
-		rsc.setId(Header.Routing.NAMESPACELIST_VALUE);
+		rsc.setId(Header.Routing.NAMESPACEFIND_VALUE);
 		rsc.setClazz("poke.resources.NameSpaceResource");
 		conf.addResource(rsc);
 
