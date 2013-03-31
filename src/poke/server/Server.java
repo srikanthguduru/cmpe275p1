@@ -197,6 +197,7 @@ public class Server {
 		// start heartbeat
 		String str = server.getNodeId();
 		heartbeat = ServerHeartbeat.getInstance(str);
+		ServerHeartbeat.setsHeartRate(conf.getHealthInterval() * 1000);
 		heartbeat.start();
 		
 		serverMonitor = HeartMonitor.getInstance(str, conf.getConnectedNodes(nodeId));

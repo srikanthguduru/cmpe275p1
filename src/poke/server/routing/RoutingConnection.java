@@ -149,7 +149,7 @@ public class RoutingConnection {
 					if(channel == null || !channel.isConnected() || !channel.isOpen()) {
 						while( ! HeartMonitor.getInstance().isServerRunning(conn.server.getNodeId())) {
 							// remote server is not available sleep and try again after some time 
-							Thread.sleep(ServerHeartbeat.sHeartRate);
+							Thread.sleep(ServerHeartbeat.getsHeartRate());
 						}
 						// set previous Channel Future to null
 						conn.channel = null;

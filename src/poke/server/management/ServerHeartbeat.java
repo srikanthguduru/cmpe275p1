@@ -34,7 +34,7 @@ public class ServerHeartbeat extends Thread {
 	protected static Logger logger = LoggerFactory.getLogger("management-beat");
 	protected static AtomicReference<ServerHeartbeat> instance = new AtomicReference<ServerHeartbeat>();
 
-	public static final int sHeartRate = 30000; // msec
+	private static int sHeartRate;
 
 	String nodeId;
 	ManagementQueue mqueue;
@@ -86,7 +86,7 @@ public class ServerHeartbeat extends Thread {
 
 		while (forever) {
 			try {
-				Thread.sleep(sHeartRate);
+				Thread.sleep(getsHeartRate());
 
 				// ignore until we have edges with other nodes
 				if (group.size() > 0) {
@@ -113,6 +113,14 @@ public class ServerHeartbeat extends Thread {
 		if (!forever) {
 			logger.info("management outbound queue closing");
 		}
+	}
+
+	public static int getsHeartRate() {
+		return sHeartRate;
+	}
+
+	public static void setsHeartRate(int sHeartRate) {
+		ServerHeartbeat.sHeartRate = sHeartRate;
 	}
 
 	public static class HeartData {

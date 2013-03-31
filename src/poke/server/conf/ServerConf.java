@@ -41,6 +41,7 @@ public class ServerConf {
 
 	protected static Logger logger = LoggerFactory.getLogger(ServerConf.class.getName());
 
+	private int healthInterval;
 	private List<GeneralConf> server;
 	private List<ResourceConf> resource;
 	private List<RouteConf> route;
@@ -56,6 +57,14 @@ public class ServerConf {
 
 	
 	// Setter & Getters 
+	public int getHealthInterval() {
+		return healthInterval;
+	}
+
+	public void setHealthInterval(int healthInterval) {
+		this.healthInterval = healthInterval;
+	}
+	
 	public List<GeneralConf> getServer(){
 		return server;
 	}

@@ -27,7 +27,7 @@ public class HeartMonitor extends Thread {
 	protected static AtomicReference<HeartMonitor> instance = new AtomicReference<HeartMonitor>();
 	private static int SUCCESS_THRSHOLD = 5;
 	private static int FAILURE_THRSHOLD = 3;
-	private static int CONNECTION_TIMEOUT = ServerHeartbeat.sHeartRate;
+	private static int CONNECTION_TIMEOUT = ServerHeartbeat.getsHeartRate();
 	
 	String nodeId;
 	List<GeneralConf> servers;
@@ -171,7 +171,7 @@ public class HeartMonitor extends Thread {
 						}
 					}
 				}
-				Thread.sleep(ServerHeartbeat.sHeartRate);
+				Thread.sleep(ServerHeartbeat.getsHeartRate());
 			} catch (InterruptedException ie) {
 				break;
 			} catch (Exception e) {
