@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import poke.server.conf.ServerConf;
 import poke.server.conf.ServerConf.GeneralConf;
+import poke.server.storage.jpa.JPAStorage;
 
 /**
  * Resource factory provides how the server manages resource creation. We hide
@@ -45,13 +46,20 @@ public class StorageFactory {
 	protected static Logger logger = LoggerFactory.getLogger("StorageFactory");
 
 	private static Storage storage;
+	private static JPAStorage jpaStorage;	
 	private static AtomicReference<StorageFactory> factory = new AtomicReference<StorageFactory>();
+	
 
 	public static void initialize(ServerConf cfg, GeneralConf gcf) {
 		try {
 			StorageFactory.storage = (Storage) Beans.instantiate(StorageFactory.class.getClassLoader(), gcf.getStorage());
 			StorageFactory.storage.init(cfg.findDatasourceById(gcf.getNodeId()));
-			factory.compareAndSet(null, new StorageFactory());
+			
+			StorageFactory.jpaStorage = new JPAStorage();
+			StorageFactory.jpaStorage.init(gcf);
+			
+			factory.compareAndSet(null, new StorageFactory());	
+			
 		} catch (Exception e) {
 			logger.error("failed to initialize ResourceFactory", e);
 		}
@@ -76,5 +84,9 @@ public class StorageFactory {
 	 */
 	public Storage getStorageInstance() {
 		return storage;
+	}
+	
+	public JPAStorage getJPAStorageInstance() {
+		return jpaStorage;
 	}
 }

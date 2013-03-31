@@ -19,6 +19,7 @@ import java.util.List;
 
 import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
+import eye.Comm.LoginInfo;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
 import eye.Comm.QueryNamespace;
@@ -83,5 +84,11 @@ public class NoOpStorage implements Storage {
 	public void release() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String validateLogin(LoginInfo loginInfo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

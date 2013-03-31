@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.postgis.PGgeometry;
 import org.slf4j.Logger;
@@ -96,6 +97,7 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 			// TODO complete code to retrieve through JDBC/SQL
 			// select * from space where id = spaceId
@@ -172,6 +174,7 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
@@ -190,6 +193,7 @@ public class DatabaseStorage implements Storage {
 
 				users.add(user);
 			}
+			conn.commit();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -255,11 +259,11 @@ public class DatabaseStorage implements Storage {
 		return space;
 	}
 
-	public boolean validateLogin(LoginInfo loginInfo){
+	public String validateLogin(LoginInfo loginInfo){
 		if (loginInfo == null)
-			return false;
-
-		boolean valid = false;
+			return null;
+		
+		String uuid = null;
 
 		String select = "SELECT * FROM " + schema + ".userdata WHERE user_id = '" + loginInfo.getUserId()
 				+ "' AND password = '" + loginInfo.getPassword() + "';";
@@ -267,6 +271,7 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
@@ -275,9 +280,9 @@ public class DatabaseStorage implements Storage {
 			ResultSet rs = stmt.executeQuery(select);
 
 			if(rs != null)
-				valid = true;
-
-			// TODO complete code to use JDBC
+				uuid = UUID.randomUUID().toString();
+			
+			conn.commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on validating user " + loginInfo, ex);
@@ -287,7 +292,7 @@ public class DatabaseStorage implements Storage {
 			}
 
 			// indicate failure
-			return false;
+			return null;
 		} finally {
 			if (conn != null) {
 				try {
@@ -297,7 +302,7 @@ public class DatabaseStorage implements Storage {
 				}
 			}
 		}
-		return valid;
+		return uuid;
 	}
 	@Override
 	public boolean removeNameSpace(String userId) {
@@ -306,12 +311,14 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
 			logger.debug("Deleting user - " + userId);
 
 			stmt.executeUpdate(delete);
+			conn.commit();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -346,21 +353,21 @@ public class DatabaseStorage implements Storage {
 
 		Point location = doc.getLocation();
 
-		String insert = "INSERT INTO " + schema + ".image (id, file_name, geom, data, user_id, file_type, time) VALUES (" 
-				+ doc.getId() + ", '" + doc.getFileName() + "', 'POINT (" + location.getX() + " " + location.getY() + ")', '"
+		String insert = "INSERT INTO " + schema + ".image ( file_name, geom, data, user_id, file_type, img_time) VALUES ('" 
+				+ doc.getFileName() + "', 'POINT (" + location.getX() + " " + location.getY() + ")', '"
 				+ doc.getImgByte() + "','" + namespace  + "', '" + doc.getFileName() + "','" + doc.getTime() + "');";
 
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
 			logger.debug("Creating image - " +  doc.getId());
 
 			stmt.executeUpdate(insert);
-
-			// TODO complete code to use JDBC
+			conn.commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on creating image " + doc.getId(), ex);
@@ -391,12 +398,14 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
 			logger.debug("Deleting image - " + docId);
 
 			stmt.executeUpdate(delete);
+			conn.commit();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -437,14 +446,14 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
 			logger.debug("Updating image - " +  doc.getId());
 
 			stmt.executeUpdate(update);
-
-			// TODO complete code to use JDBC
+			conn.commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on updating image " + doc.getId(), ex);
@@ -480,10 +489,10 @@ public class DatabaseStorage implements Storage {
 		String userId = criteria.getUserId();
 		String fileName = criteria.getName();
 		long time = criteria.getTime();
-		
+
 		List<Document> images = new ArrayList<Document>();
 		select = new StringBuffer("SELECT * FROM " + schema + ".image WHERE " );
-		
+
 		if(userId != null)
 		{
 			if(queryParamCount > 0)
@@ -505,7 +514,7 @@ public class DatabaseStorage implements Storage {
 
 			queryParamCount++;
 			java.sql.Date imgTime = new Date(criteria.getTime());
-			select.append(", time = '" + imgTime + "'");
+			select.append(", img_time = '" + imgTime + "'");
 		}
 		select.append(" AND geom = 'POINT(" + criteria.getLocation().getX() + " " + criteria.getLocation().getY() 
 				+ ")' ;");
@@ -513,6 +522,7 @@ public class DatabaseStorage implements Storage {
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
+			conn.setAutoCommit(false);
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
@@ -535,7 +545,7 @@ public class DatabaseStorage implements Storage {
 
 				Point point = Point.newBuilder().setX(x)
 						.setY(y).build();
-				java.sql.Date date = rs.getDate("time");
+				java.sql.Date date = rs.getDate("img_time");
 				long timeFromDB = -1L;
 
 				if (date != null){
@@ -551,6 +561,7 @@ public class DatabaseStorage implements Storage {
 
 				images.add(image);
 			}
+			conn.commit();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

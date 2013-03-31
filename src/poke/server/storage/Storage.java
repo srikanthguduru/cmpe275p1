@@ -19,6 +19,7 @@ import java.util.List;
 
 import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
+import eye.Comm.LoginInfo;
 import eye.Comm.NameSpace;
 import eye.Comm.QueryInfo;
 import eye.Comm.QueryNamespace;
@@ -44,4 +45,6 @@ public interface Storage {
 	boolean updateDocument(String user_id, Document doc);
 
 	List<Document> findDocuments(String user_id, QueryInfo criteria);
+	
+	String validateLogin (LoginInfo loginInfo);
 }
