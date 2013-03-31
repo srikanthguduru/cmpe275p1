@@ -44,7 +44,7 @@ public class JPAStorage {
 
 	public List<User> findNameSpaces(String originator, User criteria) {
 		List<User> users = new ArrayList<User>();
-		EntityManager manager = JPAUtil.getEntityManager();
+		EntityManager manager = getEntityManager();
 		try{
 			
 			StringBuffer select = null;

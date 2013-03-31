@@ -54,7 +54,6 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 		//if (msg.getHeader().getRoutingId() == Header.Routing.FINGER) {
 			System.out.println("Finger response: ");
 			System.out.println(" - Tag : " + msg.getHeader().getTag());
-			System.out.println(" - Time : " + msg.getHeader().getTime());
 			System.out.println(" - Status : " + msg.getHeader().getReplyCode());
 			System.out.println(" - Message : " + msg.getHeader().getReplyMsg());
 			System.out.println("\nInfo:");

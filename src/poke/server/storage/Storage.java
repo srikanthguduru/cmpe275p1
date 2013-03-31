@@ -20,9 +20,9 @@ import java.util.List;
 import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
 import eye.Comm.LoginInfo;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
-import eye.Comm.QueryInfo;
-import eye.Comm.QueryNamespace;
+import eye.Comm.QueryDocument;
 
 public interface Storage {
 
@@ -32,7 +32,7 @@ public interface Storage {
 
 	NameSpace getNameSpaceInfo(String userId);
 
-	List<NameSpace> findNameSpaces(String user_id, QueryNamespace criteria);
+	List<NameSpace> findNameSpaces(String user_id, ManipulateNS criteria);
 
 	NameSpace createNameSpace(NameSpace space);
 
@@ -44,7 +44,7 @@ public interface Storage {
 
 	boolean updateDocument(String user_id, Document doc);
 
-	List<Document> findDocuments(String user_id, QueryInfo criteria);
+	List<Document> findDocuments(String user_id, QueryDocument criteria);
 	
 	String validateLogin (LoginInfo loginInfo);
 }

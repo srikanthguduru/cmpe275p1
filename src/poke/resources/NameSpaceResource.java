@@ -63,7 +63,7 @@ public class NameSpaceResource implements Resource {
 
 			reply = r.build();
 		}
-		else if(routingNumber == Routing.NAMESPACELIST.getNumber()){
+		else if(routingNumber == Routing.NAMESPACEFIND.getNumber()){
 			List<NameSpace> namespaces = storage.findNameSpaces(request.getHeader().getTag(), request.getBody().getQueryUser());
 
 			if(namespaces == null )

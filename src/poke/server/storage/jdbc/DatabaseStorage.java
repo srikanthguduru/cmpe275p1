@@ -37,10 +37,10 @@ import com.jolbox.bonecp.BoneCPConfig;
 
 import eye.Comm.Document;
 import eye.Comm.LoginInfo;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
 import eye.Comm.Point;
-import eye.Comm.QueryInfo;
-import eye.Comm.QueryNamespace;
+import eye.Comm.QueryDocument;
 
 public class DatabaseStorage implements Storage {
 	protected static Logger logger = LoggerFactory.getLogger("database");
@@ -122,7 +122,7 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public List<NameSpace> findNameSpaces(String namespace, QueryNamespace criteria) {
+	public List<NameSpace> findNameSpaces(String namespace, ManipulateNS criteria) {
 		if (criteria == null)
 			return null;
 
@@ -478,7 +478,7 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String namespace, QueryInfo criteria) {
+	public List<Document> findDocuments(String namespace, QueryDocument criteria) {
 		if (criteria == null || criteria.getLocation() == null)
 			return null;
 

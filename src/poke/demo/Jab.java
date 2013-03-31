@@ -80,7 +80,6 @@ public class Jab {
 		eye.Comm.Header.Builder h = Header.newBuilder();
 		h.setOriginator("client");
 		h.setTag(tag+num+System.currentTimeMillis());
-		h.setTime(System.currentTimeMillis());
 		h.setRoutingId(eye.Comm.Header.Routing.FINGER);
 		r.setHeader(h.build());
 		return r.build();
@@ -105,7 +104,6 @@ public class Jab {
 		eye.Comm.Header.Builder h = Header.newBuilder();
 		h.setOriginator("client");
 		h.setTag(userId);
-		h.setTime(System.currentTimeMillis());
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
 		return r.build();
@@ -143,7 +141,6 @@ public class Jab {
 		eye.Comm.Header.Builder h = Header.newBuilder();
 		h.setOriginator("client");
 		h.setTag(userId);
-		h.setTime(System.currentTimeMillis());
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
 		return r.build();

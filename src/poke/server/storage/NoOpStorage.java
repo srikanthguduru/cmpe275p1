@@ -20,9 +20,9 @@ import java.util.List;
 import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
 import eye.Comm.LoginInfo;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
-import eye.Comm.QueryInfo;
-import eye.Comm.QueryNamespace;
+import eye.Comm.QueryDocument;
 
 public class NoOpStorage implements Storage {
 
@@ -45,7 +45,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String namespace, QueryInfo criteria) {
+	public List<Document> findDocuments(String namespace, QueryDocument criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -57,7 +57,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public List<NameSpace> findNameSpaces(String user_id, QueryNamespace criteria) {
+	public List<NameSpace> findNameSpaces(String user_id, ManipulateNS criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}

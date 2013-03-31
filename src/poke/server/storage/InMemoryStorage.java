@@ -22,9 +22,9 @@ import java.util.List;
 import poke.server.conf.ServerConf.DatasourceConf;
 import eye.Comm.Document;
 import eye.Comm.LoginInfo;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
-import eye.Comm.QueryInfo;
-import eye.Comm.QueryNamespace;
+import eye.Comm.QueryDocument;
 
 /**
  * A memory-based storage.
@@ -91,7 +91,7 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<Document> findDocuments(String userId, QueryInfo criteria) {
+	public List<Document> findDocuments(String userId, QueryDocument criteria) {
 		// TODO locating documents can be have several implementations that
 		// allow for exact matching to not equal to gt to lt
 
@@ -109,7 +109,7 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<eye.Comm.NameSpace> findNameSpaces(String userId, QueryNamespace criteria) {
+	public List<eye.Comm.NameSpace> findNameSpaces(String userId, ManipulateNS criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}

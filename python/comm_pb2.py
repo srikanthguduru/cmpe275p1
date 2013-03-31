@@ -11,7 +11,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='comm.proto',
   package='',
-  serialized_pb='\n\ncomm.proto\"%\n\x06\x46inger\x12\x0e\n\x06number\x18\x01 \x02(\x05\x12\x0b\n\x03tag\x18\x02 \x02(\t\"\\\n\tNameSpace\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x02(\t\x12\x0c\n\x04\x63ity\x18\x03 \x02(\t\x12\x10\n\x08zip_code\x18\x04 \x02(\t\x12\x10\n\x08password\x18\x05 \x02(\t\".\n\tLoginInfo\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x10\n\x08password\x18\x02 \x02(\t\"\x1d\n\x05Point\x12\t\n\x01x\x18\x01 \x02(\x01\x12\t\n\x01y\x18\x02 \x02(\x01\"O\n\x0eQueryNamespace\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ity\x18\x03 \x01(\t\x12\x10\n\x08zip_code\x18\x04 \x01(\t\"`\n\tQueryInfo\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x18\n\x08location\x18\x02 \x02(\x0b\x32\x06.Point\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04time\x18\x04 \x01(\x03\x12\x0c\n\x04\x64\x65sc\x18\x05 \x01(\t\"\x94\x01\n\x0cNameValueSet\x12)\n\tnode_type\x18\x01 \x02(\x0e\x32\x16.NameValueSet.NodeType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x1b\n\x04node\x18\x04 \x03(\x0b\x32\r.NameValueSet\"\x1f\n\x08NodeType\x12\x08\n\x04NODE\x10\x01\x12\t\n\x05VALUE\x10\x02\"\x8a\x01\n\x08\x44ocument\x12\x12\n\nname_space\x18\x01 \x02(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08img_byte\x18\x03 \x02(\x0c\x12\x18\n\x08location\x18\x04 \x02(\x0b\x32\x06.Point\x12\x11\n\tfile_name\x18\x05 \x01(\t\x12\x11\n\tfile_type\x18\x06 \x01(\t\x12\x0c\n\x04time\x18\x07 \x01(\x03\"+\n\x0b\x44ocumentSet\x12\x1c\n\tdocuments\x18\x01 \x03(\x0b\x32\t.Document\"*\n\x0cNameSpaceSet\x12\x1a\n\x06spaces\x18\x01 \x03(\x0b\x32\n.NameSpace\"\x98\x03\n\x06Header\x12#\n\nrouting_id\x18\x02 \x02(\x0e\x32\x0f.Header.Routing\x12\x12\n\noriginator\x18\x03 \x02(\t\x12\x0b\n\x03tag\x18\x04 \x02(\t\x12\x0c\n\x04time\x18\x05 \x01(\x03\x12\'\n\nreply_code\x18\x06 \x01(\x0e\x32\x13.Header.ReplyStatus\x12\x11\n\treply_msg\x18\x07 \x01(\t\"\xa6\x01\n\x07Routing\x12\n\n\x06\x46INGER\x10\x02\x12\t\n\x05STATS\x10\x03\x12\x10\n\x0cNAMESPACEADD\x10\n\x12\x11\n\rNAMESPACELIST\x10\x0b\x12\x13\n\x0fNAMESPACEUPDATE\x10\x0c\x12\x13\n\x0fNAMESPACEREMOVE\x10\r\x12\n\n\x06\x44OCADD\x10\x14\x12\x0b\n\x07\x44OCFIND\x10\x15\x12\r\n\tDOCUPDATE\x10\x16\x12\r\n\tDOCREMOVE\x10\x17\"U\n\x0bReplyStatus\x12\x0b\n\x07SUCCESS\x10\x01\x12\x0b\n\x07\x46\x41ILURE\x10\x02\x12\n\n\x06NOAUTH\x10\x03\x12\x0e\n\nMISSINGARG\x10\x04\x12\x10\n\x0cNOCONNECTION\x10\x05\"\x94\x01\n\x07Payload\x12\x17\n\x06\x66inger\x18\x01 \x01(\x0b\x32\x07.Finger\x12\x16\n\x03\x64oc\x18\x02 \x01(\x0b\x32\t.Document\x12\x19\n\x05space\x18\x03 \x01(\x0b\x32\n.NameSpace\x12\x19\n\x05query\x18\x04 \x01(\x0b\x32\n.QueryInfo\x12\"\n\tqueryUser\x18\x05 \x01(\x0b\x32\x0f.QueryNamespace\"x\n\x0cPayloadReply\x12\x17\n\x04\x64ocs\x18\x01 \x03(\x0b\x32\t.Document\x12\x1a\n\x06spaces\x18\x02 \x03(\x0b\x32\n.NameSpace\x12\x18\n\x05stats\x18\x03 \x01(\x0b\x32\t.Document\x12\x19\n\x06\x66inger\x18\x04 \x01(\x0b\x32\t.Document\":\n\x07Request\x12\x17\n\x06header\x18\x01 \x02(\x0b\x32\x07.Header\x12\x16\n\x04\x62ody\x18\x02 \x02(\x0b\x32\x08.Payload\"@\n\x08Response\x12\x17\n\x06header\x18\x01 \x02(\x0b\x32\x07.Header\x12\x1b\n\x04\x62ody\x18\x02 \x01(\x0b\x32\r.PayloadReply\",\n\tHeartbeat\x12\x0e\n\x06nodeId\x18\x01 \x02(\t\x12\x0f\n\x07timeRef\x18\x02 \x02(\x03\"\x95\x01\n\x07Network\x12\x0e\n\x06nodeId\x18\x01 \x02(\t\x12\x1f\n\x06\x61\x63tion\x18\x02 \x02(\x0e\x32\x0f.Network.Action\"Y\n\x06\x41\x63tion\x12\x0c\n\x08NODEJOIN\x10\x01\x12\r\n\tNODELEAVE\x10\x02\x12\x0c\n\x08NODEDEAD\x10\x03\x12\x07\n\x03MAP\x10\x37\x12\x0c\n\x08\x41NNOUNCE\x10\x38\x12\r\n\x08SHUTDOWN\x10\xe7\x07\"?\n\nManagement\x12\x17\n\x05graph\x18\x01 \x01(\x0b\x32\x08.Network\x12\x18\n\x04\x62\x65\x61t\x18\x02 \x01(\x0b\x32\n.HeartbeatB\x07\n\x03\x65yeH\x01')
+  serialized_pb='\n\ncomm.proto\"%\n\x06\x46inger\x12\x0e\n\x06number\x18\x01 \x02(\x05\x12\x0b\n\x03tag\x18\x02 \x02(\t\"\\\n\tNameSpace\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x02(\t\x12\x0c\n\x04\x63ity\x18\x03 \x02(\t\x12\x10\n\x08zip_code\x18\x04 \x02(\t\x12\x10\n\x08password\x18\x05 \x02(\t\".\n\tLoginInfo\x12\x0f\n\x07user_id\x18\x01 \x02(\t\x12\x10\n\x08password\x18\x02 \x02(\t\"\x1d\n\x05Point\x12\t\n\x01x\x18\x01 \x02(\x01\x12\t\n\x01y\x18\x02 \x02(\x01\"M\n\x0cManipulateNS\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ity\x18\x03 \x01(\t\x12\x10\n\x08zip_code\x18\x04 \x01(\t\"V\n\rQueryDocument\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x18\n\x08location\x18\x02 \x01(\x0b\x32\x06.Point\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04time\x18\x04 \x01(\x03\"\x94\x01\n\x0cNameValueSet\x12)\n\tnode_type\x18\x01 \x02(\x0e\x32\x16.NameValueSet.NodeType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x1b\n\x04node\x18\x04 \x03(\x0b\x32\r.NameValueSet\"\x1f\n\x08NodeType\x12\x08\n\x04NODE\x10\x01\x12\t\n\x05VALUE\x10\x02\"\x8a\x01\n\x08\x44ocument\x12\x12\n\nname_space\x18\x01 \x02(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08img_byte\x18\x03 \x02(\x0c\x12\x18\n\x08location\x18\x04 \x02(\x0b\x32\x06.Point\x12\x11\n\tfile_name\x18\x05 \x01(\t\x12\x11\n\tfile_type\x18\x06 \x01(\t\x12\x0c\n\x04time\x18\x07 \x01(\x03\"\xd1\x03\n\x06Header\x12#\n\nrouting_id\x18\x02 \x02(\x0e\x32\x0f.Header.Routing\x12\x12\n\noriginator\x18\x03 \x02(\t\x12\x0b\n\x03tag\x18\x04 \x02(\t\x12\'\n\nreply_code\x18\x05 \x01(\x0e\x32\x13.Header.ReplyStatus\x12\x11\n\treply_msg\x18\x06 \x01(\t\"\xed\x01\n\x07Routing\x12\n\n\x06\x46INGER\x10\x02\x12\t\n\x05STATS\x10\x03\x12\t\n\x05LOGIN\x10\n\x12\x10\n\x0cNAMESPACEADD\x10\x0b\x12\x11\n\rNAMESPACEFIND\x10\x0c\x12\x13\n\x0fNAMESPACEREMOVE\x10\r\x12\x0c\n\x08LOGINJPA\x10\x0f\x12\x13\n\x0fNAMESPACEADDJPA\x10\x10\x12\x14\n\x10NAMESPACEFINDJPA\x10\x11\x12\x16\n\x12NAMESPACEREMOVEJPA\x10\x12\x12\n\n\x06\x44OCADD\x10\x14\x12\x0b\n\x07\x44OCFIND\x10\x15\x12\r\n\tDOCUPDATE\x10\x16\x12\r\n\tDOCREMOVE\x10\x17\"U\n\x0bReplyStatus\x12\x0b\n\x07SUCCESS\x10\x01\x12\x0b\n\x07\x46\x41ILURE\x10\x02\x12\n\n\x06NOAUTH\x10\x03\x12\x0e\n\nMISSINGARG\x10\x04\x12\x10\n\x0cNOCONNECTION\x10\x05\"\xb1\x01\n\x07Payload\x12\x17\n\x06\x66inger\x18\x01 \x01(\x0b\x32\x07.Finger\x12\x16\n\x03\x64oc\x18\x02 \x01(\x0b\x32\t.Document\x12\x19\n\x05space\x18\x03 \x01(\x0b\x32\n.NameSpace\x12\x1d\n\x05query\x18\x04 \x01(\x0b\x32\x0e.QueryDocument\x12 \n\tqueryUser\x18\x05 \x01(\x0b\x32\r.ManipulateNS\x12\x19\n\x05login\x18\x06 \x01(\x0b\x32\n.LoginInfo\"\x86\x01\n\x0cPayloadReply\x12\x17\n\x04\x64ocs\x18\x01 \x03(\x0b\x32\t.Document\x12\x1a\n\x06spaces\x18\x02 \x03(\x0b\x32\n.NameSpace\x12\x18\n\x05stats\x18\x03 \x01(\x0b\x32\t.Document\x12\x19\n\x06\x66inger\x18\x04 \x01(\x0b\x32\t.Document\x12\x0c\n\x04uuid\x18\x05 \x01(\t\":\n\x07Request\x12\x17\n\x06header\x18\x01 \x02(\x0b\x32\x07.Header\x12\x16\n\x04\x62ody\x18\x02 \x02(\x0b\x32\x08.Payload\"@\n\x08Response\x12\x17\n\x06header\x18\x01 \x02(\x0b\x32\x07.Header\x12\x1b\n\x04\x62ody\x18\x02 \x01(\x0b\x32\r.PayloadReply\",\n\tHeartbeat\x12\x0e\n\x06nodeId\x18\x01 \x02(\t\x12\x0f\n\x07timeRef\x18\x02 \x02(\x03\"\x95\x01\n\x07Network\x12\x0e\n\x06nodeId\x18\x01 \x02(\t\x12\x1f\n\x06\x61\x63tion\x18\x02 \x02(\x0e\x32\x0f.Network.Action\"Y\n\x06\x41\x63tion\x12\x0c\n\x08NODEJOIN\x10\x01\x12\r\n\tNODELEAVE\x10\x02\x12\x0c\n\x08NODEDEAD\x10\x03\x12\x07\n\x03MAP\x10\x37\x12\x0c\n\x08\x41NNOUNCE\x10\x38\x12\r\n\x08SHUTDOWN\x10\xe7\x07\"?\n\nManagement\x12\x17\n\x05graph\x18\x01 \x01(\x0b\x32\x08.Network\x12\x18\n\x04\x62\x65\x61t\x18\x02 \x01(\x0b\x32\n.HeartbeatB\x07\n\x03\x65yeH\x01')
 
 
 
@@ -32,8 +32,8 @@ _NAMEVALUESET_NODETYPE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=523,
-  serialized_end=554,
+  serialized_start=511,
+  serialized_end=542,
 )
 
 _HEADER_ROUTING = descriptor.EnumDescriptor(
@@ -51,15 +51,15 @@ _HEADER_ROUTING = descriptor.EnumDescriptor(
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='NAMESPACEADD', index=2, number=10,
+      name='LOGIN', index=2, number=10,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='NAMESPACELIST', index=3, number=11,
+      name='NAMESPACEADD', index=3, number=11,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='NAMESPACEUPDATE', index=4, number=12,
+      name='NAMESPACEFIND', index=4, number=12,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
@@ -67,26 +67,42 @@ _HEADER_ROUTING = descriptor.EnumDescriptor(
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='DOCADD', index=6, number=20,
+      name='LOGINJPA', index=6, number=15,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='DOCFIND', index=7, number=21,
+      name='NAMESPACEADDJPA', index=7, number=16,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='DOCUPDATE', index=8, number=22,
+      name='NAMESPACEFINDJPA', index=8, number=17,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='DOCREMOVE', index=9, number=23,
+      name='NAMESPACEREMOVEJPA', index=9, number=18,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='DOCADD', index=10, number=20,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='DOCFIND', index=11, number=21,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='DOCUPDATE', index=12, number=22,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='DOCREMOVE', index=13, number=23,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=942,
-  serialized_end=1108,
+  serialized_start=827,
+  serialized_end=1064,
 )
 
 _HEADER_REPLYSTATUS = descriptor.EnumDescriptor(
@@ -118,8 +134,8 @@ _HEADER_REPLYSTATUS = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1110,
-  serialized_end=1195,
+  serialized_start=1066,
+  serialized_end=1151,
 )
 
 _NETWORK_ACTION = descriptor.EnumDescriptor(
@@ -321,36 +337,36 @@ _POINT = descriptor.Descriptor(
 )
 
 
-_QUERYNAMESPACE = descriptor.Descriptor(
-  name='QueryNamespace',
-  full_name='QueryNamespace',
+_MANIPULATENS = descriptor.Descriptor(
+  name='ManipulateNS',
+  full_name='ManipulateNS',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='user_id', full_name='QueryNamespace.user_id', index=0,
+      name='user_id', full_name='ManipulateNS.user_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='name', full_name='QueryNamespace.name', index=1,
+      name='name', full_name='ManipulateNS.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='city', full_name='QueryNamespace.city', index=2,
+      name='city', full_name='ManipulateNS.city', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='zip_code', full_name='QueryNamespace.zip_code', index=3,
+      name='zip_code', full_name='ManipulateNS.zip_code', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
@@ -366,49 +382,42 @@ _QUERYNAMESPACE = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=226,
-  serialized_end=305,
+  serialized_end=303,
 )
 
 
-_QUERYINFO = descriptor.Descriptor(
-  name='QueryInfo',
-  full_name='QueryInfo',
+_QUERYDOCUMENT = descriptor.Descriptor(
+  name='QueryDocument',
+  full_name='QueryDocument',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='user_id', full_name='QueryInfo.user_id', index=0,
+      name='user_id', full_name='QueryDocument.user_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='location', full_name='QueryInfo.location', index=1,
-      number=2, type=11, cpp_type=10, label=2,
+      name='location', full_name='QueryDocument.location', index=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='name', full_name='QueryInfo.name', index=2,
+      name='name', full_name='QueryDocument.name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='time', full_name='QueryInfo.time', index=3,
+      name='time', full_name='QueryDocument.time', index=3,
       number=4, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='desc', full_name='QueryInfo.desc', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -421,8 +430,8 @@ _QUERYINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=307,
-  serialized_end=403,
+  serialized_start=305,
+  serialized_end=391,
 )
 
 
@@ -471,8 +480,8 @@ _NAMEVALUESET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=406,
-  serialized_end=554,
+  serialized_start=394,
+  serialized_end=542,
 )
 
 
@@ -541,64 +550,8 @@ _DOCUMENT = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=557,
-  serialized_end=695,
-)
-
-
-_DOCUMENTSET = descriptor.Descriptor(
-  name='DocumentSet',
-  full_name='DocumentSet',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='documents', full_name='DocumentSet.documents', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=697,
-  serialized_end=740,
-)
-
-
-_NAMESPACESET = descriptor.Descriptor(
-  name='NameSpaceSet',
-  full_name='NameSpaceSet',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='spaces', full_name='NameSpaceSet.spaces', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=742,
-  serialized_end=784,
+  serialized_start=545,
+  serialized_end=683,
 )
 
 
@@ -631,22 +584,15 @@ _HEADER = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='time', full_name='Header.time', index=3,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='reply_code', full_name='Header.reply_code', index=4,
-      number=6, type=14, cpp_type=8, label=1,
+      name='reply_code', full_name='Header.reply_code', index=3,
+      number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='reply_msg', full_name='Header.reply_msg', index=5,
-      number=7, type=9, cpp_type=9, label=1,
+      name='reply_msg', full_name='Header.reply_msg', index=4,
+      number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -662,8 +608,8 @@ _HEADER = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=787,
-  serialized_end=1195,
+  serialized_start=686,
+  serialized_end=1151,
 )
 
 
@@ -709,6 +655,13 @@ _PAYLOAD = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='login', full_name='Payload.login', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -718,8 +671,8 @@ _PAYLOAD = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1198,
-  serialized_end=1346,
+  serialized_start=1154,
+  serialized_end=1331,
 )
 
 
@@ -758,6 +711,13 @@ _PAYLOADREPLY = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='uuid', full_name='PayloadReply.uuid', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -767,7 +727,7 @@ _PAYLOADREPLY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1348,
+  serialized_start=1334,
   serialized_end=1468,
 )
 
@@ -947,13 +907,11 @@ _MANAGEMENT = descriptor.Descriptor(
   serialized_end=1857,
 )
 
-_QUERYINFO.fields_by_name['location'].message_type = _POINT
+_QUERYDOCUMENT.fields_by_name['location'].message_type = _POINT
 _NAMEVALUESET.fields_by_name['node_type'].enum_type = _NAMEVALUESET_NODETYPE
 _NAMEVALUESET.fields_by_name['node'].message_type = _NAMEVALUESET
 _NAMEVALUESET_NODETYPE.containing_type = _NAMEVALUESET;
 _DOCUMENT.fields_by_name['location'].message_type = _POINT
-_DOCUMENTSET.fields_by_name['documents'].message_type = _DOCUMENT
-_NAMESPACESET.fields_by_name['spaces'].message_type = _NAMESPACE
 _HEADER.fields_by_name['routing_id'].enum_type = _HEADER_ROUTING
 _HEADER.fields_by_name['reply_code'].enum_type = _HEADER_REPLYSTATUS
 _HEADER_ROUTING.containing_type = _HEADER;
@@ -961,8 +919,9 @@ _HEADER_REPLYSTATUS.containing_type = _HEADER;
 _PAYLOAD.fields_by_name['finger'].message_type = _FINGER
 _PAYLOAD.fields_by_name['doc'].message_type = _DOCUMENT
 _PAYLOAD.fields_by_name['space'].message_type = _NAMESPACE
-_PAYLOAD.fields_by_name['query'].message_type = _QUERYINFO
-_PAYLOAD.fields_by_name['queryUser'].message_type = _QUERYNAMESPACE
+_PAYLOAD.fields_by_name['query'].message_type = _QUERYDOCUMENT
+_PAYLOAD.fields_by_name['queryUser'].message_type = _MANIPULATENS
+_PAYLOAD.fields_by_name['login'].message_type = _LOGININFO
 _PAYLOADREPLY.fields_by_name['docs'].message_type = _DOCUMENT
 _PAYLOADREPLY.fields_by_name['spaces'].message_type = _NAMESPACE
 _PAYLOADREPLY.fields_by_name['stats'].message_type = _DOCUMENT
@@ -979,12 +938,10 @@ DESCRIPTOR.message_types_by_name['Finger'] = _FINGER
 DESCRIPTOR.message_types_by_name['NameSpace'] = _NAMESPACE
 DESCRIPTOR.message_types_by_name['LoginInfo'] = _LOGININFO
 DESCRIPTOR.message_types_by_name['Point'] = _POINT
-DESCRIPTOR.message_types_by_name['QueryNamespace'] = _QUERYNAMESPACE
-DESCRIPTOR.message_types_by_name['QueryInfo'] = _QUERYINFO
+DESCRIPTOR.message_types_by_name['ManipulateNS'] = _MANIPULATENS
+DESCRIPTOR.message_types_by_name['QueryDocument'] = _QUERYDOCUMENT
 DESCRIPTOR.message_types_by_name['NameValueSet'] = _NAMEVALUESET
 DESCRIPTOR.message_types_by_name['Document'] = _DOCUMENT
-DESCRIPTOR.message_types_by_name['DocumentSet'] = _DOCUMENTSET
-DESCRIPTOR.message_types_by_name['NameSpaceSet'] = _NAMESPACESET
 DESCRIPTOR.message_types_by_name['Header'] = _HEADER
 DESCRIPTOR.message_types_by_name['Payload'] = _PAYLOAD
 DESCRIPTOR.message_types_by_name['PayloadReply'] = _PAYLOADREPLY
@@ -1018,17 +975,17 @@ class Point(message.Message):
   
   # @@protoc_insertion_point(class_scope:Point)
 
-class QueryNamespace(message.Message):
+class ManipulateNS(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _QUERYNAMESPACE
+  DESCRIPTOR = _MANIPULATENS
   
-  # @@protoc_insertion_point(class_scope:QueryNamespace)
+  # @@protoc_insertion_point(class_scope:ManipulateNS)
 
-class QueryInfo(message.Message):
+class QueryDocument(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _QUERYINFO
+  DESCRIPTOR = _QUERYDOCUMENT
   
-  # @@protoc_insertion_point(class_scope:QueryInfo)
+  # @@protoc_insertion_point(class_scope:QueryDocument)
 
 class NameValueSet(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -1041,18 +998,6 @@ class Document(message.Message):
   DESCRIPTOR = _DOCUMENT
   
   # @@protoc_insertion_point(class_scope:Document)
-
-class DocumentSet(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _DOCUMENTSET
-  
-  # @@protoc_insertion_point(class_scope:DocumentSet)
-
-class NameSpaceSet(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _NAMESPACESET
-  
-  # @@protoc_insertion_point(class_scope:NameSpaceSet)
 
 class Header(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

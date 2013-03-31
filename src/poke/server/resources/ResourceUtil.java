@@ -39,7 +39,7 @@ public class ResourceUtil {
 		if (msg != null)
 			bldr.setReplyMsg(msg);
 
-		bldr.setTime(System.currentTimeMillis());
+		//bldr.setTime(System.currentTimeMillis());
 
 		return bldr.build();
 	}
