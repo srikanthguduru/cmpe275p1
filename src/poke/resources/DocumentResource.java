@@ -40,10 +40,10 @@ public class DocumentResource implements Resource {
 		PayloadReply.Builder payload = PayloadReply.newBuilder();
 		
 		Storage storage = StorageFactory.getInstance().getStorageInstance();
-		if(routingNumber == 20)
+		if(routingNumber == Routing.DOCADD.getNumber())
 		{
 			System.out.println("Routinggg");
-			boolean added = storage.addDocument(request.getHeader().getOriginator(), request.getBody().getDoc());
+			boolean added = storage.addDocument(request.getHeader().getTag(), request.getBody().getDoc());
 			if(!added)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
@@ -57,8 +57,8 @@ public class DocumentResource implements Resource {
 
 			reply = r.build();
 		}
-		else if(routingNumber == 21){
-			List<Document> documents = storage.findDocuments(request.getHeader().getOriginator(), request.getBody().getQuery());
+		else if(routingNumber == Routing.DOCFIND.getNumber()){
+			List<Document> documents = storage.findDocuments(request.getHeader().getTag(), request.getBody().getQuery());
 
 			if(documents == null )
 			{
@@ -79,9 +79,9 @@ public class DocumentResource implements Resource {
 			}
 			r.build();
 		}
-		if(routingNumber == 22)
+		else if(routingNumber == Routing.DOCUPDATE.getNumber())
 		{
-			boolean updated = storage.updateDocument(request.getHeader().getOriginator(), request.getBody().getDoc());
+			boolean updated = storage.updateDocument(request.getHeader().getTag(), request.getBody().getDoc());
 			if(!updated)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
@@ -95,9 +95,9 @@ public class DocumentResource implements Resource {
 
 			reply = r.build();
 		}
-		if(routingNumber == 23)
+		else if(routingNumber == Routing.DOCREMOVE.getNumber())
 		{
-			boolean removed = storage.removeDocument(request.getHeader().getOriginator(), request.getBody().getDoc().getId());
+			boolean removed = storage.removeDocument(request.getHeader().getTag(), request.getBody().getDoc().getId());
 			if(!removed)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),

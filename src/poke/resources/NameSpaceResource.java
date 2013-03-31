@@ -44,7 +44,8 @@ public class NameSpaceResource implements Resource {
 		PayloadReply.Builder payload = PayloadReply.newBuilder();
 
 		Storage storage = StorageFactory.getInstance().getStorageInstance();
-		if(routingNumber == 10)
+		
+		if(routingNumber == Routing.NAMESPACEADD.getNumber())
 		{
 			NameSpace created = storage.createNameSpace(request.getBody().getSpace());
 			if(created == null)
@@ -62,8 +63,8 @@ public class NameSpaceResource implements Resource {
 
 			reply = r.build();
 		}
-		else if(routingNumber == 11){
-			List<NameSpace> namespaces = storage.findNameSpaces(request.getHeader().getOriginator(), request.getBody().getQueryUser());
+		else if(routingNumber == Routing.NAMESPACELIST.getNumber()){
+			List<NameSpace> namespaces = storage.findNameSpaces(request.getHeader().getTag(), request.getBody().getQueryUser());
 
 			if(namespaces == null )
 			{
@@ -79,14 +80,14 @@ public class NameSpaceResource implements Resource {
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
 						ReplyStatus.SUCCESS, "Users Found"));
 				for(int index = 0; index < namespaces.size(); index ++)
-					payload.setSpaces(index, namespaces.get(index));
+					payload.addSpaces(index, namespaces.get(index));
 				r.setBody(payload);
 			}
 			r.build();
 		}
-		if(routingNumber == 13)
+		else if(routingNumber == Routing.NAMESPACEREMOVE.getNumber())
 		{
-			boolean removed = storage.removeNameSpace(request.getHeader().getOriginator());
+			boolean removed = storage.removeNameSpace(request.getHeader().getTag());
 			if(!removed)
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
@@ -96,6 +97,24 @@ public class NameSpaceResource implements Resource {
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
 						ReplyStatus.SUCCESS, "User deleted successfully"));
+			}
+
+			reply = r.build();
+		}
+		else if(routingNumber == Routing.LOGIN.getNumber())
+		{
+			String uuid = storage.validateLogin(request.getBody().getLogin());
+			
+			if(uuid == null)
+			{
+				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
+						ReplyStatus.FAILURE, "Invalid credentials"));
+			}
+			else
+			{
+				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
+						ReplyStatus.SUCCESS, "Login successful"));
+				payload.setUuid(uuid);
 			}
 
 			reply = r.build();
