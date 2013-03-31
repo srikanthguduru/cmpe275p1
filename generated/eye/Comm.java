@@ -8710,6 +8710,10 @@ public final class Comm {
     boolean hasFinger();
     eye.Comm.Document getFinger();
     eye.Comm.DocumentOrBuilder getFingerOrBuilder();
+    
+    // optional string uuid = 5;
+    boolean hasUuid();
+    String getUuid();
   }
   public static final class PayloadReply extends
       com.google.protobuf.GeneratedMessage
@@ -8808,11 +8812,44 @@ public final class Comm {
       return finger_;
     }
     
+    // optional string uuid = 5;
+    public static final int UUID_FIELD_NUMBER = 5;
+    private java.lang.Object uuid_;
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public String getUuid() {
+      java.lang.Object ref = uuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          uuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUuidBytes() {
+      java.lang.Object ref = uuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        uuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       docs_ = java.util.Collections.emptyList();
       spaces_ = java.util.Collections.emptyList();
       stats_ = eye.Comm.Document.getDefaultInstance();
       finger_ = eye.Comm.Document.getDefaultInstance();
+      uuid_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -8862,6 +8899,9 @@ public final class Comm {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(4, finger_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(5, getUuidBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -8886,6 +8926,10 @@ public final class Comm {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, finger_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getUuidBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9039,6 +9083,8 @@ public final class Comm {
           fingerBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
+        uuid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -9111,6 +9157,10 @@ public final class Comm {
         } else {
           result.finger_ = fingerBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.uuid_ = uuid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -9184,6 +9234,9 @@ public final class Comm {
         }
         if (other.hasFinger()) {
           mergeFinger(other.getFinger());
+        }
+        if (other.hasUuid()) {
+          setUuid(other.getUuid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9268,6 +9321,11 @@ public final class Comm {
               }
               input.readMessage(subBuilder, extensionRegistry);
               setFinger(subBuilder.buildPartial());
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              uuid_ = input.readBytes();
               break;
             }
           }
@@ -9826,6 +9884,42 @@ public final class Comm {
           finger_ = null;
         }
         return fingerBuilder_;
+      }
+      
+      // optional string uuid = 5;
+      private java.lang.Object uuid_ = "";
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public String getUuid() {
+        java.lang.Object ref = uuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          uuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        uuid_ = getDefaultInstance().getUuid();
+        onChanged();
+        return this;
+      }
+      void setUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000010;
+        uuid_ = value;
+        onChanged();
       }
       
       // @@protoc_insertion_point(builder_scope:PayloadReply)
@@ -12746,20 +12840,20 @@ public final class Comm {
       "\0132\t.Document\022\031\n\005space\030\003 \001(\0132\n.NameSpace\022" +
       "\031\n\005query\030\004 \001(\0132\n.QueryInfo\022\"\n\tqueryUser\030" +
       "\005 \001(\0132\017.QueryNamespace\022\031\n\005login\030\006 \001(\0132\n." +
-      "LoginInfo\"x\n\014PayloadReply\022\027\n\004docs\030\001 \003(\0132" +
-      "\t.Document\022\032\n\006spaces\030\002 \003(\0132\n.NameSpace\022\030" +
-      "\n\005stats\030\003 \001(\0132\t.Document\022\031\n\006finger\030\004 \001(\013",
-      "2\t.Document\":\n\007Request\022\027\n\006header\030\001 \002(\0132\007" +
-      ".Header\022\026\n\004body\030\002 \002(\0132\010.Payload\"@\n\010Respo" +
-      "nse\022\027\n\006header\030\001 \002(\0132\007.Header\022\033\n\004body\030\002 \001" +
-      "(\0132\r.PayloadReply\",\n\tHeartbeat\022\016\n\006nodeId" +
-      "\030\001 \002(\t\022\017\n\007timeRef\030\002 \002(\003\"\225\001\n\007Network\022\016\n\006n" +
-      "odeId\030\001 \002(\t\022\037\n\006action\030\002 \002(\0162\017.Network.Ac" +
-      "tion\"Y\n\006Action\022\014\n\010NODEJOIN\020\001\022\r\n\tNODELEAV" +
-      "E\020\002\022\014\n\010NODEDEAD\020\003\022\007\n\003MAP\0207\022\014\n\010ANNOUNCE\0208" +
-      "\022\r\n\010SHUTDOWN\020\347\007\"?\n\nManagement\022\027\n\005graph\030\001" +
-      " \001(\0132\010.Network\022\030\n\004beat\030\002 \001(\0132\n.Heartbeat",
-      "B\007\n\003eyeH\001"
+      "LoginInfo\"\206\001\n\014PayloadReply\022\027\n\004docs\030\001 \003(\013" +
+      "2\t.Document\022\032\n\006spaces\030\002 \003(\0132\n.NameSpace\022" +
+      "\030\n\005stats\030\003 \001(\0132\t.Document\022\031\n\006finger\030\004 \001(",
+      "\0132\t.Document\022\014\n\004uuid\030\005 \001(\t\":\n\007Request\022\027\n" +
+      "\006header\030\001 \002(\0132\007.Header\022\026\n\004body\030\002 \002(\0132\010.P" +
+      "ayload\"@\n\010Response\022\027\n\006header\030\001 \002(\0132\007.Hea" +
+      "der\022\033\n\004body\030\002 \001(\0132\r.PayloadReply\",\n\tHear" +
+      "tbeat\022\016\n\006nodeId\030\001 \002(\t\022\017\n\007timeRef\030\002 \002(\003\"\225" +
+      "\001\n\007Network\022\016\n\006nodeId\030\001 \002(\t\022\037\n\006action\030\002 \002" +
+      "(\0162\017.Network.Action\"Y\n\006Action\022\014\n\010NODEJOI" +
+      "N\020\001\022\r\n\tNODELEAVE\020\002\022\014\n\010NODEDEAD\020\003\022\007\n\003MAP\020" +
+      "7\022\014\n\010ANNOUNCE\0208\022\r\n\010SHUTDOWN\020\347\007\"?\n\nManage" +
+      "ment\022\027\n\005graph\030\001 \001(\0132\010.Network\022\030\n\004beat\030\002 ",
+      "\001(\0132\n.HeartbeatB\007\n\003eyeH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -12867,7 +12961,7 @@ public final class Comm {
           internal_static_PayloadReply_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_PayloadReply_descriptor,
-              new java.lang.String[] { "Docs", "Spaces", "Stats", "Finger", },
+              new java.lang.String[] { "Docs", "Spaces", "Stats", "Finger", "Uuid", },
               eye.Comm.PayloadReply.class,
               eye.Comm.PayloadReply.Builder.class);
           internal_static_Request_descriptor =
