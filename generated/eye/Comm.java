@@ -2161,10 +2161,6 @@ public final class Comm {
     // optional string zip_code = 4;
     boolean hasZipCode();
     String getZipCode();
-    
-    // optional string password = 5;
-    boolean hasPassword();
-    String getPassword();
   }
   public static final class QueryNamespace extends
       com.google.protobuf.GeneratedMessage
@@ -2323,44 +2319,11 @@ public final class Comm {
       }
     }
     
-    // optional string password = 5;
-    public static final int PASSWORD_FIELD_NUMBER = 5;
-    private java.lang.Object password_;
-    public boolean hasPassword() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    public String getPassword() {
-      java.lang.Object ref = password_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          password_ = s;
-        }
-        return s;
-      }
-    }
-    private com.google.protobuf.ByteString getPasswordBytes() {
-      java.lang.Object ref = password_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        password_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    
     private void initFields() {
       userId_ = "";
       name_ = "";
       city_ = "";
       zipCode_ = "";
-      password_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2386,9 +2349,6 @@ public final class Comm {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, getZipCodeBytes());
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(5, getPasswordBytes());
-      }
       getUnknownFields().writeTo(output);
     }
     
@@ -2413,10 +2373,6 @@ public final class Comm {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, getZipCodeBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getPasswordBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2550,8 +2506,6 @@ public final class Comm {
         bitField0_ = (bitField0_ & ~0x00000004);
         zipCode_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
-        password_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -2606,10 +2560,6 @@ public final class Comm {
           to_bitField0_ |= 0x00000008;
         }
         result.zipCode_ = zipCode_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.password_ = password_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2637,9 +2587,6 @@ public final class Comm {
         }
         if (other.hasZipCode()) {
           setZipCode(other.getZipCode());
-        }
-        if (other.hasPassword()) {
-          setPassword(other.getPassword());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2690,11 +2637,6 @@ public final class Comm {
             case 34: {
               bitField0_ |= 0x00000008;
               zipCode_ = input.readBytes();
-              break;
-            }
-            case 42: {
-              bitField0_ |= 0x00000010;
-              password_ = input.readBytes();
               break;
             }
           }
@@ -2844,42 +2786,6 @@ public final class Comm {
       void setZipCode(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000008;
         zipCode_ = value;
-        onChanged();
-      }
-      
-      // optional string password = 5;
-      private java.lang.Object password_ = "";
-      public boolean hasPassword() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      public String getPassword() {
-        java.lang.Object ref = password_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          password_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
-      }
-      public Builder setPassword(String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        password_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearPassword() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        password_ = getDefaultInstance().getPassword();
-        onChanged();
-        return this;
-      }
-      void setPassword(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000010;
-        password_ = value;
         onChanged();
       }
       
@@ -5748,7 +5654,7 @@ public final class Comm {
       
       public eye.Comm.DocumentSet buildPartial() {
         eye.Comm.DocumentSet result = new eye.Comm.DocumentSet(this);
-//        int from_bitField0_ = bitField0_;
+        int from_bitField0_ = bitField0_;
         if (documentsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             documents_ = java.util.Collections.unmodifiableList(documents_);
@@ -6311,7 +6217,7 @@ public final class Comm {
       
       public eye.Comm.NameSpaceSet buildPartial() {
         eye.Comm.NameSpaceSet result = new eye.Comm.NameSpaceSet(this);
-//        int from_bitField0_ = bitField0_;
+        int from_bitField0_ = bitField0_;
         if (spacesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             spaces_ = java.util.Collections.unmodifiableList(spaces_);
@@ -6667,22 +6573,34 @@ public final class Comm {
         implements com.google.protobuf.ProtocolMessageEnum {
       FINGER(0, 2),
       STATS(1, 3),
-      NAMESPACEADD(2, 10),
-      NAMESPACELIST(3, 11),
-      NAMESPACEUPDATE(4, 12),
-      NAMESPACEREMOVE(5, 13),
-      DOCADD(6, 20),
-      DOCFIND(7, 21),
-      DOCUPDATE(8, 22),
-      DOCREMOVE(9, 23),
+      LOGIN(2, 10),
+      NAMESPACEADD(3, 11),
+      NAMESPACELIST(4, 12),
+      NAMESPACEUPDATE(5, 13),
+      NAMESPACEREMOVE(6, 14),
+      LOGINJPA(7, 15),
+      NAMESPACEADDJPA(8, 16),
+      NAMESPACELISTJPA(9, 17),
+      NAMESPACEUPDATEJPA(10, 18),
+      NAMESPACEREMOVEJPA(11, 19),
+      DOCADD(12, 20),
+      DOCFIND(13, 21),
+      DOCUPDATE(14, 22),
+      DOCREMOVE(15, 23),
       ;
       
       public static final int FINGER_VALUE = 2;
       public static final int STATS_VALUE = 3;
-      public static final int NAMESPACEADD_VALUE = 10;
-      public static final int NAMESPACELIST_VALUE = 11;
-      public static final int NAMESPACEUPDATE_VALUE = 12;
-      public static final int NAMESPACEREMOVE_VALUE = 13;
+      public static final int LOGIN_VALUE = 10;
+      public static final int NAMESPACEADD_VALUE = 11;
+      public static final int NAMESPACELIST_VALUE = 12;
+      public static final int NAMESPACEUPDATE_VALUE = 13;
+      public static final int NAMESPACEREMOVE_VALUE = 14;
+      public static final int LOGINJPA_VALUE = 15;
+      public static final int NAMESPACEADDJPA_VALUE = 16;
+      public static final int NAMESPACELISTJPA_VALUE = 17;
+      public static final int NAMESPACEUPDATEJPA_VALUE = 18;
+      public static final int NAMESPACEREMOVEJPA_VALUE = 19;
       public static final int DOCADD_VALUE = 20;
       public static final int DOCFIND_VALUE = 21;
       public static final int DOCUPDATE_VALUE = 22;
@@ -6695,10 +6613,16 @@ public final class Comm {
         switch (value) {
           case 2: return FINGER;
           case 3: return STATS;
-          case 10: return NAMESPACEADD;
-          case 11: return NAMESPACELIST;
-          case 12: return NAMESPACEUPDATE;
-          case 13: return NAMESPACEREMOVE;
+          case 10: return LOGIN;
+          case 11: return NAMESPACEADD;
+          case 12: return NAMESPACELIST;
+          case 13: return NAMESPACEUPDATE;
+          case 14: return NAMESPACEREMOVE;
+          case 15: return LOGINJPA;
+          case 16: return NAMESPACEADDJPA;
+          case 17: return NAMESPACELISTJPA;
+          case 18: return NAMESPACEUPDATEJPA;
+          case 19: return NAMESPACEREMOVEJPA;
           case 20: return DOCADD;
           case 21: return DOCFIND;
           case 22: return DOCUPDATE;
@@ -6733,7 +6657,7 @@ public final class Comm {
       }
       
       private static final Routing[] VALUES = {
-        FINGER, STATS, NAMESPACEADD, NAMESPACELIST, NAMESPACEUPDATE, NAMESPACEREMOVE, DOCADD, DOCFIND, DOCUPDATE, DOCREMOVE, 
+        FINGER, STATS, LOGIN, NAMESPACEADD, NAMESPACELIST, NAMESPACEUPDATE, NAMESPACEREMOVE, LOGINJPA, NAMESPACEADDJPA, NAMESPACELISTJPA, NAMESPACEUPDATEJPA, NAMESPACEREMOVEJPA, DOCADD, DOCFIND, DOCUPDATE, DOCREMOVE, 
       };
       
       public static Routing valueOf(
@@ -7582,6 +7506,11 @@ public final class Comm {
     boolean hasQueryUser();
     eye.Comm.QueryNamespace getQueryUser();
     eye.Comm.QueryNamespaceOrBuilder getQueryUserOrBuilder();
+    
+    // optional .LoginInfo login = 6;
+    boolean hasLogin();
+    eye.Comm.LoginInfo getLogin();
+    eye.Comm.LoginInfoOrBuilder getLoginOrBuilder();
   }
   public static final class Payload extends
       com.google.protobuf.GeneratedMessage
@@ -7677,12 +7606,26 @@ public final class Comm {
       return queryUser_;
     }
     
+    // optional .LoginInfo login = 6;
+    public static final int LOGIN_FIELD_NUMBER = 6;
+    private eye.Comm.LoginInfo login_;
+    public boolean hasLogin() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public eye.Comm.LoginInfo getLogin() {
+      return login_;
+    }
+    public eye.Comm.LoginInfoOrBuilder getLoginOrBuilder() {
+      return login_;
+    }
+    
     private void initFields() {
       finger_ = eye.Comm.Finger.getDefaultInstance();
       doc_ = eye.Comm.Document.getDefaultInstance();
       space_ = eye.Comm.NameSpace.getDefaultInstance();
       query_ = eye.Comm.QueryInfo.getDefaultInstance();
       queryUser_ = eye.Comm.QueryNamespace.getDefaultInstance();
+      login_ = eye.Comm.LoginInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -7713,6 +7656,12 @@ public final class Comm {
           return false;
         }
       }
+      if (hasLogin()) {
+        if (!getLogin().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -7734,6 +7683,9 @@ public final class Comm {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeMessage(5, queryUser_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, login_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -7763,6 +7715,10 @@ public final class Comm {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, queryUser_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, login_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -7885,6 +7841,7 @@ public final class Comm {
           getSpaceFieldBuilder();
           getQueryFieldBuilder();
           getQueryUserFieldBuilder();
+          getLoginFieldBuilder();
         }
       }
       private static Builder create() {
@@ -7923,6 +7880,12 @@ public final class Comm {
           queryUserBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
+        if (loginBuilder_ == null) {
+          login_ = eye.Comm.LoginInfo.getDefaultInstance();
+        } else {
+          loginBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       
@@ -8001,6 +7964,14 @@ public final class Comm {
         } else {
           result.queryUser_ = queryUserBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (loginBuilder_ == null) {
+          result.login_ = login_;
+        } else {
+          result.login_ = loginBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8032,6 +8003,9 @@ public final class Comm {
         if (other.hasQueryUser()) {
           mergeQueryUser(other.getQueryUser());
         }
+        if (other.hasLogin()) {
+          mergeLogin(other.getLogin());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -8057,6 +8031,12 @@ public final class Comm {
         }
         if (hasQuery()) {
           if (!getQuery().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasLogin()) {
+          if (!getLogin().isInitialized()) {
             
             return false;
           }
@@ -8130,6 +8110,15 @@ public final class Comm {
               }
               input.readMessage(subBuilder, extensionRegistry);
               setQueryUser(subBuilder.buildPartial());
+              break;
+            }
+            case 50: {
+              eye.Comm.LoginInfo.Builder subBuilder = eye.Comm.LoginInfo.newBuilder();
+              if (hasLogin()) {
+                subBuilder.mergeFrom(getLogin());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setLogin(subBuilder.buildPartial());
               break;
             }
           }
@@ -8586,6 +8575,96 @@ public final class Comm {
           queryUser_ = null;
         }
         return queryUserBuilder_;
+      }
+      
+      // optional .LoginInfo login = 6;
+      private eye.Comm.LoginInfo login_ = eye.Comm.LoginInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          eye.Comm.LoginInfo, eye.Comm.LoginInfo.Builder, eye.Comm.LoginInfoOrBuilder> loginBuilder_;
+      public boolean hasLogin() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public eye.Comm.LoginInfo getLogin() {
+        if (loginBuilder_ == null) {
+          return login_;
+        } else {
+          return loginBuilder_.getMessage();
+        }
+      }
+      public Builder setLogin(eye.Comm.LoginInfo value) {
+        if (loginBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          login_ = value;
+          onChanged();
+        } else {
+          loginBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder setLogin(
+          eye.Comm.LoginInfo.Builder builderForValue) {
+        if (loginBuilder_ == null) {
+          login_ = builderForValue.build();
+          onChanged();
+        } else {
+          loginBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder mergeLogin(eye.Comm.LoginInfo value) {
+        if (loginBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              login_ != eye.Comm.LoginInfo.getDefaultInstance()) {
+            login_ =
+              eye.Comm.LoginInfo.newBuilder(login_).mergeFrom(value).buildPartial();
+          } else {
+            login_ = value;
+          }
+          onChanged();
+        } else {
+          loginBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder clearLogin() {
+        if (loginBuilder_ == null) {
+          login_ = eye.Comm.LoginInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          loginBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      public eye.Comm.LoginInfo.Builder getLoginBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getLoginFieldBuilder().getBuilder();
+      }
+      public eye.Comm.LoginInfoOrBuilder getLoginOrBuilder() {
+        if (loginBuilder_ != null) {
+          return loginBuilder_.getMessageOrBuilder();
+        } else {
+          return login_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          eye.Comm.LoginInfo, eye.Comm.LoginInfo.Builder, eye.Comm.LoginInfoOrBuilder> 
+          getLoginFieldBuilder() {
+        if (loginBuilder_ == null) {
+          loginBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              eye.Comm.LoginInfo, eye.Comm.LoginInfo.Builder, eye.Comm.LoginInfoOrBuilder>(
+                  login_,
+                  getParentForChildren(),
+                  isClean());
+          login_ = null;
+        }
+        return loginBuilder_;
       }
       
       // @@protoc_insertion_point(builder_scope:Payload)
@@ -12635,49 +12714,52 @@ public final class Comm {
       "\t\022\014\n\004name\030\002 \002(\t\022\014\n\004city\030\003 \002(\t\022\020\n\010zip_cod" +
       "e\030\004 \002(\t\022\020\n\010password\030\005 \002(\t\".\n\tLoginInfo\022\017" +
       "\n\007user_id\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\"\035\n\005Poi" +
-      "nt\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\"a\n\016QueryNamespa" +
+      "nt\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\"O\n\016QueryNamespa" +
       "ce\022\017\n\007user_id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\014\n\004cit" +
-      "y\030\003 \001(\t\022\020\n\010zip_code\030\004 \001(\t\022\020\n\010password\030\005 " +
-      "\001(\t\"`\n\tQueryInfo\022\017\n\007user_id\030\001 \001(\t\022\030\n\010loc" +
-      "ation\030\002 \002(\0132\006.Point\022\014\n\004name\030\003 \001(\t\022\014\n\004tim",
-      "e\030\004 \001(\003\022\014\n\004desc\030\005 \001(\t\"\224\001\n\014NameValueSet\022)" +
-      "\n\tnode_type\030\001 \002(\0162\026.NameValueSet.NodeTyp" +
-      "e\022\014\n\004name\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\022\033\n\004node\030\004" +
-      " \003(\0132\r.NameValueSet\"\037\n\010NodeType\022\010\n\004NODE\020" +
-      "\001\022\t\n\005VALUE\020\002\"\212\001\n\010Document\022\022\n\nname_space\030" +
-      "\001 \002(\t\022\n\n\002id\030\002 \001(\003\022\020\n\010img_byte\030\003 \002(\014\022\030\n\010l" +
-      "ocation\030\004 \002(\0132\006.Point\022\021\n\tfile_name\030\005 \001(\t" +
-      "\022\021\n\tfile_type\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"+\n\013Doc" +
-      "umentSet\022\034\n\tdocuments\030\001 \003(\0132\t.Document\"*" +
-      "\n\014NameSpaceSet\022\032\n\006spaces\030\001 \003(\0132\n.NameSpa",
-      "ce\"\230\003\n\006Header\022#\n\nrouting_id\030\002 \002(\0162\017.Head" +
-      "er.Routing\022\022\n\noriginator\030\003 \002(\t\022\013\n\003tag\030\004 " +
-      "\002(\t\022\014\n\004time\030\005 \001(\003\022\'\n\nreply_code\030\006 \001(\0162\023." +
-      "Header.ReplyStatus\022\021\n\treply_msg\030\007 \001(\t\"\246\001" +
-      "\n\007Routing\022\n\n\006FINGER\020\002\022\t\n\005STATS\020\003\022\020\n\014NAME" +
-      "SPACEADD\020\n\022\021\n\rNAMESPACELIST\020\013\022\023\n\017NAMESPA" +
-      "CEUPDATE\020\014\022\023\n\017NAMESPACEREMOVE\020\r\022\n\n\006DOCAD" +
-      "D\020\024\022\013\n\007DOCFIND\020\025\022\r\n\tDOCUPDATE\020\026\022\r\n\tDOCRE" +
-      "MOVE\020\027\"U\n\013ReplyStatus\022\013\n\007SUCCESS\020\001\022\013\n\007FA" +
-      "ILURE\020\002\022\n\n\006NOAUTH\020\003\022\016\n\nMISSINGARG\020\004\022\020\n\014N",
-      "OCONNECTION\020\005\"\224\001\n\007Payload\022\027\n\006finger\030\001 \001(" +
-      "\0132\007.Finger\022\026\n\003doc\030\002 \001(\0132\t.Document\022\031\n\005sp" +
-      "ace\030\003 \001(\0132\n.NameSpace\022\031\n\005query\030\004 \001(\0132\n.Q" +
-      "ueryInfo\022\"\n\tqueryUser\030\005 \001(\0132\017.QueryNames" +
-      "pace\"x\n\014PayloadReply\022\027\n\004docs\030\001 \003(\0132\t.Doc" +
-      "ument\022\032\n\006spaces\030\002 \003(\0132\n.NameSpace\022\030\n\005sta" +
-      "ts\030\003 \001(\0132\t.Document\022\031\n\006finger\030\004 \001(\0132\t.Do" +
-      "cument\":\n\007Request\022\027\n\006header\030\001 \002(\0132\007.Head" +
-      "er\022\026\n\004body\030\002 \002(\0132\010.Payload\"@\n\010Response\022\027" +
-      "\n\006header\030\001 \002(\0132\007.Header\022\033\n\004body\030\002 \001(\0132\r.",
-      "PayloadReply\",\n\tHeartbeat\022\016\n\006nodeId\030\001 \002(" +
-      "\t\022\017\n\007timeRef\030\002 \002(\003\"\225\001\n\007Network\022\016\n\006nodeId" +
-      "\030\001 \002(\t\022\037\n\006action\030\002 \002(\0162\017.Network.Action\"" +
-      "Y\n\006Action\022\014\n\010NODEJOIN\020\001\022\r\n\tNODELEAVE\020\002\022\014" +
-      "\n\010NODEDEAD\020\003\022\007\n\003MAP\0207\022\014\n\010ANNOUNCE\0208\022\r\n\010S" +
-      "HUTDOWN\020\347\007\"?\n\nManagement\022\027\n\005graph\030\001 \001(\0132" +
-      "\010.Network\022\030\n\004beat\030\002 \001(\0132\n.HeartbeatB\007\n\003e" +
-      "yeH\001"
+      "y\030\003 \001(\t\022\020\n\010zip_code\030\004 \001(\t\"`\n\tQueryInfo\022\017" +
+      "\n\007user_id\030\001 \001(\t\022\030\n\010location\030\002 \002(\0132\006.Poin" +
+      "t\022\014\n\004name\030\003 \001(\t\022\014\n\004time\030\004 \001(\003\022\014\n\004desc\030\005 ",
+      "\001(\t\"\224\001\n\014NameValueSet\022)\n\tnode_type\030\001 \002(\0162" +
+      "\026.NameValueSet.NodeType\022\014\n\004name\030\002 \001(\t\022\r\n" +
+      "\005value\030\003 \001(\t\022\033\n\004node\030\004 \003(\0132\r.NameValueSe" +
+      "t\"\037\n\010NodeType\022\010\n\004NODE\020\001\022\t\n\005VALUE\020\002\"\212\001\n\010D" +
+      "ocument\022\022\n\nname_space\030\001 \002(\t\022\n\n\002id\030\002 \001(\003\022" +
+      "\020\n\010img_byte\030\003 \002(\014\022\030\n\010location\030\004 \002(\0132\006.Po" +
+      "int\022\021\n\tfile_name\030\005 \001(\t\022\021\n\tfile_type\030\006 \001(" +
+      "\t\022\014\n\004time\030\007 \001(\003\"+\n\013DocumentSet\022\034\n\tdocume" +
+      "nts\030\001 \003(\0132\t.Document\"*\n\014NameSpaceSet\022\032\n\006" +
+      "spaces\030\001 \003(\0132\n.NameSpace\"\214\004\n\006Header\022#\n\nr",
+      "outing_id\030\002 \002(\0162\017.Header.Routing\022\022\n\norig" +
+      "inator\030\003 \002(\t\022\013\n\003tag\030\004 \002(\t\022\014\n\004time\030\005 \001(\003\022" +
+      "\'\n\nreply_code\030\006 \001(\0162\023.Header.ReplyStatus" +
+      "\022\021\n\treply_msg\030\007 \001(\t\"\232\002\n\007Routing\022\n\n\006FINGE" +
+      "R\020\002\022\t\n\005STATS\020\003\022\t\n\005LOGIN\020\n\022\020\n\014NAMESPACEAD" +
+      "D\020\013\022\021\n\rNAMESPACELIST\020\014\022\023\n\017NAMESPACEUPDAT" +
+      "E\020\r\022\023\n\017NAMESPACEREMOVE\020\016\022\014\n\010LOGINJPA\020\017\022\023" +
+      "\n\017NAMESPACEADDJPA\020\020\022\024\n\020NAMESPACELISTJPA\020" +
+      "\021\022\026\n\022NAMESPACEUPDATEJPA\020\022\022\026\n\022NAMESPACERE" +
+      "MOVEJPA\020\023\022\n\n\006DOCADD\020\024\022\013\n\007DOCFIND\020\025\022\r\n\tDO",
+      "CUPDATE\020\026\022\r\n\tDOCREMOVE\020\027\"U\n\013ReplyStatus\022" +
+      "\013\n\007SUCCESS\020\001\022\013\n\007FAILURE\020\002\022\n\n\006NOAUTH\020\003\022\016\n" +
+      "\nMISSINGARG\020\004\022\020\n\014NOCONNECTION\020\005\"\257\001\n\007Payl" +
+      "oad\022\027\n\006finger\030\001 \001(\0132\007.Finger\022\026\n\003doc\030\002 \001(" +
+      "\0132\t.Document\022\031\n\005space\030\003 \001(\0132\n.NameSpace\022" +
+      "\031\n\005query\030\004 \001(\0132\n.QueryInfo\022\"\n\tqueryUser\030" +
+      "\005 \001(\0132\017.QueryNamespace\022\031\n\005login\030\006 \001(\0132\n." +
+      "LoginInfo\"x\n\014PayloadReply\022\027\n\004docs\030\001 \003(\0132" +
+      "\t.Document\022\032\n\006spaces\030\002 \003(\0132\n.NameSpace\022\030" +
+      "\n\005stats\030\003 \001(\0132\t.Document\022\031\n\006finger\030\004 \001(\013",
+      "2\t.Document\":\n\007Request\022\027\n\006header\030\001 \002(\0132\007" +
+      ".Header\022\026\n\004body\030\002 \002(\0132\010.Payload\"@\n\010Respo" +
+      "nse\022\027\n\006header\030\001 \002(\0132\007.Header\022\033\n\004body\030\002 \001" +
+      "(\0132\r.PayloadReply\",\n\tHeartbeat\022\016\n\006nodeId" +
+      "\030\001 \002(\t\022\017\n\007timeRef\030\002 \002(\003\"\225\001\n\007Network\022\016\n\006n" +
+      "odeId\030\001 \002(\t\022\037\n\006action\030\002 \002(\0162\017.Network.Ac" +
+      "tion\"Y\n\006Action\022\014\n\010NODEJOIN\020\001\022\r\n\tNODELEAV" +
+      "E\020\002\022\014\n\010NODEDEAD\020\003\022\007\n\003MAP\0207\022\014\n\010ANNOUNCE\0208" +
+      "\022\r\n\010SHUTDOWN\020\347\007\"?\n\nManagement\022\027\n\005graph\030\001" +
+      " \001(\0132\010.Network\022\030\n\004beat\030\002 \001(\0132\n.Heartbeat",
+      "B\007\n\003eyeH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -12721,7 +12803,7 @@ public final class Comm {
           internal_static_QueryNamespace_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_QueryNamespace_descriptor,
-              new java.lang.String[] { "UserId", "Name", "City", "ZipCode", "Password", },
+              new java.lang.String[] { "UserId", "Name", "City", "ZipCode", },
               eye.Comm.QueryNamespace.class,
               eye.Comm.QueryNamespace.Builder.class);
           internal_static_QueryInfo_descriptor =
@@ -12777,7 +12859,7 @@ public final class Comm {
           internal_static_Payload_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Payload_descriptor,
-              new java.lang.String[] { "Finger", "Doc", "Space", "Query", "QueryUser", },
+              new java.lang.String[] { "Finger", "Doc", "Space", "Query", "QueryUser", "Login", },
               eye.Comm.Payload.class,
               eye.Comm.Payload.Builder.class);
           internal_static_PayloadReply_descriptor =
