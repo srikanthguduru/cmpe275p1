@@ -42,15 +42,13 @@ public class JPAStorage {
 		return 	user;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") 
 	public List<User> findNameSpaces(String originator, User criteria) {
 		List<User> users = new ArrayList<User>();
 		EntityManager manager = getEntityManager();
 		try{
 			
 			StringBuffer select = null;
-			StringBuffer searchClauseBuffer = new StringBuffer();
-
 			int queryParamCount = 0;
 
 			String userId = criteria.getUserId();
@@ -58,39 +56,39 @@ public class JPAStorage {
 			String city = criteria.getCity();
 			String zipCode = criteria.getZipCode();
 
-			select = new StringBuffer("SELECT * FROM user_data WHERE ");
+			select = new StringBuffer("SELECT ud FROM " + User.class.getName() + " ud WHERE ");
 
 			if(userId != null)
 			{
 				if(queryParamCount > 0)
-					searchClauseBuffer.append(" OR ");
+					select.append(" OR ");
 
 				queryParamCount++;
-				select.append("user_id = '" + userId + "'");
+				select.append(" ud.userId = '" + userId + "'");
 			}
 			if(name != null)
 			{
 				if(queryParamCount > 0)
-					searchClauseBuffer.append(" OR ");
+					select.append(" OR ");
 
 				queryParamCount++;
-				select.append("name = '" + name + "'");
+				select.append(" ud.name = '" + name + "'");
 			}
 			if(city != null)
 			{
 				if(queryParamCount > 0)
-					searchClauseBuffer.append(" OR ");
+					select.append(" OR ");
 
 				queryParamCount++;
-				select.append("city = '" + city + "'");
+				select.append(" ud.city = '" + city + "'");
 			}
 			if(zipCode != null)
 			{
 				if(queryParamCount > 0)
-					searchClauseBuffer.append(" OR ");
+					select.append(" OR ");
 
 				queryParamCount++;
-				select.append("zip_code = '" + zipCode + "'");
+				select.append(" ud.zipCode = '" + zipCode + "'");
 			}
 			logger.debug("Select user query " + select.toString());
 			manager.getTransaction().begin();
@@ -108,7 +106,7 @@ public class JPAStorage {
 	}
 
 
-	public boolean removeNameSpace(String userId) {
+	public String removeNameSpace(String userId) {
 		EntityManager manager = getEntityManager();
 		try{
 			User user;
@@ -119,12 +117,12 @@ public class JPAStorage {
 		}
 		catch(Exception ex){
 			logger.error("Error occurred while deleting user " , ex);
-			return false;
+			return "Failed to delete user";
 		}
 		finally{
 			manager.close();
 		}
-		return true;
+		return "User deleted successfully";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,7 +134,7 @@ public class JPAStorage {
 		String uuid = null;
 		List<User> users = new ArrayList<User>();
 
-		String select = "SELECT * FROM userdata WHERE user_id :userId AND password = :pswd";
+		String select = "SELECT ud FROM " + User.class.getName() + " ud WHERE ud.userId = :userId AND ud.password = :pswd";
 
 		try {
 			manager.getTransaction().begin();

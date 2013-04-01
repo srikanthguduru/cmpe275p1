@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.postgis.PGgeometry;
+import org.postgresql.geometric.PGpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,13 +122,12 @@ public class DatabaseStorage implements Storage {
 	}
 
 	@Override
-	public List<NameSpace> findNameSpaces(String namespace, ManipulateNS criteria) {
+	public List<ManipulateNS> findNameSpaces(String namespace, ManipulateNS criteria) {
 		if (criteria == null)
 			return null;
 
 		StringBuffer select = null;
-		StringBuffer searchClauseBuffer = new StringBuffer();
-		List<NameSpace> users = new ArrayList<NameSpace>();
+		List<ManipulateNS> users = new ArrayList<ManipulateNS>();
 		int queryParamCount = 0;
 
 		String userId = criteria.getUserId();
@@ -136,39 +135,39 @@ public class DatabaseStorage implements Storage {
 		String city = criteria.getCity();
 		String zipCode = criteria.getZipCode();
 
-		select = new StringBuffer("SELECT * FROM " + schema + ".user_data WHERE ");
+		select = new StringBuffer("SELECT * FROM " + schema + ".userdata WHERE ");
 
 		if(userId != null)
 		{
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			select.append("user_id = '" + userId + "'");
+			select.append(" user_id = '" + userId + "'");
 		}
 		if(name != null)
 		{
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			select.append("name = '" + name + "'");
+			select.append(" name = '" + name + "'");
 		}
 		if(city != null)
 		{
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			select.append("city = '" + city + "'");
+			select.append(" city = '" + city + "'");
 		}
 		if(zipCode != null)
 		{
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			select.append("zip_code = '" + zipCode + "'");
+			select.append(" zip_code = '" + zipCode + "'");
 		}
 
 		Connection conn = null;
@@ -182,10 +181,10 @@ public class DatabaseStorage implements Storage {
 
 			ResultSet rs = stmt.executeQuery(select.toString());
 
-			NameSpace user;
+			ManipulateNS user;
 			while(rs.next()){
 
-				user = NameSpace.newBuilder()
+				user = ManipulateNS.newBuilder()
 						.setUserId(rs.getString("user_id"))
 						.setName(rs.getString("name"))
 						.setCity(rs.getString("city"))
@@ -262,7 +261,7 @@ public class DatabaseStorage implements Storage {
 	public String validateLogin(LoginInfo loginInfo){
 		if (loginInfo == null)
 			return null;
-		
+
 		String uuid = null;
 
 		String select = "SELECT * FROM " + schema + ".userdata WHERE user_id = '" + loginInfo.getUserId()
@@ -281,7 +280,7 @@ public class DatabaseStorage implements Storage {
 
 			if(rs != null)
 				uuid = UUID.randomUUID().toString();
-			
+
 			conn.commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -305,7 +304,13 @@ public class DatabaseStorage implements Storage {
 		return uuid;
 	}
 	@Override
-	public boolean removeNameSpace(String userId) {
+	public String removeNameSpace(String userId) {
+		
+		if(userId == null)
+		{
+			return "No user id sent to delete the user";
+		}
+				
 		String delete = "DELETE FROM  " + schema + ".userdata WHERE user_id = '" + userId + "';";
 
 		Connection conn = null;
@@ -317,8 +322,11 @@ public class DatabaseStorage implements Storage {
 			Statement stmt = conn.createStatement();
 			logger.debug("Deleting user - " + userId);
 
-			stmt.executeUpdate(delete);
+			int deleted = stmt.executeUpdate(delete);
 			conn.commit();
+			
+			if(deleted <= 0)
+				return "No user found to be deleted";
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -329,7 +337,7 @@ public class DatabaseStorage implements Storage {
 			}
 
 			// indicate failure
-			return false;
+			return "Failed to delete user";
 		} finally {
 			if (conn != null) {
 				try {
@@ -340,7 +348,7 @@ public class DatabaseStorage implements Storage {
 			}
 		}
 
-		return true;
+		return "User deleted successfully";
 	}
 
 	@Override
@@ -353,10 +361,13 @@ public class DatabaseStorage implements Storage {
 
 		Point location = doc.getLocation();
 
-		String insert = "INSERT INTO " + schema + ".image ( file_name, geom, data, user_id, file_type, img_time) VALUES ('" 
-				+ doc.getFileName() + "', 'POINT (" + location.getX() + " " + location.getY() + ")', '"
-				+ doc.getImgByte() + "','" + namespace  + "', '" + doc.getFileName() + "','" + doc.getTime() + "');";
+		java.sql.Date date = new java.sql.Date(doc.getTime());
 
+		String insert = "INSERT INTO " + schema + ".image ( file_name, geom, data, user_id, file_type, img_time) VALUES ('" 
+				+ doc.getFileName() + "', POINT (" + location.getX() + ", " + location.getY() + "), '"
+				+ doc.getImgByte() + "','" + namespace  + "', '" + doc.getFileName() + "','" + date + "');";
+
+		logger.info("INSERT STATEMENT : " + insert);
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
@@ -364,10 +375,13 @@ public class DatabaseStorage implements Storage {
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
-			logger.debug("Creating image - " +  doc.getId());
+			logger.info("Creating image - " +  doc.getId());
 
-			stmt.executeUpdate(insert);
+			int added = stmt.executeUpdate(insert);
+				
 			conn.commit();
+			if(added > 0)
+				return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on creating image " + doc.getId(), ex);
@@ -388,12 +402,22 @@ public class DatabaseStorage implements Storage {
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
-	public boolean removeDocument(String namespace, long docId) {
-		String delete = "DELETE FROM  " + schema + ".image WHERE id = " + docId + ";";
+	public String removeDocument(String namespace, QueryDocument doc) {
+		if(doc == null)
+		{
+			return "No image details sent for the image to be deleted";
+		}
+		else if (doc.getName() == null || doc.getUserId() == null)
+		{
+			return "Image name and user should be given in order to delete the image";
+		}
+
+		String delete = "DELETE FROM  " + schema + ".image WHERE user_id = '" + doc.getUserId() 
+				+ "' AND file_name = '" + doc.getName() + "';";
 
 		Connection conn = null;
 		try {
@@ -402,21 +426,23 @@ public class DatabaseStorage implements Storage {
 			conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
 			Statement stmt = conn.createStatement();
-			logger.debug("Deleting image - " + docId);
+			logger.info("Deleting image ");
 
-			stmt.executeUpdate(delete);
-			conn.commit();
+			int deleted = stmt.executeUpdate(delete);
+
+			conn.commit();			
+
+			if(deleted <= 0)
+				return "No images found to be deleted";
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("failed/exception on deleting image " + docId, ex);
+			logger.error("failed/exception on deleting image ", ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
 			}
-
-			// indicate failure
-			return false;
+			return "Failed to delete image";
 		} finally {
 			if (conn != null) {
 				try {
@@ -427,7 +453,7 @@ public class DatabaseStorage implements Storage {
 			}
 		}
 
-		return true;
+		return "Image Deleted successfully";
 	}
 
 	@Override
@@ -440,8 +466,8 @@ public class DatabaseStorage implements Storage {
 
 		Point location = doc.getLocation();
 
-		String update = "UPDATE " + schema + ".image SET file_name = '" + doc.getFileName() + "', geom = 'POINT (" + location.getX() + " "
-				+ location.getY() + ")', data = '" + doc.getImgByte() + "', file_type = '" + doc.getFileType() + "' WHERE id = " + doc.getId();
+		String update = "UPDATE " + schema + ".image SET file_name = '" + doc.getFileName() + "', geom = POINT (" + location.getX() + ", "
+				+ location.getY() + "), data = '" + doc.getImgByte() + "', file_type = '" + doc.getFileType() + "' WHERE id = " + doc.getId();
 
 		Connection conn = null;
 		try {
@@ -452,8 +478,11 @@ public class DatabaseStorage implements Storage {
 			Statement stmt = conn.createStatement();
 			logger.debug("Updating image - " +  doc.getId());
 
-			stmt.executeUpdate(update);
+			int updated = stmt.executeUpdate(update);
 			conn.commit();
+			
+			if (updated > 0)
+				return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("failed/exception on updating image " + doc.getId(), ex);
@@ -474,51 +503,54 @@ public class DatabaseStorage implements Storage {
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
 	public List<Document> findDocuments(String namespace, QueryDocument criteria) {
-		if (criteria == null || criteria.getLocation() == null)
+		if (criteria == null)
 			return null;
 
 		StringBuffer select = null;
-		StringBuffer searchClauseBuffer = new StringBuffer();
 		int queryParamCount = 0;
 
 		String userId = criteria.getUserId();
 		String fileName = criteria.getName();
 		long time = criteria.getTime();
 
+
 		List<Document> images = new ArrayList<Document>();
 		select = new StringBuffer("SELECT * FROM " + schema + ".image WHERE " );
 
-		if(userId != null)
+		if(userId != null && userId.length() > 0)
 		{
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
 			select.append("user_id = '" + userId + "'");
 		}
-		if(fileName != null){
+		if(fileName != null && fileName.length() > 0){
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			select.append(", file_name = '" + criteria.getName() + "'");
+			select.append(" file_name = '" + fileName + "'");
 		}			
 		if(time != -1){
 			if(queryParamCount > 0)
-				searchClauseBuffer.append(" OR ");
+				select.append(" OR ");
 
 			queryParamCount++;
-			java.sql.Date imgTime = new Date(criteria.getTime());
-			select.append(", img_time = '" + imgTime + "'");
+			java.sql.Date imgTime = new Date(time);
+			select.append(" img_time = '" + imgTime + "'");
 		}
-		select.append(" AND geom = 'POINT(" + criteria.getLocation().getX() + " " + criteria.getLocation().getY() 
-				+ ")' ;");
+		if (criteria.getLocation() != null){
+			select.append(" OR geom ~= POINT(" + criteria.getLocation().getX() + ", " + criteria.getLocation().getY() 
+					+ ") ;");
+		}
 
+		logger.info("find doc query : " + select.toString());
 		Connection conn = null;
 		try {
 			conn = cpool.getConnection();
@@ -534,15 +566,22 @@ public class DatabaseStorage implements Storage {
 			while(rs.next()){
 
 				ByteString bytes = ByteString.copyFrom(rs.getBytes("data"));
-
-				PGgeometry geom = (PGgeometry)rs.getObject("geom"); 
 				double x = 0, y = 0;
+				/*
+				PGgeometry geom = (PGgeometry)rs.getObject("geom");
+
 				if(geom.getGeometry().getPoint(0) != null)
 				{
 					x = geom.getGeometry().getPoint(0).getX();
 					y = geom.getGeometry().getPoint(0).getY();
-				}
+				}*/
 
+				PGpoint geom = (PGpoint)rs.getObject("geom");
+				if(geom != null)
+				{
+					x = geom.x;
+					y = geom.y;
+				}
 				Point point = Point.newBuilder().setX(x)
 						.setY(y).build();
 				java.sql.Date date = rs.getDate("img_time");
@@ -552,6 +591,7 @@ public class DatabaseStorage implements Storage {
 					timeFromDB = date.getTime();
 				}
 				image = Document.newBuilder()
+						.setNameSpace(namespace)
 						.setId(rs.getLong("id"))
 						.setFileName(rs.getString("file_name"))
 						.setFileType(rs.getString("file_type"))
@@ -560,6 +600,11 @@ public class DatabaseStorage implements Storage {
 						.setTime(timeFromDB).build();
 
 				images.add(image);
+			}
+
+			if(images.size() < 0)
+			{
+				return null;
 			}
 			conn.commit();
 

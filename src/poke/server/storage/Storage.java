@@ -32,15 +32,15 @@ public interface Storage {
 
 	NameSpace getNameSpaceInfo(String userId);
 
-	List<NameSpace> findNameSpaces(String user_id, ManipulateNS criteria);
+	List<ManipulateNS> findNameSpaces(String user_id, ManipulateNS criteria);
 
 	NameSpace createNameSpace(NameSpace space);
 
-	boolean removeNameSpace(String userId);
+	String removeNameSpace(String userId);
 
 	boolean addDocument(String user_id, Document doc);
 
-	boolean removeDocument(String user_id, long docId);
+	String removeDocument(String user_id, QueryDocument doc);
 
 	boolean updateDocument(String user_id, Document doc);
 

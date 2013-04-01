@@ -42,7 +42,6 @@ public class DocumentResource implements Resource {
 		Storage storage = StorageFactory.getInstance().getStorageInstance();
 		if(routingNumber == Routing.DOCADD.getNumber())
 		{
-			System.out.println("Routinggg");
 			boolean added = storage.addDocument(request.getHeader().getTag(), request.getBody().getDoc());
 			if(!added)
 			{
@@ -74,10 +73,10 @@ public class DocumentResource implements Resource {
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
 						ReplyStatus.SUCCESS, "Images Found"));
 				for(int index = 0; index < documents.size(); index ++)
-					payload.setDocs(index, documents.get(index));
+					payload.addDocs(index, documents.get(index));
 				r.setBody(payload);
 			}
-			r.build();
+			reply = r.build();
 		}
 		else if(routingNumber == Routing.DOCUPDATE.getNumber())
 		{
@@ -97,16 +96,16 @@ public class DocumentResource implements Resource {
 		}
 		else if(routingNumber == Routing.DOCREMOVE.getNumber())
 		{
-			boolean removed = storage.removeDocument(request.getHeader().getTag(), request.getBody().getDoc().getId());
-			if(!removed)
+			String removed = storage.removeDocument(request.getHeader().getTag(), request.getBody().getQuery());
+			if(removed.equals("Image Deleted successfully"))
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.FAILURE, "Error deleting image"));
+						ReplyStatus.SUCCESS, removed));
 			}
 			else
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.SUCCESS, "Image deleted successfully"));
+						ReplyStatus.FAILURE, removed));
 			}
 
 			reply = r.build();

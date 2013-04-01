@@ -71,8 +71,8 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeDocument(String userId, long docId) {
-		if (userId == null)
+	public String removeDocument(String userId, QueryDocument doc) {
+		/*if (userId == null)
 			userId = sNoName;
 
 		boolean rtn = false;
@@ -82,7 +82,8 @@ public class InMemoryStorage implements Storage {
 			dns.remove(docId);
 		}	
 
-		return rtn;
+		return rtn;*/
+		return null;
 	}
 
 	@Override
@@ -109,7 +110,7 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public List<eye.Comm.NameSpace> findNameSpaces(String userId, ManipulateNS criteria) {
+	public List<eye.Comm.ManipulateNS> findNameSpaces(String userId, ManipulateNS criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -131,15 +132,16 @@ public class InMemoryStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeNameSpace(String user_id) {
-		DataNameSpace dns = data.remove(user_id);
+	public String removeNameSpace(String user_id) {
+		/*DataNameSpace dns = data.remove(user_id);
 		try {
 			return (dns != null);
 		} finally {
 			if (dns != null)
 				dns.release();
 			dns = null;
-		}
+		}*/
+		return null;
 	}
 
 	private NameSpace lookupByID(String user_id) {

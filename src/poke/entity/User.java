@@ -18,7 +18,7 @@ public class User {
 
 	@Id
 	@Basic(optional = false)
-	@Column(name = "id")
+	@Column(name = "user_id")
 	public String getUserId() {
 		return userId;
 	}

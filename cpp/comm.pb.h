@@ -1569,6 +1569,18 @@ class PayloadReply : public ::google::protobuf::Message {
   inline ::std::string* mutable_uuid();
   inline ::std::string* release_uuid();
   
+  // repeated .ManipulateNS users = 6;
+  inline int users_size() const;
+  inline void clear_users();
+  static const int kUsersFieldNumber = 6;
+  inline const ::ManipulateNS& users(int index) const;
+  inline ::ManipulateNS* mutable_users(int index);
+  inline ::ManipulateNS* add_users();
+  inline const ::google::protobuf::RepeatedPtrField< ::ManipulateNS >&
+      users() const;
+  inline ::google::protobuf::RepeatedPtrField< ::ManipulateNS >*
+      mutable_users();
+  
   // @@protoc_insertion_point(class_scope:PayloadReply)
  private:
   inline void set_has_stats();
@@ -1585,9 +1597,10 @@ class PayloadReply : public ::google::protobuf::Message {
   ::Document* stats_;
   ::Document* finger_;
   ::std::string* uuid_;
+  ::google::protobuf::RepeatedPtrField< ::ManipulateNS > users_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_comm_2eproto();
   friend void protobuf_AssignDesc_comm_2eproto();
@@ -4101,6 +4114,31 @@ inline ::std::string* PayloadReply::release_uuid() {
     uuid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// repeated .ManipulateNS users = 6;
+inline int PayloadReply::users_size() const {
+  return users_.size();
+}
+inline void PayloadReply::clear_users() {
+  users_.Clear();
+}
+inline const ::ManipulateNS& PayloadReply::users(int index) const {
+  return users_.Get(index);
+}
+inline ::ManipulateNS* PayloadReply::mutable_users(int index) {
+  return users_.Mutable(index);
+}
+inline ::ManipulateNS* PayloadReply::add_users() {
+  return users_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::ManipulateNS >&
+PayloadReply::users() const {
+  return users_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::ManipulateNS >*
+PayloadReply::mutable_users() {
+  return &users_;
 }
 
 // -------------------------------------------------------------------

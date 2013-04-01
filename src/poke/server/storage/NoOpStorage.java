@@ -33,9 +33,9 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeDocument(String namespace, long docId) {
+	public String removeDocument(String namespace, QueryDocument doc) {
 		// TODO Auto-generated method stub
-		return true;
+		return null;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public List<NameSpace> findNameSpaces(String user_id, ManipulateNS criteria) {
+	public List<ManipulateNS> findNameSpaces(String user_id, ManipulateNS criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -69,9 +69,9 @@ public class NoOpStorage implements Storage {
 	}
 
 	@Override
-	public boolean removeNameSpace(String spaceId) {
+	public String removeNameSpace(String spaceId) {
 		// TODO Auto-generated method stub
-		return true;
+		return null;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package poke.resources;
 
 import java.util.List;
 
+import org.hibernate.hql.ast.tree.QueryNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class NamespaceJPAResource implements Resource {
 
 		JPAStorage jpaStorage = StorageFactory.getInstance().getJPAStorageInstance();
 
-		if(routingNumber == Routing.NAMESPACEADD.getNumber())
+		if(routingNumber == Routing.NAMESPACEADDJPA.getNumber())
 		{
 			User user = new User();
 			NameSpace space = request.getBody().getSpace();
@@ -67,7 +68,7 @@ public class NamespaceJPAResource implements Resource {
 
 			reply = r.build();
 		}
-		else if(routingNumber == Routing.NAMESPACEFIND.getNumber()){
+		else if(routingNumber == Routing.NAMESPACEFINDJPA.getNumber()){
 
 			User user = new User();
 			ManipulateNS queryUser = request.getBody().getQueryUser();
@@ -86,7 +87,7 @@ public class NamespaceJPAResource implements Resource {
 			user.setZipCode(queryUser.getZipCode());
 
 			List<User> users = jpaStorage.findNameSpaces(request.getHeader().getTag(), user);
-			NameSpace namespace = null;
+			ManipulateNS namespace = null;
 
 			if(users == null )
 			{
@@ -103,34 +104,34 @@ public class NamespaceJPAResource implements Resource {
 						ReplyStatus.SUCCESS, "Users Found"));
 				for(int index = 0; index < users.size(); index ++)
 				{					
-					namespace = NameSpace.newBuilder()
+					namespace = ManipulateNS.newBuilder()
 							.setUserId(users.get(index).getUserId())
 							.setName(users.get(index).getName())
 							.setCity(users.get(index).getCity())
 							.setZipCode(users.get(index).getZipCode()).build();
-					payload.addSpaces(index, namespace);
+					payload.addUsers(index, namespace);
 				}
 				r.setBody(payload);
 			}
-			r.build();
+			reply = r.build();
 		}
-		else if(routingNumber == Routing.NAMESPACEREMOVE.getNumber())
+		else if(routingNumber == Routing.NAMESPACEREMOVEJPA.getNumber())
 		{
-			boolean removed = jpaStorage.removeNameSpace(request.getHeader().getTag());
-			if(!removed)
+			String removed = jpaStorage.removeNameSpace(request.getHeader().getTag());
+			if(removed.equals("User deleted successfully"))
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.FAILURE, "Error deleting user"));
+						ReplyStatus.SUCCESS, removed));
 			}
 			else
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.SUCCESS, "User deleted successfully"));
+						ReplyStatus.FAILURE, removed));
 			}
 
 			reply = r.build();
 		}
-		else if(routingNumber == Routing.LOGIN.getNumber())
+		else if(routingNumber == Routing.LOGINJPA.getNumber())
 		{
 			User user = new User();
 			LoginInfo loginInfo = request.getBody().getLogin();

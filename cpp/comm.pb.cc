@@ -262,12 +262,13 @@ void protobuf_AssignDesc_comm_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Payload));
   PayloadReply_descriptor_ = file->message_type(10);
-  static const int PayloadReply_offsets_[5] = {
+  static const int PayloadReply_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, docs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, spaces_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, stats_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, finger_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, uuid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PayloadReply, users_),
   };
   PayloadReply_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -484,20 +485,21 @@ void protobuf_AddDesc_comm_2eproto() {
     "\0132\t.Document\022\031\n\005space\030\003 \001(\0132\n.NameSpace\022"
     "\035\n\005query\030\004 \001(\0132\016.QueryDocument\022 \n\tqueryU"
     "ser\030\005 \001(\0132\r.ManipulateNS\022\031\n\005login\030\006 \001(\0132"
-    "\n.LoginInfo\"\206\001\n\014PayloadReply\022\027\n\004docs\030\001 \003"
+    "\n.LoginInfo\"\244\001\n\014PayloadReply\022\027\n\004docs\030\001 \003"
     "(\0132\t.Document\022\032\n\006spaces\030\002 \003(\0132\n.NameSpac"
     "e\022\030\n\005stats\030\003 \001(\0132\t.Document\022\031\n\006finger\030\004 "
-    "\001(\0132\t.Document\022\014\n\004uuid\030\005 \001(\t\":\n\007Request\022"
-    "\027\n\006header\030\001 \002(\0132\007.Header\022\026\n\004body\030\002 \002(\0132\010"
-    ".Payload\"@\n\010Response\022\027\n\006header\030\001 \002(\0132\007.H"
-    "eader\022\033\n\004body\030\002 \001(\0132\r.PayloadReply\",\n\tHe"
-    "artbeat\022\016\n\006nodeId\030\001 \002(\t\022\017\n\007timeRef\030\002 \002(\003"
-    "\"\225\001\n\007Network\022\016\n\006nodeId\030\001 \002(\t\022\037\n\006action\030\002"
-    " \002(\0162\017.Network.Action\"Y\n\006Action\022\014\n\010NODEJ"
-    "OIN\020\001\022\r\n\tNODELEAVE\020\002\022\014\n\010NODEDEAD\020\003\022\007\n\003MA"
-    "P\0207\022\014\n\010ANNOUNCE\0208\022\r\n\010SHUTDOWN\020\347\007\"\?\n\nMana"
-    "gement\022\027\n\005graph\030\001 \001(\0132\010.Network\022\030\n\004beat\030"
-    "\002 \001(\0132\n.HeartbeatB\007\n\003eyeH\001", 1866);
+    "\001(\0132\t.Document\022\014\n\004uuid\030\005 \001(\t\022\034\n\005users\030\006 "
+    "\003(\0132\r.ManipulateNS\":\n\007Request\022\027\n\006header\030"
+    "\001 \002(\0132\007.Header\022\026\n\004body\030\002 \002(\0132\010.Payload\"@"
+    "\n\010Response\022\027\n\006header\030\001 \002(\0132\007.Header\022\033\n\004b"
+    "ody\030\002 \001(\0132\r.PayloadReply\",\n\tHeartbeat\022\016\n"
+    "\006nodeId\030\001 \002(\t\022\017\n\007timeRef\030\002 \002(\003\"\225\001\n\007Netwo"
+    "rk\022\016\n\006nodeId\030\001 \002(\t\022\037\n\006action\030\002 \002(\0162\017.Net"
+    "work.Action\"Y\n\006Action\022\014\n\010NODEJOIN\020\001\022\r\n\tN"
+    "ODELEAVE\020\002\022\014\n\010NODEDEAD\020\003\022\007\n\003MAP\0207\022\014\n\010ANN"
+    "OUNCE\0208\022\r\n\010SHUTDOWN\020\347\007\"\?\n\nManagement\022\027\n\005"
+    "graph\030\001 \001(\0132\010.Network\022\030\n\004beat\030\002 \001(\0132\n.He"
+    "artbeatB\007\n\003eyeH\001", 1896);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "comm.proto", &protobuf_RegisterTypes);
   Finger::default_instance_ = new Finger();
@@ -4421,6 +4423,7 @@ const int PayloadReply::kSpacesFieldNumber;
 const int PayloadReply::kStatsFieldNumber;
 const int PayloadReply::kFingerFieldNumber;
 const int PayloadReply::kUuidFieldNumber;
+const int PayloadReply::kUsersFieldNumber;
 #endif  // !_MSC_VER
 
 PayloadReply::PayloadReply()
@@ -4497,6 +4500,7 @@ void PayloadReply::Clear() {
   }
   docs_.Clear();
   spaces_.Clear();
+  users_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -4578,6 +4582,21 @@ bool PayloadReply::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(50)) goto parse_users;
+        break;
+      }
+      
+      // repeated .ManipulateNS users = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_users:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_users()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_users;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -4633,6 +4652,12 @@ void PayloadReply::SerializeWithCachedSizes(
       5, this->uuid(), output);
   }
   
+  // repeated .ManipulateNS users = 6;
+  for (int i = 0; i < this->users_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, this->users(i), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -4677,6 +4702,13 @@ void PayloadReply::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         5, this->uuid(), target);
+  }
+  
+  // repeated .ManipulateNS users = 6;
+  for (int i = 0; i < this->users_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        6, this->users(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4728,6 +4760,14 @@ int PayloadReply::ByteSize() const {
         this->spaces(i));
   }
   
+  // repeated .ManipulateNS users = 6;
+  total_size += 1 * this->users_size();
+  for (int i = 0; i < this->users_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->users(i));
+  }
+  
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -4755,6 +4795,7 @@ void PayloadReply::MergeFrom(const PayloadReply& from) {
   GOOGLE_CHECK_NE(&from, this);
   docs_.MergeFrom(from.docs_);
   spaces_.MergeFrom(from.spaces_);
+  users_.MergeFrom(from.users_);
   if (from._has_bits_[2 / 32] & (0xffu << (2 % 32))) {
     if (from.has_stats()) {
       mutable_stats()->::Document::MergeFrom(from.stats());
@@ -4805,6 +4846,7 @@ void PayloadReply::Swap(PayloadReply* other) {
     std::swap(stats_, other->stats_);
     std::swap(finger_, other->finger_);
     std::swap(uuid_, other->uuid_);
+    users_.Swap(&other->users_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

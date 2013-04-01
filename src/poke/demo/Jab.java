@@ -51,39 +51,52 @@ public class Jab {
 
 	public void run() {
 		ClientConnection cc = ClientConnection.initConnection(server, port);
+
 		switch (requestType) {
-			case 0: // Add Poke
-				cc.sendRequest(buildPoke(userId, count));
-				break;
-			case 1: // Add NameSpace
-				cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
-				break;
-			case 2: // Login
-				cc.sendRequest(login(Routing.LOGIN));
-				break;
-			case 3: // Add Document
-				cc.sendRequest(createDocRequest(Routing.DOCADD));
-				break;
-			case 4: // Update Document
-				cc.sendRequest(createDocRequest(Routing.DOCUPDATE));
-				break;
-			case 5: // Find Document
-				cc.sendRequest(findDoc(Routing.DOCFIND));
-				break;
-			case 6: // Remove Doc --> Change to NameSpace Find
-				cc.sendRequest(findDoc(Routing.DOCREMOVE));
-				break;
-			case 7: // Find  User
-				cc.sendRequest(findNameSpace(Routing.NAMESPACEFIND));
-				break;
-			case 8: // Remove User
-				cc.sendRequest(removeNameSpace(Routing.NAMESPACEREMOVE));
-				break;
-			default:
-				break;
+		case 0: // Add Poke
+			cc.sendRequest(buildPoke(userId, count));
+			break;
+		case 1: // Add NameSpace
+			cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
+			break;
+		case 2: // Login
+			cc.sendRequest(login(Routing.LOGIN));
+			break;
+		case 3: // Add Document
+			cc.sendRequest(createDocRequest(Routing.DOCADD));
+			break;
+		case 4: // Update Document
+			cc.sendRequest(createDocRequest(Routing.DOCUPDATE));
+			break;
+		case 5: // Find Document
+			cc.sendRequest(findDoc(Routing.DOCFIND));
+			break;
+		case 6: // Remove Doc --> Change to NameSpace Find
+			cc.sendRequest(findDoc(Routing.DOCREMOVE));
+			break;
+		case 7: // Find  User
+			cc.sendRequest(findNameSpace(Routing.NAMESPACEFIND));
+			break;
+		case 8: // Remove User
+			cc.sendRequest(removeNameSpace(Routing.NAMESPACEREMOVE));
+			break;
+		case 9: // Add NameSpace JPA
+			cc.sendRequest(createNameSpace(Routing.NAMESPACEADDJPA));
+			break;
+		case 10: // Login JPA
+			cc.sendRequest(login(Routing.LOGINJPA));
+			break;
+		case 11: // Find  User JPA
+			cc.sendRequest(findNameSpace(Routing.NAMESPACEFINDJPA));
+			break;
+		case 12: // Remove User JPA
+			cc.sendRequest(removeNameSpace(Routing.NAMESPACEREMOVEJPA));
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	private Request buildPoke(String tag, int num) {
 		// data to send
 		Finger.Builder f = eye.Comm.Finger.newBuilder();
@@ -128,17 +141,25 @@ public class Jab {
 		r.setHeader(h.build());
 		return r.build();
 	}
-		
+
 	private Request createDocRequest(Routing msgRoute){
 		Document.Builder doc = Document.newBuilder();
+		
+		if(msgRoute == Routing.DOCUPDATE){
+			doc.setId(3);
+			doc.setFileName("scene");
+		}
+		else{
 		doc.setId(new Random().nextLong());
-		doc.setNameSpace(userId);
 		doc.setFileName("My Image");
+		}
+		doc.setNameSpace(userId);
 		doc.setFileType("jpg");
 		eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(35).setY(-122);
 		doc.setLocation(pnt);
 		doc.setTime(System.currentTimeMillis());
 		
+
 		File image = new File("resources/DSC_1832.jpg");
 		byte [] imgAsBytes = new byte[(int)image.length()];
 		try {
@@ -167,14 +188,16 @@ public class Jab {
 
 	private Request login(Routing msgRoute) {
 		// data to send
-		LoginInfo.Builder l = LoginInfo.newBuilder();
-		l.setUserId(userId);
-		l.setPassword("cmpe275");
-		
+		LoginInfo l = LoginInfo.newBuilder()
+				.setUserId(userId)
+				.setPassword("cmpe275")
+				.build();
+
+
 		// payload containing data
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
-		p.setLogin(l.build());
+		p.setLogin(l);
 		r.setBody(p.build());
 
 		// header with routing info
@@ -187,18 +210,22 @@ public class Jab {
 	}
 
 	private Request findDoc(Routing msgRoute) {
-		QueryDocument.Builder qd = QueryDocument.newBuilder();
+		QueryDocument qd;
 		if(msgRoute == Routing.DOCFIND) {
-			eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(34.6).setY(-121.5);
-			qd.setLocation(pnt);
+			eye.Comm.Point pnt = eye.Comm.Point.newBuilder().setX(34.6).setY(-121.5).build();
+			qd =	QueryDocument.newBuilder().setLocation(pnt)
+					.setUserId(userId)
+					.setTime(-1L)
+					.build();
 		} else {
-			qd.setName(userId);
+			qd =	QueryDocument.newBuilder().setUserId(userId)
+					.setName("My Image").build();
 		}
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
+		
+		p.setQuery(qd);
 		r.setBody(p.build());
-		p.setQuery(qd.build());
-			
 
 		// header with routing info
 		eye.Comm.Header.Builder h = Header.newBuilder();
@@ -212,7 +239,7 @@ public class Jab {
 	private Request findNameSpace(Routing msgRoute) {
 		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
 		qd.setUserId(userId);
-		
+
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
 		p.setQueryUser(qd.build());
@@ -225,13 +252,13 @@ public class Jab {
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
 		return r.build();
-		
+
 	}
-	
+
 	private Request removeNameSpace(Routing msgRoute) {
 		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
 		qd.setUserId(userId);
-		
+
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
 		p.setQueryUser(qd.build());
@@ -244,15 +271,16 @@ public class Jab {
 		h.setRoutingId(msgRoute);
 		r.setHeader(h.build());
 		return r.build();
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		try {
 			if(args.length != 4) {
 				System.out.println("Usage jab <User_Id> <Server> <Port> <RequestType>");
 				System.out.println("Request Type - [0 - Poke, 1 - UserAdd, 2 - Login, 3 - ImageUpload, 4 - Update Image ");
 				System.out.println("Request Type - [5 - Find Image, 6 - Remove Image, 7 - Find User, 8 - Remove User ]");
+				System.out.println("Request Type - [9 - UserAdd-JPA, 10 - Login-JPA, 11 - Find User-JPA, 12 - Remove User-JPA ");
 				return;
 			}
 			System.out.println("UserID: " + args[0] + ", Server: " + args[1] + ", Port: " + args[2] + ", Request: " + args[3]);

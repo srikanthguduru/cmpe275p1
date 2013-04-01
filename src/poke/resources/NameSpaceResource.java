@@ -26,6 +26,7 @@ import poke.server.storage.Storage;
 import poke.server.storage.StorageFactory;
 import eye.Comm.Header.ReplyStatus;
 import eye.Comm.Header.Routing;
+import eye.Comm.ManipulateNS;
 import eye.Comm.NameSpace;
 import eye.Comm.PayloadReply;
 import eye.Comm.Request;
@@ -64,7 +65,7 @@ public class NameSpaceResource implements Resource {
 			reply = r.build();
 		}
 		else if(routingNumber == Routing.NAMESPACEFIND.getNumber()){
-			List<NameSpace> namespaces = storage.findNameSpaces(request.getHeader().getTag(), request.getBody().getQueryUser());
+			List<ManipulateNS> namespaces = storage.findNameSpaces(request.getHeader().getTag(), request.getBody().getQueryUser());
 
 			if(namespaces == null )
 			{
@@ -80,23 +81,23 @@ public class NameSpaceResource implements Resource {
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
 						ReplyStatus.SUCCESS, "Users Found"));
 				for(int index = 0; index < namespaces.size(); index ++)
-					payload.addSpaces(index, namespaces.get(index));
+					payload.addUsers(index, namespaces.get(index));
 				r.setBody(payload);
 			}
-			r.build();
+			reply = r.build();
 		}
 		else if(routingNumber == Routing.NAMESPACEREMOVE.getNumber())
 		{
-			boolean removed = storage.removeNameSpace(request.getHeader().getTag());
-			if(!removed)
+			String removed = storage.removeNameSpace(request.getHeader().getTag());
+			if(removed.equals("User deleted successfully"))
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.FAILURE, "Error deleting user"));
+						ReplyStatus.SUCCESS, removed));
 			}
 			else
 			{
 				r.setHeader(ResourceUtil.buildHeaderFrom(request.getHeader(),
-						ReplyStatus.SUCCESS, "User deleted successfully"));
+						ReplyStatus.FAILURE, removed));
 			}
 
 			reply = r.build();
