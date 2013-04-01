@@ -50,7 +50,6 @@ public class MonitorHandler extends SimpleChannelUpstreamHandler {
 	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
 		if (channel.isConnected()) {
 			// chose Channel so that we can re-try
-			HeartMonitor.getInstance().closeChannel(channel);
 			channel.write(ChannelBuffers.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
 		}
 	}
@@ -72,7 +71,6 @@ public class MonitorHandler extends SimpleChannelUpstreamHandler {
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
 		logger.error("exception: " + e.getCause(), e);
 		// chose Channel so that we can re-try
-		HeartMonitor.getInstance().closeChannel(e.getChannel());
 		e.getChannel().close();
 	}
 }

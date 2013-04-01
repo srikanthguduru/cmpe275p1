@@ -2,7 +2,6 @@ package poke.monitor;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -82,19 +81,19 @@ public class HeartMonitor extends Thread {
 		return false;
 	}
 	
-	protected void closeChannel(Channel channel) {
-		if(channels.size() > 0) {
-			Iterator<String> itr = channels.keySet().iterator();
-			while(itr.hasNext()) {
-				String serverId = itr.next();
-				if(channels.get(serverId).equals(channel)) {
-					logger.info("**********closing channel for nodeId " + serverId);
-					channelFutures.remove(serverId); 
-					channels.remove(serverId);
-				}
-			}
-		}
-	}
+//	protected void closeChannel(Channel channel) {
+//		if(channels.size() > 0) {
+//			Iterator<String> itr = channels.keySet().iterator();
+//			while(itr.hasNext()) {
+//				String serverId = itr.next();
+//				if(channels.get(serverId).equals(channel)) {
+//					logger.info("**********closing channel for nodeId " + serverId);
+//					channelFutures.remove(serverId); 
+//					channels.remove(serverId);
+//				}
+//			}
+//		}
+//	}
 	
 	protected HeartMonitor(String nodeId, List<GeneralConf> servers) {
 		this.nodeId = nodeId;
