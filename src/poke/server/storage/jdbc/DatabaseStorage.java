@@ -65,8 +65,8 @@ public class DatabaseStorage implements Storage {
 			config.setJdbcUrl(ds.getUrl());
 			config.setUsername(ds.getUser());
 			config.setPassword(ds.getPass());
-			config.setMinConnectionsPerPartition(5);
-			config.setMaxConnectionsPerPartition(10);
+			config.setMinConnectionsPerPartition(2);
+			config.setMaxConnectionsPerPartition(4);
 			config.setPartitionCount(1);
 
 			cpool = new BoneCP(config);	

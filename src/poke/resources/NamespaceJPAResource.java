@@ -2,7 +2,6 @@ package poke.resources;
 
 import java.util.List;
 
-import org.hibernate.hql.ast.tree.QueryNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
