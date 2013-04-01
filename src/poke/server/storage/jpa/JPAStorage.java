@@ -42,6 +42,7 @@ public class JPAStorage {
 		return 	user;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> findNameSpaces(String originator, User criteria) {
 		List<User> users = new ArrayList<User>();
 		EntityManager manager = getEntityManager();

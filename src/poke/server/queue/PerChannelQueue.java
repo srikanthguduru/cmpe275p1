@@ -16,8 +16,8 @@
 package poke.server.queue;
 
 import java.lang.Thread.State;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.jboss.netty.channel.Channel;
@@ -57,7 +57,7 @@ public class PerChannelQueue implements ChannelQueue {
 	// not the best method to ensure uniqueness
 	private ThreadGroup tgroup = new ThreadGroup("ServerQueue-" + System.nanoTime());
 
-	private HashMap<String, RoutingConnection> routingConnections = new HashMap<String, RoutingConnection>();
+	private ConcurrentHashMap<String, RoutingConnection> routingConnections = new ConcurrentHashMap<String, RoutingConnection>();
 	private List<GeneralConf> serverMap;
 	private String nodeId;
 	

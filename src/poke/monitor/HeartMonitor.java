@@ -1,8 +1,8 @@
 package poke.monitor;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,11 +33,11 @@ public class HeartMonitor extends Thread {
 	List<RouteConf> route;
 
 	boolean forever = true;
-	HashMap<String, Channel> channels = new HashMap<String, Channel>();
-	HashMap<String, ChannelFuture> channelFutures = new HashMap<String, ChannelFuture>();
-	HashMap<String, ClientBootstrap> bootstraps = new HashMap<String, ClientBootstrap>();
+	ConcurrentHashMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
+	ConcurrentHashMap<String, ChannelFuture> channelFutures = new ConcurrentHashMap<String, ChannelFuture>();
+	ConcurrentHashMap<String, ClientBootstrap> bootstraps = new ConcurrentHashMap<String, ClientBootstrap>();
 	
-	HashMap<String, MonitorData> serverstatus = new HashMap<String, MonitorData>();
+	ConcurrentHashMap<String, MonitorData> serverstatus = new ConcurrentHashMap<String, MonitorData>();
 	
 	public static HeartMonitor getInstance(String id, List<GeneralConf> servers) {
 		instance.compareAndSet(null, new HeartMonitor(id, servers));
