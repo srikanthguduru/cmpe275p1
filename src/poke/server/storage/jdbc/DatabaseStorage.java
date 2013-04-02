@@ -606,7 +606,7 @@ public class DatabaseStorage implements Storage {
 			{
 				return null;
 			}
-			conn.commit();
+			//conn.commit();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

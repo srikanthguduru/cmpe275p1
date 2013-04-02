@@ -11,25 +11,23 @@ public class TestClass {
 	public static void main(String[] args) {
 		Connection conn;
 
-		String dburl = "jdbc:postgresql://localhost:5433/cmpe275"; // args[0];
-		// String dburl = "jdbc:postgresql_lwgis://localhost:5432/lifestream";
-		String dbuser = "postgres";
-		String dbpass = "root";
+		String dburl = "jdbc:postgresql://localhost:5432/cmpe275"; // args[0];
+//		 String dburl = "jdbc:postgresql_lwgis://localhost:5432/cmpe275";
+		String dbuser = "cmpe275";
+		String dbpass = "cmpe275";
 
-		String dbtable = "site1.jdbc_test";
-
-		String dropSQL = "drop table " + dbtable;
-		String createSQL = "create table " + dbtable
-				+ " (geom geometry, id int4)";
-		String insertPointSQL = "insert into " + dbtable
-				+ " values ('POINT (10 10)',1)";
-		String insertPolygonSQL = "insert into " + dbtable
-				+ " values ('POLYGON ((0 0 0,0 10 0,10 10 0,10 0 0,0 0 0))',2)";
+		String postGisSQL = "CREATE EXTENSION postgis";
+		
+		String dropSQL = "drop table jdbc_test";
+		String createSQL = "create table jdbc_test (geom GEOMETRY(Point, 100), id int4)";
+		
+		String insertPointSQL = "insert into jdbc_test values (ST_GeomFromText('POINT (10 10)',100), 1)";
+		String insertPolygonSQL = "insert into jdbc_test values (ST_GeomFromText('POINT (100 100)',100), 11)";
 
 		try {
 
 			System.out.println("Creating JDBC connection...");
-			// Class.forName("org.postgis.DriverWrapperLW");
+//			Class.forName("org.postgis.DriverWrapperLW");
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection(dburl, dbuser, dbpass);
 			System.out.println("Adding geometric type entries...");
@@ -45,6 +43,12 @@ public class TestClass {
 				System.out.println("Error dropping old table: "
 						+ e.getMessage());
 			}
+			try {
+				s.execute(postGisSQL);
+			} catch (Exception e) {
+				System.out.println("Error dropping old table: "
+						+ e.getMessage());
+			}
 			s.execute(createSQL);
 			System.out.println("Inserting point...");
 			s.execute(insertPointSQL);
@@ -53,8 +57,9 @@ public class TestClass {
 			System.out.println("Done.");
 			s = conn.createStatement();
 			System.out.println("Querying table...");
+			
 			// ResultSet r = s.executeQuery("select asText(geom),id from " + dbtable);
-			ResultSet r = s.executeQuery("select geom,id from " + dbtable);
+			ResultSet r = s.executeQuery("select geom,id from jdbc_test where ST_DWithin(geom, ST_GeomFromText('POINT (5 5)', 100), 10)");
 
 			while (r.next()) {
 				// Object obj = r.getObject(1);
