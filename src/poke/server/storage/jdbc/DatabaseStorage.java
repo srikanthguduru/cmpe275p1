@@ -1,6 +1,6 @@
 /*
  * copyright 2012, gash
- * 
+ *
  * Gash licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.postgresql.geometric.PGpoint;
+import org.postgis.PGgeometry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +69,7 @@ public class DatabaseStorage implements Storage {
 			config.setMaxConnectionsPerPartition(4);
 			config.setPartitionCount(1);
 
-			cpool = new BoneCP(config);	
+			cpool = new BoneCP(config);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class DatabaseStorage implements Storage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gash.jdbc.repo.Repository#release()
 	 */
 	@Override
@@ -220,7 +220,7 @@ public class DatabaseStorage implements Storage {
 		if (space == null)
 			return space;
 
-		String insert = "INSERT INTO " + schema + ".userdata (user_id, name, city, zip_code, password) VALUES ('" + space.getUserId() + "', '" 
+		String insert = "INSERT INTO " + schema + ".userdata (user_id, name, city, zip_code, password) VALUES ('" + space.getUserId() + "', '"
 				+ space.getName() + "', '" + space.getCity() + "', '" + space.getZipCode() + "','" + space.getPassword() + "');";
 
 		Connection conn = null;
@@ -305,12 +305,12 @@ public class DatabaseStorage implements Storage {
 	}
 	@Override
 	public String removeNameSpace(String userId) {
-		
+
 		if(userId == null)
 		{
 			return "No user id sent to delete the user";
 		}
-				
+
 		String delete = "DELETE FROM  " + schema + ".userdata WHERE user_id = '" + userId + "';";
 
 		Connection conn = null;
@@ -324,7 +324,7 @@ public class DatabaseStorage implements Storage {
 
 			int deleted = stmt.executeUpdate(delete);
 			conn.commit();
-			
+
 			if(deleted <= 0)
 				return "No user found to be deleted";
 
@@ -363,8 +363,9 @@ public class DatabaseStorage implements Storage {
 
 		java.sql.Date date = new java.sql.Date(doc.getTime());
 
-		String insert = "INSERT INTO " + schema + ".image ( file_name, geom, data, user_id, file_type, img_time) VALUES ('" 
-				+ doc.getFileName() + "', POINT (" + location.getX() + ", " + location.getY() + "), '"
+
+		String insert = "INSERT INTO " + schema + ".image ( file_name, geom, data, user_id, file_type, img_time) VALUES ('"
+				+ doc.getFileName() + "', ST_GeomFromText('POINT (" + location.getX() + " " + location.getY() + ")',100), '"
 				+ doc.getImgByte() + "','" + namespace  + "', '" + doc.getFileName() + "','" + date + "');";
 
 		logger.info("INSERT STATEMENT : " + insert);
@@ -378,7 +379,7 @@ public class DatabaseStorage implements Storage {
 			logger.info("Creating image - " +  doc.getId());
 
 			int added = stmt.executeUpdate(insert);
-				
+
 			conn.commit();
 			if(added > 0)
 				return true;
@@ -416,7 +417,7 @@ public class DatabaseStorage implements Storage {
 			return "Image name and user should be given in order to delete the image";
 		}
 
-		String delete = "DELETE FROM  " + schema + ".image WHERE user_id = '" + doc.getUserId() 
+		String delete = "DELETE FROM  " + schema + ".image WHERE user_id = '" + doc.getUserId()
 				+ "' AND file_name = '" + doc.getName() + "';";
 
 		Connection conn = null;
@@ -430,7 +431,7 @@ public class DatabaseStorage implements Storage {
 
 			int deleted = stmt.executeUpdate(delete);
 
-			conn.commit();			
+			conn.commit();
 
 			if(deleted <= 0)
 				return "No images found to be deleted";
@@ -480,7 +481,7 @@ public class DatabaseStorage implements Storage {
 
 			int updated = stmt.executeUpdate(update);
 			conn.commit();
-			
+
 			if (updated > 0)
 				return true;
 		} catch (Exception ex) {
@@ -536,7 +537,7 @@ public class DatabaseStorage implements Storage {
 
 			queryParamCount++;
 			select.append(" file_name = '" + fileName + "'");
-		}			
+		}
 		if(time != -1){
 			if(queryParamCount > 0)
 				select.append(" OR ");
@@ -546,8 +547,8 @@ public class DatabaseStorage implements Storage {
 			select.append(" img_time = '" + imgTime + "'");
 		}
 		if (criteria.getLocation() != null){
-			select.append(" OR geom ~= POINT(" + criteria.getLocation().getX() + ", " + criteria.getLocation().getY() 
-					+ ") ;");
+			select.append(" OR ST_DWithin(geom, ST_GeomFromText('POINT (" + criteria.getLocation().getX() + " " + criteria.getLocation().getY()
+					+ ")', 100), 10);");
 		}
 
 		logger.info("find doc query : " + select.toString());
@@ -567,21 +568,22 @@ public class DatabaseStorage implements Storage {
 
 				ByteString bytes = ByteString.copyFrom(rs.getBytes("data"));
 				double x = 0, y = 0;
-				/*
+
 				PGgeometry geom = (PGgeometry)rs.getObject("geom");
 
 				if(geom.getGeometry().getPoint(0) != null)
 				{
 					x = geom.getGeometry().getPoint(0).getX();
 					y = geom.getGeometry().getPoint(0).getY();
-				}*/
+				}
 
-				PGpoint geom = (PGpoint)rs.getObject("geom");
+				/*PGpoint geom = (PGpoint)rs.getObject("geom");
 				if(geom != null)
 				{
 					x = geom.x;
 					y = geom.y;
-				}
+				}*/
+
 				Point point = Point.newBuilder().setX(x)
 						.setY(y).build();
 				java.sql.Date date = rs.getDate("img_time");

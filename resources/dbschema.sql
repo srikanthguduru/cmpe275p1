@@ -38,7 +38,7 @@ CREATE TABLE site1.image
 (
    id serial NOT NULL, 
    file_name character varying(128) NOT NULL, 
-   geom point NOT NULL, 
+   geom geometry NOT NULL, 
    data bytea NOT NULL, 
    file_type character varying(128), 
    img_time date NOT NULL, 
@@ -77,7 +77,7 @@ CREATE TABLE site2.image
 (
    id serial NOT NULL, 
    file_name character varying(128) NOT NULL, 
-   geom point NOT NULL, 
+   geom geometry NOT NULL, 
    data bytea NOT NULL, 
    file_type character varying(128), 
    img_time date NOT NULL, 
@@ -116,7 +116,7 @@ CREATE TABLE site3.image
 (
    id serial NOT NULL, 
    file_name character varying(128) NOT NULL, 
-   geom point NOT NULL, 
+   geom geometry NOT NULL, 
    data bytea NOT NULL, 
    file_type character varying(128), 
    img_time date NOT NULL, 
@@ -155,7 +155,7 @@ CREATE TABLE site4.image
 (
    id serial NOT NULL, 
    file_name character varying(128) NOT NULL, 
-   geom point NOT NULL, 
+   geom geometry NOT NULL, 
    data bytea NOT NULL, 
    file_type character varying(128), 
    img_time date NOT NULL, 
@@ -167,4 +167,14 @@ WITH (
   OIDS = FALSE
 );
 ALTER TABLE site4.image
-  OWNER TO cmpe275;          
+  OWNER TO cmpe275;   
+  
+#For Alteration, if You have geom as Point
+alter table site1.image drop geom;
+alter table site1.image add geom GEOMETRY;
+alter table site2.image drop geom;
+alter table site2.image add geom GEOMETRY;
+alter table site3.image drop geom;
+alter table site3.image add geom GEOMETRY;
+alter table site4.image drop geom;
+alter table site4.image add geom GEOMETRY;
