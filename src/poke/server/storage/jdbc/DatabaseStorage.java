@@ -467,8 +467,7 @@ public class DatabaseStorage implements Storage {
 
 		Point location = doc.getLocation();
 
-		String update = "UPDATE " + schema + ".image SET file_name = '" + doc.getFileName() + "', geom = POINT (" + location.getX() + ", "
-				+ location.getY() + "), data = '" + doc.getImgByte() + "', file_type = '" + doc.getFileType() + "' WHERE id = " + doc.getId();
+		String update = "UPDATE " + schema + ".image SET file_name = '" + doc.getFileName() + "', geom = ST_GeomFromText('POINT (" + location.getX() + " " + location.getY() + ")',100),  data = '" + doc.getImgByte() + "', file_type = '" + doc.getFileType() + "' WHERE id = " + doc.getId();
 
 		Connection conn = null;
 		try {
@@ -486,7 +485,7 @@ public class DatabaseStorage implements Storage {
 				return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("failed/exception on updating image " + doc.getId(), ex);
+			logger.error("Exception on updating image " + doc.getId(), ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
