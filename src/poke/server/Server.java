@@ -119,7 +119,7 @@ public class Server {
 
 		// internal using TCP - a better option
 		mgmtCF = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),
-				Executors.newFixedThreadPool(2));
+				Executors.newFixedThreadPool(5));
 	}
 
 	public void release() {
