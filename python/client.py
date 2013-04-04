@@ -34,8 +34,11 @@ def CreateSocket():
     m = buildPoke(1,2)
     packed_len = struct.pack('>L',len(m))
     s.sendall(packed_len + m)
+    data = s.recv(4096)
     s.close
-
+    r = comm_pb2.Response()
+    print data
+    #print r.ParseFromString(data)
 # Main procedure:  Reads the entire address book from a file,
 #   adds one person based on user input, then writes it back out to the same
 #   file.
