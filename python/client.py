@@ -3,7 +3,8 @@
 # See README.txt for information and build instructions.
 
 import comm_pb2
-import os, sys
+import os
+import sys
 import socket               # Import socket module
 import time
 import struct
@@ -24,9 +25,12 @@ def buildPoke(tag, number):
     m = r.SerializeToString()
     return m
 
-def docMethod():
-    
+def buildDoc():
     r = comm_pb2.Request()
+
+    f = open('../resources/DSC_1832.jpg', 'rb')
+    r.body.doc.img_byte = bytearray(f.read())
+    f.close()
 
     r.body.doc.id = 3
     r.body.doc.file_name = "scene.jpg"
@@ -34,24 +38,18 @@ def docMethod():
     r.body.doc.file_type = "jpg"
     r.body.doc.location.x = 35
     r.body.doc.location.y = -122
-    r.body.doc.time = time.time()
-    
-    fh = open("resources/DSC_1832.jpg",rb)
-    ba = bytearray(fh.read())
-    fh.close()
-
-    r.body.doc.img_byte = ba
+    r.body.doc.time = int(round(time.time() * 1000))
     
     r.header.originator = "python client"
-    r.header.tag = str(tag + number + int(round(time.time() * 1000)))
-    r.header.routing_id = comm_pb2.Header.FINGER
+    r.header.tag = str(int(round(time.time() * 1000)))
+    r.header.routing_id = comm_pb2.Header.DOCADD
     
     m = r.SerializeToString()
     return m
     
     
 
-def someMethod():
+def buildNS():
     r = comm_pb2.Request()
 
     r.body.space.name = "Prateek"
@@ -61,7 +59,7 @@ def someMethod():
     r.body.space.zip_code = "94538"
     
     r.header.originator = "python client"
-    r.header.tag = str(tag + number + int(round(time.time() * 1000)))
+    r.header.tag = str(int(round(time.time() * 1000)))
     r.header.routing_id = comm_pb2.Header.NAMESPACEADD
 
     m = r.SerializeToString()
@@ -78,11 +76,28 @@ def CreateSocket():
     packed_len = struct.pack('>L',len(m))
     s.sendall(packed_len + m)
     data = s.recv(4096)
-    s.close
     r = comm_pb2.Response()
-    #print data
     r.ParseFromString(data)
-    print r
+    print data
+
+    m = buildNS()
+    packed_len = struct.pack('>L',len(m))
+    s.sendall(packed_len + m)
+    data = s.recv(4096)
+    r = comm_pb2.Response()
+    r.ParseFromString(data)
+    print data
+
+    m = buildDoc()
+    packed_len = struct.pack('>L',len(m))
+    s.sendall(packed_len + m)
+    data = s.recv(4096* 50)
+    r = comm_pb2.Response()
+    r.ParseFromString(data)
+    print data
+
+    s.close
+    
 # Main procedure:  Reads the entire address book from a file,
 #   adds one person based on user input, then writes it back out to the same
 #   file.
