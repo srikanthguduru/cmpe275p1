@@ -30,103 +30,111 @@ import eye.Comm.Header.Routing;
 
 public class ServerConfTest {
 
-	private String userID ;
-	private String server;
-	private int port;
+	private String userID = "TestUser"+ System.currentTimeMillis();;
+	private String server = "localhost";
+	private int port = 5570;
 	private Jab jab;
 	private ClientConnection cc;
-	private int count;
-	
+		
 	@Before
 	public void initialize() {
-		userID = "Sugandhi";
-		server = "localhost";
-		port = 5570;
-		cc = ClientConnection.initConnection(server, port);
+		if(cc == null)
+			cc = ClientConnection.initConnection(server, port);
 	}
 	
 	@Test
-	public void testSequence()
+	public void testSequence() throws InterruptedException
 	{
 		testPoke();
+		Thread.sleep(3000);
 		testCreateUser();
+		Thread.sleep(3000);
 		testImageUpload();
+		Thread.sleep(3000);
 		testUpdateImage();
+		Thread.sleep(3000);
 		testFindImage();
+		Thread.sleep(3000);
 		testRemoveImage();
+		Thread.sleep(3000);
 		testFindUser();
+		Thread.sleep(3000);
 		testRemoveUser();
+		Thread.sleep(3000);
 		testCreateUserJPA();
+		Thread.sleep(3000);
 		testFindUserJPA();
+		Thread.sleep(3000);
 		testRemoveUserJPA();
+		Thread.sleep(3000);
 	}
+
 	
-	public void testPoke()
-	{
+	public void testPoke() {
+		System.out.println("Poke");
 		jab = new Jab(userID, server, port, 1);
-		cc.sendRequest(jab.buildPoke(userID, count));
+		cc.sendRequest(jab.buildPoke(userID, 100));
 	}
 	
-	public void testCreateUser()
-	{
+	public void testCreateUser() {
+		System.out.println("Create User");
 		jab = new Jab(userID, server, port, 1);
 		cc.sendRequest(jab.createNameSpace(Routing.NAMESPACEADD));
 	}
 	
-	public void testImageUpload()
-	{
+	public void testImageUpload() {
+		System.out.println("Upload Image");		
 		jab = new Jab(userID, server, port, 3);
 		cc.sendRequest(jab.createDocRequest(Routing.DOCADD));
 	}
 	
-	public void testUpdateImage()
-	{
+	public void testUpdateImage() {
+		System.out.println("Update Image");		
 		jab = new Jab(userID, server, port, 4);
 		cc.sendRequest(jab.createDocRequest(Routing.DOCUPDATE));
 	}
 	
-	public void testFindImage()
-	{
+	public void testFindImage() {
+		System.out.println("Find Image");
 		jab = new Jab(userID, server, port, 5);
 		cc.sendRequest(jab.findDoc(Routing.DOCFIND));
 	}
 	
-	public void testRemoveImage()
-	{
+	public void testRemoveImage() {
+		System.out.println("Remove Image");
 		jab = new Jab(userID, server, port, 6);
 		cc.sendRequest(jab.findDoc(Routing.DOCREMOVE));
 	}
 	
-	public void testFindUser()
-	{
+	public void testFindUser() {
+		System.out.println("Find User");		
 		jab = new Jab(userID, server, port, 7);
 		cc.sendRequest(jab.findNameSpace(Routing.NAMESPACEFIND));
 	}
-	public void testRemoveUser()
-	{
+
+	public void testRemoveUser() {
+		System.out.println("Remove User");		
 		jab = new Jab(userID, server, port, 8);
 		cc.sendRequest(jab.removeNameSpace(Routing.NAMESPACEREMOVE));
 	}
 	
-	public void testCreateUserJPA()
-	{
+	public void testCreateUserJPA() {
+		System.out.println("Create User JPA");		
 		jab = new Jab(userID, server, port, 9);
 		cc.sendRequest(jab.createNameSpace(Routing.NAMESPACEADDJPA));
 	}
 	
-	public void testFindUserJPA()
-	{
+	public void testFindUserJPA() {
+		System.out.println("Find User JPA");				
 		jab = new Jab(userID, server, port, 11);
 		cc.sendRequest(jab.removeNameSpace(Routing.NAMESPACEFINDJPA));
 	}
 	
-	public void testRemoveUserJPA()
-	{
+	public void testRemoveUserJPA() {
+		System.out.println("Remove User JPA");		
 		jab = new Jab(userID, server, port, 12);
 		cc.sendRequest(jab.findNameSpace(Routing.NAMESPACEREMOVEJPA));
 	}
-	
-	
 	
 	@Test
 	public void testBasicConf() throws Exception {
