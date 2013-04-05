@@ -49,6 +49,10 @@ public class Jab {
 		this.requestType = request;
 	}
 
+	public Jab() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void run() {
 		ClientConnection cc = ClientConnection.initConnection(server, port);
 
@@ -97,7 +101,7 @@ public class Jab {
 		}
 	}
 
-	private Request buildPoke(String tag, int num) {
+	public Request buildPoke(String tag, int num) {
 		// data to send
 		Finger.Builder f = eye.Comm.Finger.newBuilder();
 		f.setTag(tag);
@@ -118,7 +122,7 @@ public class Jab {
 		return r.build();
 	}
 
-	private Request createNameSpace(Routing msgRoute) {
+	public Request createNameSpace(Routing msgRoute) {
 		// data to send
 		NameSpace.Builder ns = eye.Comm.NameSpace.newBuilder();
 		ns.setName("Srinath");
@@ -142,23 +146,23 @@ public class Jab {
 		return r.build();
 	}
 
-	private Request createDocRequest(Routing msgRoute){
+	public Request createDocRequest(Routing msgRoute){
 		Document.Builder doc = Document.newBuilder();
-		
+
 		if(msgRoute == Routing.DOCUPDATE){
 			doc.setId(3);
 			doc.setFileName("scene");
 		}
 		else{
-		doc.setId(new Random().nextLong());
-		doc.setFileName("My Image");
+			doc.setId(new Random().nextLong());
+			doc.setFileName("My Image");
 		}
 		doc.setNameSpace(userId);
 		doc.setFileType("jpg");
 		eye.Comm.Point.Builder pnt = eye.Comm.Point.newBuilder().setX(35).setY(-122);
 		doc.setLocation(pnt);
 		doc.setTime(System.currentTimeMillis());
-		
+
 
 		File image = new File("resources/DSC_1832.jpg");
 		byte [] imgAsBytes = new byte[(int)image.length()];
@@ -186,7 +190,7 @@ public class Jab {
 		return r.build();
 	}
 
-	private Request login(Routing msgRoute) {
+	public Request login(Routing msgRoute) {
 		// data to send
 		LoginInfo l = LoginInfo.newBuilder()
 				.setUserId(userId)
@@ -209,7 +213,7 @@ public class Jab {
 		return r.build();
 	}
 
-	private Request findDoc(Routing msgRoute) {
+	public Request findDoc(Routing msgRoute) {
 		QueryDocument qd;
 		if(msgRoute == Routing.DOCFIND) {
 			eye.Comm.Point pnt = eye.Comm.Point.newBuilder().setX(34.6).setY(-121.5).build();
@@ -223,7 +227,7 @@ public class Jab {
 		}
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
-		
+
 		p.setQuery(qd);
 		r.setBody(p.build());
 
@@ -236,7 +240,7 @@ public class Jab {
 		return r.build();
 	}
 
-	private Request findNameSpace(Routing msgRoute) {
+	public Request findNameSpace(Routing msgRoute) {
 		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
 		qd.setUserId(userId);
 
@@ -255,7 +259,7 @@ public class Jab {
 
 	}
 
-	private Request removeNameSpace(Routing msgRoute) {
+	public Request removeNameSpace(Routing msgRoute) {
 		ManipulateNS.Builder qd = ManipulateNS.newBuilder();
 		qd.setUserId(userId);
 
