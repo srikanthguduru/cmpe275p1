@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="netty demo" basedir="." default="build">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="LifeStream" basedir="." default="build">
 
 	<target name="resolve" depends="init">
 		<ivy:retrieve pattern="${lib.dir}/[module]-[type]-[artifact]-[revision].[ext]" />
@@ -56,10 +56,10 @@
 	<!-- ================================================================= -->
 
 	<target name="client" depends="init">
-		<property name="user" value="SrinathS"/>
+		<property name="user" value="Sugandhi"/>
 		<property name="server" value="localhost"/>
 		<property name="port" value="5570"/>
-		<property name="request" value="0"/>
+		<property name="request" value="3"/>
 		<java fork="yes" classname="poke.demo.Jab">
 			<classpath refid="project.classpath" />
 			<arg value="${user}" />
@@ -68,6 +68,7 @@
 			<arg value="${request}" />
 		</java>
 	</target>
+	
 
 	<target name="monitor" depends="init">
 		<java fork="yes" classname="poke.demo.Monitor">
@@ -81,5 +82,18 @@
 			<classpath refid="project.classpath" />
 		</java>
 	</target>
+	
+	<target name="test" depends="init" >
+
+	  <junit printsummary="withOutAndErr" haltonfailure="yes" fork = "true"  forkmode ="perTest">
+	  	<classpath refid="project.classpath" />
+	  	<formatter type="brief" usefile="false" />
+	    <test name="poke.server.conf.ServerConfTest">
+
+	    </test>
+
+	  </junit>
+	</target>
+
 
 </project>
