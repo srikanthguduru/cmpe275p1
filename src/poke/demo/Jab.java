@@ -63,9 +63,6 @@ public class Jab {
 		case 1: // Add NameSpace
 			cc.sendRequest(createNameSpace(Routing.NAMESPACEADD));
 			break;
-		case 2: // Login
-			cc.sendRequest(login(Routing.LOGIN));
-			break;
 		case 3: // Add Document
 			cc.sendRequest(createDocRequest(Routing.DOCADD));
 			break;
@@ -86,9 +83,6 @@ public class Jab {
 			break;
 		case 9: // Add NameSpace JPA
 			cc.sendRequest(createNameSpace(Routing.NAMESPACEADDJPA));
-			break;
-		case 10: // Login JPA
-			cc.sendRequest(login(Routing.LOGINJPA));
 			break;
 		case 11: // Find  User JPA
 			cc.sendRequest(findNameSpace(Routing.NAMESPACEFINDJPA));
@@ -125,7 +119,7 @@ public class Jab {
 	public Request createNameSpace(Routing msgRoute) {
 		// data to send
 		NameSpace.Builder ns = eye.Comm.NameSpace.newBuilder();
-		ns.setName("Srinath");
+		ns.setName("Sug");
 		ns.setPassword("cmpe275");
 		ns.setUserId(userId);
 		ns.setCity("Sunnyvale");
@@ -179,29 +173,6 @@ public class Jab {
 		Request.Builder r = Request.newBuilder();
 		eye.Comm.Payload.Builder p = Payload.newBuilder();
 		p.setDoc(doc.build());
-		r.setBody(p.build());
-
-		// header with routing info
-		eye.Comm.Header.Builder h = Header.newBuilder();
-		h.setOriginator("client");
-		h.setTag(userId);
-		h.setRoutingId(msgRoute);
-		r.setHeader(h.build());
-		return r.build();
-	}
-
-	public Request login(Routing msgRoute) {
-		// data to send
-		LoginInfo l = LoginInfo.newBuilder()
-				.setUserId(userId)
-				.setPassword("cmpe275")
-				.build();
-
-
-		// payload containing data
-		Request.Builder r = Request.newBuilder();
-		eye.Comm.Payload.Builder p = Payload.newBuilder();
-		p.setLogin(l);
 		r.setBody(p.build());
 
 		// header with routing info
@@ -282,9 +253,9 @@ public class Jab {
 		try {
 			if(args.length != 4) {
 				System.out.println("Usage jab <User_Id> <Server> <Port> <RequestType>");
-				System.out.println("Request Type - [0 - Poke, 1 - UserAdd, 2 - Login, 3 - ImageUpload, 4 - Update Image ");
+				System.out.println("Request Type - [0 - Poke, 1 - UserAdd, 3 - ImageUpload, 4 - Update Image ");
 				System.out.println("Request Type - [5 - Find Image, 6 - Remove Image, 7 - Find User, 8 - Remove User ]");
-				System.out.println("Request Type - [9 - UserAdd-JPA, 10 - Login-JPA, 11 - Find User-JPA, 12 - Remove User-JPA ");
+				System.out.println("Request Type - [9 - UserAdd-JPA, 11 - Find User-JPA, 12 - Remove User-JPA ");
 				return;
 			}
 			System.out.println("UserID: " + args[0] + ", Server: " + args[1] + ", Port: " + args[2] + ", Request: " + args[3]);
