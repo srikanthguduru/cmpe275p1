@@ -4,7 +4,9 @@
         http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 	version="1.0">
 	<persistence-unit name="1">
+	
 		<provider> org.hibernate.ejb.HibernatePersistence</provider>
+		<class>poke.entity.User</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/cmpe275"/>
@@ -33,6 +35,7 @@
 	</persistence-unit>
 	<persistence-unit name="3">
 		<provider> org.hibernate.ejb.HibernatePersistence</provider>
+		<class>poke.entity.User</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/cmpe275"/>
@@ -47,6 +50,7 @@
 	</persistence-unit>
 	<persistence-unit name="4">
 		<provider> org.hibernate.ejb.HibernatePersistence</provider>
+		<class>poke.entity.User</class>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/cmpe275"/>
